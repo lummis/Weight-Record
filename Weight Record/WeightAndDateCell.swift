@@ -19,7 +19,7 @@ class WeightAndDateCell: UITableViewCell {
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = .current
         
-        dateFormatter.dateFormat = "ccc"  // comment while adding .git
+        dateFormatter.dateFormat = "ccc"
         let dayName = dateFormatter.string(from: sample.date)
         let fontSize = CGFloat(18.0)
         

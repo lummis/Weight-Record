@@ -14,7 +14,7 @@ class HealthKitHelper {
     var hkAccessRequestWasProcessed = false
     var viewController: WeightVC!
     
-    func authorizeHealthKit() -> Bool {  // comment while adding .git
+    func authorizeHealthKit() -> Bool {
         if HKHealthStore.isHealthDataAvailable() {
             let bodyMass = Set( [HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!] )
             store.requestAuthorization(toShare: bodyMass, read: bodyMass) {
