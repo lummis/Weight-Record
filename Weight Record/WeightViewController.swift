@@ -11,7 +11,7 @@ import HealthKit
 
 class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    let hks = HKHealthStore()
+    let hks = HKHealthStore()  // comment while adding .git
     let minWeight = 50.0
     let maxWeight = 250.0
     let helper = HealthKitHelper()
