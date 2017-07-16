@@ -1,0 +1,329 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7DAD52AB1F1AF54000001513 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAD52AA1F1AF54000001513 /* AppDelegate.swift */; };
+		7DAD52B21F1AF54100001513 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7DAD52B11F1AF54100001513 /* Assets.xcassets */; };
+		7DAD52BE1F1AF5A200001513 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DAD52BD1F1AF5A200001513 /* LaunchScreen.storyboard */; };
+		7DAD52C01F1AF62D00001513 /* WeightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAD52BF1F1AF62D00001513 /* WeightViewController.swift */; };
+		7DAD52C21F1AF63800001513 /* WeightAndDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAD52C11F1AF63800001513 /* WeightAndDateCell.swift */; };
+		7DAD52C41F1AF64000001513 /* HealthKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAD52C31F1AF64000001513 /* HealthKitHelper.swift */; };
+		7DAD52C81F1AF65A00001513 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DAD52C71F1AF65A00001513 /* HealthKit.framework */; };
+		7DAD52CA1F1AF6E300001513 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DAD52C91F1AF6E300001513 /* Main.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		7DAD52A71F1AF54000001513 /* Weight Record.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Weight Record.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DAD52AA1F1AF54000001513 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7DAD52B11F1AF54100001513 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7DAD52B61F1AF54100001513 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7DAD52BD1F1AF5A200001513 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7DAD52BF1F1AF62D00001513 /* WeightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeightViewController.swift; sourceTree = "<group>"; };
+		7DAD52C11F1AF63800001513 /* WeightAndDateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeightAndDateCell.swift; sourceTree = "<group>"; };
+		7DAD52C31F1AF64000001513 /* HealthKitHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitHelper.swift; sourceTree = "<group>"; };
+		7DAD52C51F1AF65A00001513 /* Weight Record.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Weight Record.entitlements"; sourceTree = "<group>"; };
+		7DAD52C71F1AF65A00001513 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		7DAD52C91F1AF6E300001513 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7DAD52A41F1AF54000001513 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7DAD52C81F1AF65A00001513 /* HealthKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7DAD529E1F1AF53F00001513 = {
+			isa = PBXGroup;
+			children = (
+				7DAD52C91F1AF6E300001513 /* Main.storyboard */,
+				7DAD52A91F1AF54000001513 /* Weight Record */,
+				7DAD52BC1F1AF56000001513 /* Usual */,
+				7DAD52A81F1AF54000001513 /* Products */,
+				7DAD52C61F1AF65A00001513 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		7DAD52A81F1AF54000001513 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7DAD52A71F1AF54000001513 /* Weight Record.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7DAD52A91F1AF54000001513 /* Weight Record */ = {
+			isa = PBXGroup;
+			children = (
+				7DAD52BF1F1AF62D00001513 /* WeightViewController.swift */,
+				7DAD52C11F1AF63800001513 /* WeightAndDateCell.swift */,
+				7DAD52C31F1AF64000001513 /* HealthKitHelper.swift */,
+			);
+			path = "Weight Record";
+			sourceTree = "<group>";
+		};
+		7DAD52BC1F1AF56000001513 /* Usual */ = {
+			isa = PBXGroup;
+			children = (
+				7DAD52AA1F1AF54000001513 /* AppDelegate.swift */,
+				7DAD52C51F1AF65A00001513 /* Weight Record.entitlements */,
+				7DAD52B11F1AF54100001513 /* Assets.xcassets */,
+				7DAD52B61F1AF54100001513 /* Info.plist */,
+				7DAD52BD1F1AF5A200001513 /* LaunchScreen.storyboard */,
+			);
+			name = Usual;
+			path = "Weight Record";
+			sourceTree = "<group>";
+		};
+		7DAD52C61F1AF65A00001513 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7DAD52C71F1AF65A00001513 /* HealthKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7DAD52A61F1AF54000001513 /* Weight Record */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7DAD52B91F1AF54100001513 /* Build configuration list for PBXNativeTarget "Weight Record" */;
+			buildPhases = (
+				7DAD52A31F1AF54000001513 /* Sources */,
+				7DAD52A41F1AF54000001513 /* Frameworks */,
+				7DAD52A51F1AF54000001513 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Weight Record";
+			productName = "Weight Record";
+			productReference = 7DAD52A71F1AF54000001513 /* Weight Record.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7DAD529F1F1AF53F00001513 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = ElectricTurkeySoftware;
+				TargetAttributes = {
+					7DAD52A61F1AF54000001513 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = XH7D6SUL6X;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 7DAD52A21F1AF53F00001513 /* Build configuration list for PBXProject "Weight Record" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7DAD529E1F1AF53F00001513;
+			productRefGroup = 7DAD52A81F1AF54000001513 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7DAD52A61F1AF54000001513 /* Weight Record */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7DAD52A51F1AF54000001513 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7DAD52CA1F1AF6E300001513 /* Main.storyboard in Resources */,
+				7DAD52BE1F1AF5A200001513 /* LaunchScreen.storyboard in Resources */,
+				7DAD52B21F1AF54100001513 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7DAD52A31F1AF54000001513 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7DAD52C41F1AF64000001513 /* HealthKitHelper.swift in Sources */,
+				7DAD52C01F1AF62D00001513 /* WeightViewController.swift in Sources */,
+				7DAD52AB1F1AF54000001513 /* AppDelegate.swift in Sources */,
+				7DAD52C21F1AF63800001513 /* WeightAndDateCell.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		7DAD52B71F1AF54100001513 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		7DAD52B81F1AF54100001513 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7DAD52BA1F1AF54100001513 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Weight Record/Weight Record.entitlements";
+				DEVELOPMENT_TEAM = XH7D6SUL6X;
+				INFOPLIST_FILE = "Weight Record/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.electricturkeysoftware.Weight-Record";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		7DAD52BB1F1AF54100001513 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Weight Record/Weight Record.entitlements";
+				DEVELOPMENT_TEAM = XH7D6SUL6X;
+				INFOPLIST_FILE = "Weight Record/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.electricturkeysoftware.Weight-Record";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7DAD52A21F1AF53F00001513 /* Build configuration list for PBXProject "Weight Record" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7DAD52B71F1AF54100001513 /* Debug */,
+				7DAD52B81F1AF54100001513 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7DAD52B91F1AF54100001513 /* Build configuration list for PBXNativeTarget "Weight Record" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7DAD52BA1F1AF54100001513 /* Debug */,
+				7DAD52BB1F1AF54100001513 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7DAD529F1F1AF53F00001513 /* Project object */;
+}
