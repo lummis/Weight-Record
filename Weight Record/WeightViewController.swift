@@ -18,31 +18,36 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     var tableView: UITableView? = nil
     lazy var weightsAndDates: [ (weight: Double, date: Date) ]  = []
     var weightsAndDatesUpdated: Bool = false
-    let delay = 0.2 // wait for the HK query to run
+    let delay = 1.0 // wait for the HK query to run
     
-    func reloadTableAfterDelay() {
+    func updateUI() {
+//        getDataFromHealthKitDatabase()
+        print("start updateUI, delay: \(delay)")
         perform(#selector(updateCells), with: nil, afterDelay: delay)
     }
     
     func updateCells() {
+        print("start updateCells")
         if tableView != nil && !weightsAndDates.isEmpty {
             weightsAndDates.sort( by: {$0.date > $1.date} )
             tableView!.reloadData()
-        } else { print("updateCells failed; either tableView is nil or weightsAndDates is empty") }
+        } else {
+            fatalError("updateCells failed; either tableView is nil or weightsAndDates is empty")
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let ok = helper.authorizeHealthKit()
-        print ("health kit helper authorized: \(ok)")
-        
+        getDataFromHealthKitDatabase()
+    }
+    
+    func getDataFromHealthKitDatabase() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm"
-        let yearStart = dateFormatter.date(from: "2017-Jan-01 00:00")!
+        let yearStart = dateFormatter.date(from: "2017-Jan-01 05:00")!
         let now = Date()
-        helper.getWeightsAndDates(fromDate: yearStart, toDate: now, vc: self)
-        
+        helper.readWeightsAndDates(fromDate: yearStart, toDate: now, vc: self)
+        print("after helper returns \(weightsAndDates.count)")
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

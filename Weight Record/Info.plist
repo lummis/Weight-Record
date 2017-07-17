@@ -20,10 +20,21 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>CFBundleDisplayName</key>
+	<string></string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Your permission is needed to read weight values that may be stored in the health database on your iPhone</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Your permission is needed to save weight values into the health database on your iPhone</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+		<string>healthkit</string>
+	</array>
 	<key>UIStatusBarTintParameters</key>
 	<dict>
 		<key>UINavigationBar</key>
@@ -34,18 +45,11 @@
 			<false/>
 		</dict>
 	</dict>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-		<string>healthkit</string>
-	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>Your permission is needed to store your weight in the health database</string>
-	<key>NSHealthShareUsageDescription</key>
-	<string>Your permission is needed to display your stored weights</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.healthcare-fitness</string>
 </dict>
 </plist>
