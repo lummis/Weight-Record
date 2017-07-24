@@ -25,7 +25,10 @@ class WeightAndDateCell: UITableViewCell {
         
             // table row bolder every Monday to emphasize weeks
             // font weight 0.0 is 'regular'; range is -1.0 to 1.0
+        
         let fontWeight = dayName == "Mon" ? CGFloat(0.7) : CGFloat (0.0)
+
+        
         dayOfWeekL.font = UIFont.systemFont(ofSize: fontSize, weight: fontWeight)
         dayOfWeekL.text = dayName
         

@@ -9,29 +9,59 @@
 import UIKit
 import HealthKit
 
-class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, WeightAndDate {
 
+    @IBOutlet weak var messageL: UILabel!
+    
     let hks = HKHealthStore()
     let minWeight = 50.0
     let maxWeight = 250.0
-    let helper = HealthKitHelper()
+    var helper: HealthKitHelper!
     var tableView: UITableView? = nil
     var weightsAndDates: [ (weight: Double, date: Date) ]  = []
-    var weightsAndDatesUpdated: Bool = false
-    let delay: TimeInterval = 1.0 // wait for the HK query to run; probably a shorter delay is OK
+    var messageText: String {
+        get {
+            return messageL.text ?? "messageText initial value"
+        }
+        set {
+            messageL.text = newValue
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getDataFromHKDatabaseThenUpdateUIAfterDelay()
-        perform(#selector(updateCells), with: nil, afterDelay: delay)
-    }
-    
-    func getDataFromHKDatabaseThenUpdateUIAfterDelay() {
+        
+        helper = HealthKitHelper(delegate: self)
+        messageText = ""
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm"
         let yearStart = dateFormatter.date(from: "2017-Jan-01 05:00")!
         let now = Date()
-        helper.readWeightsAndDates(fromDate: yearStart, toDate: now, vc: self)
+        helper.getWeightsAndDates(fromDate: yearStart, toDate: now)
+        
+        
+        
+//        let ok = helper.requestHKAuthorization(vc: self, fromDate: yearStart, toDate: now)
+//        if ok {
+//            messageL.text = "HKAuthorization request was processed"
+//        } else {
+//            messageL.text = "HKAuthorization request NOT processed"
+//        }
+//        getDataFromHKDatabaseThenUpdateUIAfterDelay()
+//        perform(#selector(updateCells), with: nil, afterDelay: delay)
+    }
+    
+//    func getDataFromHKDatabaseThenUpdateUIAfterDelay() {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm"
+//        let yearStart = dateFormatter.date(from: "2017-Jan-01 05:00")!
+//        let now = Date()
+//        helper.readWeightsAndDates(fromDate: yearStart, toDate: now, vc: self)
+//    }
+    
+    func displayMessage(msg: String) {
+        messageL.text = msg
     }
     
     func updateCells() {

@@ -66,8 +66,8 @@
 			isa = PBXGroup;
 			children = (
 				7DAD52BF1F1AF62D00001513 /* WeightViewController.swift */,
-				7DAD52C11F1AF63800001513 /* WeightAndDateCell.swift */,
 				7DAD52C31F1AF64000001513 /* HealthKitHelper.swift */,
+				7DAD52C11F1AF63800001513 /* WeightAndDateCell.swift */,
 			);
 			path = "Weight Record";
 			sourceTree = "<group>";
