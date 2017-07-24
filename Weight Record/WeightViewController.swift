@@ -39,26 +39,7 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         let yearStart = dateFormatter.date(from: "2017-Jan-01 05:00")!
         let now = Date()
         helper.getWeightsAndDates(fromDate: yearStart, toDate: now)
-        
-        
-        
-//        let ok = helper.requestHKAuthorization(vc: self, fromDate: yearStart, toDate: now)
-//        if ok {
-//            messageL.text = "HKAuthorization request was processed"
-//        } else {
-//            messageL.text = "HKAuthorization request NOT processed"
-//        }
-//        getDataFromHKDatabaseThenUpdateUIAfterDelay()
-//        perform(#selector(updateCells), with: nil, afterDelay: delay)
     }
-    
-//    func getDataFromHKDatabaseThenUpdateUIAfterDelay() {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm"
-//        let yearStart = dateFormatter.date(from: "2017-Jan-01 05:00")!
-//        let now = Date()
-//        helper.readWeightsAndDates(fromDate: yearStart, toDate: now, vc: self)
-//    }
     
     func displayMessage(msg: String) {
         messageL.text = msg
@@ -66,7 +47,6 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
     
     func updateCells() {
         if tableView != nil && !weightsAndDates.isEmpty {
-            weightsAndDates.sort( by: {$0.date > $1.date} )
             tableView!.reloadData()
         } else {
             fatalError("updateCells failed; tableView is nil or weightsAndDates is empty")

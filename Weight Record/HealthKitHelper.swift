@@ -60,49 +60,35 @@ class HealthKitHelper {
             fatalError(" *** sampleType construction should never fail ***")
         }
         let predicate = HKQuery.predicateForSamples(withStart: fromDate, end: toDate, options: [])
-
-        let query: HKSampleQuery = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) {
+        let sortDescriptor: [NSSortDescriptor] = [ NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false) ]
+        let query: HKSampleQuery = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: sortDescriptor) {
             (theQuery, results, error) in
-            print("in HKSampleQuery resultsHandler")
-            if error != nil {
-                print("error: ", error.debugDescription)
-            } else {
-                print("error is nil after running query")
+                if error != nil {
+                    print("error: ", error.debugDescription)
+                } else {
+                    print("query completed, error is nil")
+                }
+
+                guard let samples = results as! [HKQuantitySample]? else {
+                    print("error: \(error.debugDescription)")
+                    fatalError("query failed in func 'accessHealthDataBase': \(String(describing: error?.localizedDescription))" )
+                }
+
+                for sample in samples {
+                    let pounds = sample.quantity.doubleValue(for: HKUnit.pound())
+                    let date = sample.startDate
+                    self.weightVC.weightsAndDates.append( (pounds, date) )
+                }
                 
+                // if this doesn't run on the main thread it gives:
+                // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird...."
+                DispatchQueue.main.async {
+                    self.weightVC.messageText = "\(self.weightVC.weightsAndDates.count) samples"
+                    self.weightVC.updateCells()
+                }
             }
-
-            guard let samples = results as! [HKQuantitySample]? else {
-                print("error: \(error.debugDescription)")
-                fatalError("query failed in func 'accessHealthDataBase': \(String(describing: error?.localizedDescription))" )
-            }
-
-            print("A samples.count: \(samples.count)")
-            for sample in samples {
-                let pounds = sample.quantity.doubleValue(for: HKUnit.pound())
-                let date = sample.startDate
-                self.weightVC.weightsAndDates.append( (pounds, date) )
-            }
-            
-            print("B samples.count: \(samples.count)")
-            print("C self.weightVC.weightsAndDates.count:  \(self.weightVC.weightsAndDates.count)")
-            self.displayWeightsAndDates(samples: samples)
-        }
         store.execute(query)
     }
-    
-    func displayWeightsAndDates( samples: [HKQuantitySample] ) {
-        print("displayWeightsAndDates")
-        print("D samples.count: \(samples.count)")
-        
-        // if I don't put this on the main thread explicitly it gives:
-        // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird crashes etc...."
-        
-        DispatchQueue.main.async {
-            self.weightVC.messageText = "\(self.weightVC.weightsAndDates.count) samples"
-            self.weightVC.updateCells()
-        }
-    }
-
     
     func saveWeight(pounds: Double, note: String) {
         let quantityType: HKQuantityType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!
