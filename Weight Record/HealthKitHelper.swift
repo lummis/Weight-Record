@@ -5,7 +5,6 @@
 //  Created by Robert Lummis on 7/1/17.
 //  Copyright © 2017 ElectricTurkeySoftware. All rights reserved.
 //
-
 import Foundation
 import HealthKit
 
@@ -26,10 +25,10 @@ class HealthKitHelper {
     func getWeightsAndDates(fromDate: Date, toDate: Date) {
         weightVC.messageText = "testing getWeightsAndDates"
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = .current
-        print("dateFormatter using time zone: ", dateFormatter.timeZone.identifier)
-        print("fromDate: \(fromDate),     toDate: \(toDate)")
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.timeZone = .current
+//        print("dateFormatter using time zone: ", dateFormatter.timeZone.identifier)
+//        print("fromDate: \(fromDate),     toDate: \(toDate)")
 
         if HKHealthStore.isHealthDataAvailable() {  // only verifies we're on a device and version that implements health kit
             weightVC.messageText = "HealthKit is available"
@@ -74,6 +73,7 @@ class HealthKitHelper {
                     fatalError("query failed in func 'accessHealthDataBase': \(String(describing: error?.localizedDescription))" )
                 }
 
+                self.weightVC.weightsAndDates = []
                 for sample in samples {
                     let pounds = sample.quantity.doubleValue(for: HKUnit.pound())
                     let date = sample.startDate
