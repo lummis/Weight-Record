@@ -15,6 +15,7 @@
 		7DAD52C21F1AF63800001513 /* WeightAndDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAD52C11F1AF63800001513 /* WeightAndDateCell.swift */; };
 		7DAD52C41F1AF64000001513 /* HealthKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAD52C31F1AF64000001513 /* HealthKitHelper.swift */; };
 		7DAD52CA1F1AF6E300001513 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DAD52C91F1AF6E300001513 /* Main.storyboard */; };
+		7DE6EECE1F2ADDCD0078858A /* ReadMe in Resources */ = {isa = PBXBuildFile; fileRef = 7DE6EECD1F2ADDCD0078858A /* ReadMe */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		7DAD52C31F1AF64000001513 /* HealthKitHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitHelper.swift; sourceTree = "<group>"; };
 		7DAD52C51F1AF65A00001513 /* Weight Record.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Weight Record.entitlements"; sourceTree = "<group>"; };
 		7DAD52C91F1AF6E300001513 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		7DE6EECD1F2ADDCD0078858A /* ReadMe */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ReadMe; path = "Weight Record/ReadMe"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +48,7 @@
 		7DAD529E1F1AF53F00001513 = {
 			isa = PBXGroup;
 			children = (
+				7DE6EECD1F2ADDCD0078858A /* ReadMe */,
 				7DAD52C91F1AF6E300001513 /* Main.storyboard */,
 				7DAD52A91F1AF54000001513 /* Weight Record */,
 				7DAD52BC1F1AF56000001513 /* Usual */,
@@ -158,6 +161,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DE6EECE1F2ADDCD0078858A /* ReadMe in Resources */,
 				7DAD52CA1F1AF6E300001513 /* Main.storyboard in Resources */,
 				7DAD52BE1F1AF5A200001513 /* LaunchScreen.storyboard in Resources */,
 				7DAD52B21F1AF54100001513 /* Assets.xcassets in Resources */,
