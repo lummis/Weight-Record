@@ -13,6 +13,7 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
 
     @IBOutlet weak var messageL: UILabel!
     @IBOutlet weak var newWeightTF: UITextField!
+    @IBOutlet weak var noteTF: UITextField!
     
     let hks = HKHealthStore()
     let minPounds = 40.0
@@ -39,9 +40,23 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         }
         set {
             if newValue == "" {
-                newWeightTF.text = "Enter new weight..."
+                newWeightTF.text = "Enter weight..."    // text matches text set in storyboard
             } else {
                 newWeightTF.text = newValue
+            }
+        }
+    }
+    
+    var noteText: String {
+        get{
+            return noteTF.text!
+        }
+        
+        set{
+            if newValue == "" {
+                noteTF.text = "Note..."    // text matches text set in storyboard
+            } else {
+                noteTF.text = newValue
             }
         }
     }
@@ -79,9 +94,11 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         print("save weight action")
         
         newWeightTF.resignFirstResponder()
+        noteTF.resignFirstResponder()
+        
         if let wt = Double(newWeightTF.text!) {
             if wt > minPounds && wt < maxPounds {
-                saveWeight(pounds: wt, note: "blah blah")
+                saveWeight(pounds: wt, note: noteText)
                 helper.getWeightsAndDates(fromDate: fromDate, toDate: toDate)
                 updateCells()
             } else {
@@ -91,6 +108,7 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
             invalidWeight()
         }
         newWeightText = ""     // blank makes default text appear
+        noteText = ""
     }
     
     func invalidWeight() {
