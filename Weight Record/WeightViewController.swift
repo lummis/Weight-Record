@@ -54,7 +54,7 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         
         set{
             if newValue == "" {
-                noteTF.text = "Note..."    // text matches text set in storyboard
+                noteTF.text = " Note..."    // text matches text set in storyboard
             } else {
                 noteTF.text = newValue
             }
