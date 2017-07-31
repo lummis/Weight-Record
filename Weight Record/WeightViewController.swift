@@ -40,7 +40,7 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         }
         set {
             if newValue == "" {
-                newWeightTF.text = "Enter weight..."    // text matches text set in storyboard
+                newWeightTF.text = "Enter weight..."    // matches storyboard text
             } else {
                 newWeightTF.text = newValue
             }
@@ -61,33 +61,33 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         }
     }
     
+    // returns String converted to Double with one significant decimal
+    func roundedDoubleFromString(string: String) -> Double? {
+        if var x = Double(string) {
+            x = 10.0 * x
+            return round(x) / 10.0
+        } else { return nil }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm"
-        fromDate = dateFormatter.date(from: "2017-Jan-01 05:00")!   // start of this year
-        toDate = Date() // now
         
         helper = HealthKitHelper(delegate: self)
         newWeightTF.delegate = self
         messageText = ""
         
-        helper.getWeightsAndDates(fromDate: fromDate, toDate: toDate)
-    }
-    
-    func displayMessage(msg: String) {
-        messageL.text = msg
+        helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        print("should begin editing")
         return true
     }
     
     @IBAction func clearEntryAction(_ sender: Any) {
         newWeightTF.resignFirstResponder()
         newWeightText = ""
-        
     }
     
     @IBAction func saveWeightAction(_ sender: Any) {
@@ -96,11 +96,14 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         newWeightTF.resignFirstResponder()
         noteTF.resignFirstResponder()
         
-        if let wt = Double(newWeightTF.text!) {
+//        if let wt = Double(newWeightTF.text!) {
+        if let wt = roundedDoubleFromString(string: newWeightTF.text!) {
             if wt > minPounds && wt < maxPounds {
-                saveWeight(pounds: wt, note: noteText)
-                helper.getWeightsAndDates(fromDate: fromDate, toDate: toDate)
-                updateCells()
+                print("saving pounds: \(wt), note: \(noteText)")
+                helper.saveWeight(pounds: wt, note: noteText)
+
+
+                
             } else {
                 invalidWeight()
             }
@@ -111,13 +114,12 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         noteText = ""
     }
     
-    func invalidWeight() {
-        messageL.text = "valid weight range is \(minPounds) to \(maxPounds) pounds"
-        
+    func healthKitInteractionDone() {
+        helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
     }
     
-    func saveWeight(pounds: Double, note: String) {
-        print("saveWeight func with pounds: \(pounds), note: \(note)")
+    func invalidWeight() {
+        messageL.text = "valid weight range is \(minPounds) to \(maxPounds) pounds"
     }
     
     func updateCells() {

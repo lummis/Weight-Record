@@ -1,1 +1,10 @@
 Darkening Mondays results in a value entered Monday night (say, 11:15pm) being darkened which wasn't the intention
+
+get a better name for messageText
+
+On the note textField, "Correction" is intentionally OFF because when it is ON a list of wordy warnings
+are generated when text is entered into the field. It looks like one warning for each word in the note, and
+evey time 'space' is input the entire note is checked again. The stack exchange page that said to turn this off also
+says to turn off "Spell Checking" but that seems to have no effect for me. Of course with "Correction"
+OFF there is no autocorrection.
+

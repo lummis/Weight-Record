@@ -6,32 +6,29 @@
 //  Copyright © 2017 ElectricTurkeySoftware. All rights reserved.
 //
 import Foundation
+import UIKit
 import HealthKit
 
 protocol WeightAndDate {
     var weightsAndDates: [ (weight: Double, date: Date) ] { get set }
     var messageText: String { get set }
+    func healthKitInteractionDone()
 }
 
-class HealthKitHelper {
+// inherit from NSObject so I can use 'perform'
+class HealthKitHelper: NSObject {
     lazy var store = HKHealthStore()    // lazy var as per tutorial https://cocoacasts.com/managing-permissions-with-healthkit/
-    var weightVC: WeightVC!
+    var delegate: WeightVC!
     
     init(delegate: WeightVC) {
-        weightVC = delegate // this is used to notify when response is ready
-        weightVC.messageText = "HealthKitHelper init"
+        self.delegate = delegate // this is used to notify when response is ready
     }
     
     func getWeightsAndDates(fromDate: Date, toDate: Date) {
-        weightVC.messageText = "testing getWeightsAndDates"
-        
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.timeZone = .current
-//        print("dateFormatter using time zone: ", dateFormatter.timeZone.identifier)
-//        print("fromDate: \(fromDate),     toDate: \(toDate)")
+        delegate.messageText = "testing getWeightsAndDates"
 
         if HKHealthStore.isHealthDataAvailable() {  // only verifies we're on a device and version that implements health kit
-            weightVC.messageText = "HealthKit is available"
+            delegate.messageText = "HealthKit is available"
             let bodyMassToShare = Set( [HKQuantityType.quantityType(forIdentifier: .bodyMass)!] )   // 'share' means write
             let bodyMassToRead  = Set( [HKObjectType.quantityType(forIdentifier: .bodyMass)!] )
 
@@ -43,10 +40,10 @@ class HealthKitHelper {
                 (success: Bool, error: Error?) in
                 print("requestAuthorization returned; success: \(success)     error: \(error.debugDescription)")
                 if success {
-                    self.weightVC.messageText = "requested HK authorization"
+                    self.delegate.messageText = "requested HK authorization"
                     self.readWeights(fromDate: fromDate, toDate: toDate)
                 } else {
-                    self.weightVC.messageText = "Request HK authorization failed"
+                    self.delegate.messageText = "Request HK authorization failed"
                 }
             }
         }
@@ -62,31 +59,31 @@ class HealthKitHelper {
         let sortDescriptor: [NSSortDescriptor] = [ NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false) ]
         let query: HKSampleQuery = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: sortDescriptor) {
             (theQuery, results, error) in
-                if error != nil {
-                    print("error: ", error.debugDescription)
-                } else {
-                    print("query completed, error is nil")
-                }
-
-                guard let samples = results as! [HKQuantitySample]? else {
-                    print("error: \(error.debugDescription)")
-                    fatalError("query failed in func 'accessHealthDataBase': \(String(describing: error?.localizedDescription))" )
-                }
-
-                self.weightVC.weightsAndDates = []
-                for sample in samples {
-                    let pounds = sample.quantity.doubleValue(for: HKUnit.pound())
-                    let date = sample.startDate
-                    self.weightVC.weightsAndDates.append( (pounds, date) )
-                }
-                
-                // if this doesn't run on the main thread it gives:
-                // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird...."
-                DispatchQueue.main.async {
-                    self.weightVC.messageText = "\(self.weightVC.weightsAndDates.count) samples"
-                    self.weightVC.updateCells()
-                }
+            if error != nil {
+                print("error: ", error.debugDescription)
+            } else {
+                print("query completed, error is nil")
             }
+
+            guard let samples = results as! [HKQuantitySample]? else {
+                print("error: \(error.debugDescription)")
+                fatalError("query failed in func 'accessHealthDataBase': \(String(describing: error?.localizedDescription))" )
+            }
+
+            self.delegate.weightsAndDates = []
+            for sample in samples {
+                let pounds = sample.quantity.doubleValue(for: HKUnit.pound())
+                let date = sample.startDate
+                self.delegate.weightsAndDates.append( (pounds, date) )
+            }
+            // if this doesn't run on the main thread it gives:
+            // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird...."
+            DispatchQueue.main.async {
+                self.delegate.messageText = "\(self.delegate.weightsAndDates.count) samples"
+                self.delegate.updateCells()
+            }
+        }
+        
         store.execute(query)
     }
     
@@ -94,36 +91,19 @@ class HealthKitHelper {
         let quantityType: HKQuantityType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!
         let quantityUnit: HKUnit = HKUnit.pound()
         let quantity: HKQuantity = HKQuantity(unit: quantityUnit, doubleValue: pounds)
-        let now:Date = Date()
-        
+        let now = Date()
         let sample: HKQuantitySample = HKQuantitySample(type: quantityType, quantity: quantity, start: now, end: now, metadata: ["note" : note])
-        
         store.save(sample) {
             (ok, error) in
             if error == nil {
                 print("sample saved with no error: \(ok)")
+                print("wad.count: \(self.delegate.weightsAndDates.count)")
+                self.delegate.healthKitInteractionDone()
+                
             } else {
                 print("sample saved: \(ok) with error: \(String(describing: error))")
             }
         }
     }
     
-    func saveWeight(pounds: Double) {
-        let quantityType: HKQuantityType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!
-        let quantityUnit: HKUnit = HKUnit.pound()
-        let quantity: HKQuantity = HKQuantity(unit: quantityUnit, doubleValue: pounds)
-        let now:Date = Date()
-        
-        let sample: HKQuantitySample = HKQuantitySample(type: quantityType, quantity: quantity, start: now, end: now)
-        
-        store.save(sample) {
-            (ok, error) in
-            if error == nil {
-                print("sample saved with no error: \(ok)")
-            } else {
-                print("sample saved: \(ok) with error: \(String(describing: error))")
-            }
-        }
-    }
-
 }
