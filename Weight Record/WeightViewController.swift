@@ -12,7 +12,7 @@ import HealthKit
 class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, WeightAndDate, UITextFieldDelegate {
 
     @IBOutlet weak var messageL: UILabel!
-    @IBOutlet weak var newWeightTF: UITextField!
+    @IBOutlet weak var weightTF: UITextField!
     @IBOutlet weak var noteTF: UITextField!
     
     let hks = HKHealthStore()
@@ -34,16 +34,25 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         }
     }
     
-    var newWeightText: String {
-        get {
-            return newWeightTF.text ?? ""
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        print("tf before: \(textField.text ?? "blank")")
+        let rangeString = NSStringFromRange(range)
+        print("range: \(range)      rangeString: \(rangeString)     replacementString: \(string)")
+        if string == "" && textField.text?.characters.count == 1 {
+            weightText = ""
         }
+        return true
+    }
+    
+    // this is the text in the weightTF outlet
+    // it probably doesn't have to be managed this way but it's convenient
+    var weightText: String {
+        get {
+            return weightTF.text ?? ""
+        }
+        
         set {
-            if newValue == "" {
-                newWeightTF.text = "Enter weight..."    // matches storyboard text
-            } else {
-                newWeightTF.text = newValue
-            }
+            weightTF.text = newValue
         }
     }
     
@@ -61,57 +70,36 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         }
     }
     
-    // returns String converted to Double with one significant decimal
-    func roundedDoubleFromString(string: String) -> Double? {
-        if var x = Double(string) {
-            x = 10.0 * x
-            return round(x) / 10.0
-        } else { return nil }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm"
         
         helper = HealthKitHelper(delegate: self)
-        newWeightTF.delegate = self
+        weightTF.delegate = self
         messageText = ""
         
         helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
     }
     
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        return true
-    }
-    
-    @IBAction func clearEntryAction(_ sender: Any) {
-        newWeightTF.resignFirstResponder()
-        newWeightText = ""
-    }
-    
     @IBAction func saveWeightAction(_ sender: Any) {
         print("save weight action")
         
-        newWeightTF.resignFirstResponder()
+        weightTF.resignFirstResponder()
         noteTF.resignFirstResponder()
         
-//        if let wt = Double(newWeightTF.text!) {
-        if let wt = roundedDoubleFromString(string: newWeightTF.text!) {
+        if let wt = (weightTF.text!).roundedDoubleFromString() {
             if wt > minPounds && wt < maxPounds {
                 print("saving pounds: \(wt), note: \(noteText)")
                 helper.saveWeight(pounds: wt, note: noteText)
-
-
-                
             } else {
                 invalidWeight()
             }
         } else {
             invalidWeight()
         }
-        newWeightText = ""     // blank makes default text appear
-        noteText = ""
+        weightText = ""     // blank makes placeholder text appear
+        noteText = ""   // not needed ? gets overwritten by updateUI?
     }
     
     func healthKitInteractionDone() {
@@ -145,6 +133,18 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         assert(section == 0, "fatal error: tableView asks for number of rows in section \(section)")
         return weightsAndDates.count
     }
+}
+
+extension String {
     
+    // returns String converted to Double with one significant decimal
+    // if string doesn't convert to a number return nil
+    func roundedDoubleFromString() -> Double? {
+        if let x = Double(self) {
+            return round(x * 10.0) / 10.0
+        } else {
+            return nil
+        }
+    }
 }
 
