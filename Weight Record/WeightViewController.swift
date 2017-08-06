@@ -81,11 +81,12 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         }
         
         set{
-            if newValue == "" {
-                noteTF.text = "  Note..."    // text matches text set in storyboard
-            } else {
-                noteTF.text = newValue
-            }
+            noteTF.text = newValue  // if empty show placeholder text
+//            if newValue == "" {
+//                noteTF.text = "  Note..."    // text matches text set in storyboard
+//            } else {
+//                noteTF.text = newValue
+//            }
         }
     }
     
