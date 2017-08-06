@@ -23,6 +23,7 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
     var dateFormatter = DateFormatter()
     var fromDate: Date!
     var toDate: Date!
+    var isBlankoutInProgress: Bool = false
     var weightsAndDates: [ (weight: Double, date: Date) ]  = []
     
     var messageText: String {
@@ -31,7 +32,25 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         }
         set {
             messageL.text = newValue
+            // avoid calling blankOutMessage if it's already in progress
+            if newValue != "" && !isBlankoutInProgress {
+                blankOutMessage()
+            }
         }
+    }
+    
+    func blankOutMessage() {
+        let blankoutTime: TimeInterval = 4.0
+        let when: DispatchTime = DispatchTime.now() + blankoutTime
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.setMessageBlank()
+        }
+        self.isBlankoutInProgress = true
+    }
+    
+    func setMessageBlank() {
+        self.messageText = ""
+        isBlankoutInProgress = false
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -63,7 +82,7 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         
         set{
             if newValue == "" {
-                noteTF.text = " Note..."    // text matches text set in storyboard
+                noteTF.text = "  Note..."    // text matches text set in storyboard
             } else {
                 noteTF.text = newValue
             }
@@ -99,7 +118,7 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
             invalidWeight()
         }
         weightText = ""     // blank makes placeholder text appear
-        noteText = ""   // not needed ? gets overwritten by updateUI?
+        noteText = ""   // not needed ? 
     }
     
     func healthKitInteractionDone() {
@@ -107,7 +126,7 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
     }
     
     func invalidWeight() {
-        messageL.text = "valid weight range is \(minPounds) to \(maxPounds) pounds"
+        messageText = "valid weight range is \(minPounds) to \(maxPounds) pounds"
     }
     
     func updateCells() {
@@ -147,4 +166,3 @@ extension String {
         }
     }
 }
-

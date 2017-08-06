@@ -15,8 +15,7 @@ protocol WeightAndDate {
     func healthKitInteractionDone()
 }
 
-// inherit from NSObject so I can use 'perform'
-class HealthKitHelper: NSObject {
+class HealthKitHelper {
     lazy var store = HKHealthStore()    // lazy var as per tutorial https://cocoacasts.com/managing-permissions-with-healthkit/
     var delegate: WeightVC!
     
@@ -25,10 +24,8 @@ class HealthKitHelper: NSObject {
     }
     
     func getWeightsAndDates(fromDate: Date, toDate: Date) {
-        delegate.messageText = "testing getWeightsAndDates"
 
         if HKHealthStore.isHealthDataAvailable() {  // only verifies we're on a device and version that implements health kit
-            delegate.messageText = "HealthKit is available"
             let bodyMassToShare = Set( [HKQuantityType.quantityType(forIdentifier: .bodyMass)!] )   // 'share' means write
             let bodyMassToRead  = Set( [HKObjectType.quantityType(forIdentifier: .bodyMass)!] )
 
@@ -40,7 +37,6 @@ class HealthKitHelper: NSObject {
                 (success: Bool, error: Error?) in
                 print("requestAuthorization returned; success: \(success)     error: \(error.debugDescription)")
                 if success {
-                    self.delegate.messageText = "requested HK authorization"
                     self.readWeights(fromDate: fromDate, toDate: toDate)
                 } else {
                     self.delegate.messageText = "Request HK authorization failed"
@@ -79,7 +75,7 @@ class HealthKitHelper: NSObject {
             // if this doesn't run on the main thread it gives:
             // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird...."
             DispatchQueue.main.async {
-                self.delegate.messageText = "\(self.delegate.weightsAndDates.count) samples"
+                self.delegate.messageText = "\(self.delegate.weightsAndDates.count) weights"
                 self.delegate.updateCells()
             }
         }

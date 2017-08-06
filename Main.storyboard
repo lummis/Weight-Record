@@ -77,14 +77,13 @@
                                     <outlet property="delegate" destination="I1G-ah-9Vk" id="f2A-Dm-K5o"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4NC-SM-AC8" userLabel="messageL">
-                                <rect key="frame" x="16" y="57" width="343" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="message" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4NC-SM-AC8" userLabel="messageL">
+                                <rect key="frame" x="153" y="54" width="69" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text=" Note..." textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="i7W-hG-5cy">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="  Note..." textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="i7W-hG-5cy">
                                 <rect key="frame" x="12" y="123" width="347" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -103,9 +102,8 @@
                                     <action selector="saveWeightAction:" destination="I1G-ah-9Vk" eventType="touchUpInside" id="h6A-IG-1rB"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Weight Record" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M0b-De-qtC">
-                                <rect key="frame" x="16" y="20" width="343" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight Record" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M0b-De-qtC">
+                                <rect key="frame" x="109.5" y="20" width="156.5" height="29"/>
                                 <fontDescription key="fontDescription" name="Optima-Bold" family="Optima" pointSize="24"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -120,6 +118,12 @@
                             </textField>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="M0b-De-qtC" firstAttribute="centerX" secondItem="bxE-Bb-PKl" secondAttribute="centerX" id="4xx-BL-Bya"/>
+                            <constraint firstItem="4NC-SM-AC8" firstAttribute="centerX" secondItem="bxE-Bb-PKl" secondAttribute="centerX" id="Jrq-Jb-IpE"/>
+                            <constraint firstItem="M0b-De-qtC" firstAttribute="top" secondItem="FAT-uq-VPv" secondAttribute="bottom" id="OAO-2e-3rJ"/>
+                            <constraint firstItem="4NC-SM-AC8" firstAttribute="top" secondItem="M0b-De-qtC" secondAttribute="bottom" constant="5" id="nM0-H7-xu8"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="messageL" destination="4NC-SM-AC8" id="NZK-R9-mn6"/>
