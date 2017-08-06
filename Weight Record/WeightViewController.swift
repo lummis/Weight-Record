@@ -23,7 +23,7 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
     var dateFormatter = DateFormatter()
     var fromDate: Date!
     var toDate: Date!
-    var isBlankoutInProgress: Bool = false
+    var isRemoveMessageInProgress: Bool = false
     var weightsAndDates: [ (weight: Double, date: Date) ]  = []
     
     var messageText: String {
@@ -31,26 +31,28 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
             return messageL.text ?? "messageText initial value"
         }
         set {
-            messageL.text = newValue
-            // avoid calling blankOutMessage if it's already in progress
-            if newValue != "" && !isBlankoutInProgress {
-                blankOutMessage()
+            print("debug newValue: \(newValue)    isRemoveMessageInProgress: \(isRemoveMessageInProgress)")
+            // avoid calling removeMessage if it's already in progress
+            if newValue != "" && !isRemoveMessageInProgress {
+                removeMessage()
             }
+            messageL.text = newValue
         }
     }
     
-    func blankOutMessage() {
-        let blankoutTime: TimeInterval = 4.0
-        let when: DispatchTime = DispatchTime.now() + blankoutTime
+    func removeMessage() {
+        let delayUntilFadeOut: TimeInterval = 3.0
+        let when: DispatchTime = DispatchTime.now() + delayUntilFadeOut
         DispatchQueue.main.asyncAfter(deadline: when) {
-            self.setMessageBlank()
+            self.fadeoutMessage()
         }
-        self.isBlankoutInProgress = true
     }
     
-    func setMessageBlank() {
-        self.messageText = ""
-        isBlankoutInProgress = false
+    func fadeoutMessage() {
+        let fadeOutDuration: TimeInterval = 0.6
+        UIView.animate(withDuration: fadeOutDuration, animations: { self.messageL.alpha = 0.0 }, completion: {
+            finished in self.messageL.text = ""; self.isRemoveMessageInProgress = false
+        } )
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -75,6 +77,7 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         }
     }
     
+    // I guess the following is not needed; originally it did more
     var noteText: String {
         get{
             return noteTF.text!
@@ -82,11 +85,6 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         
         set{
             noteTF.text = newValue  // if empty show placeholder text
-//            if newValue == "" {
-//                noteTF.text = "  Note..."    // text matches text set in storyboard
-//            } else {
-//                noteTF.text = newValue
-//            }
         }
     }
     
@@ -127,6 +125,7 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
     }
     
     func invalidWeight() {
+        print("invalid weight")
         messageText = "valid weight range is \(minPounds) to \(maxPounds) pounds"
     }
     
