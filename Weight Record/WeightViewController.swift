@@ -25,6 +25,8 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
     var toDate: Date!
     var isRemoveMessageInProgress: Bool = false
     var weightsAndDates: [ (weight: Double, date: Date) ]  = []
+    let delayUntilFadeOut: TimeInterval = 4.0
+    let fadeDuration: TimeInterval = 1.0
     
     var messageText: String {
         get {
@@ -32,27 +34,21 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         }
         set {
             print("debug newValue: \(newValue)    isRemoveMessageInProgress: \(isRemoveMessageInProgress)")
-            // avoid calling removeMessage if it's already in progress
+            // don't call fadeThenRemoveMessage if it's already in progress
             if newValue != "" && !isRemoveMessageInProgress {
-                removeMessage()
+                fadeThenRemoveMessage()
             }
+            print("will set newValue: \(newValue)")
             messageL.text = newValue
         }
     }
     
-    func removeMessage() {
-        let delayUntilFadeOut: TimeInterval = 3.0
-        let when: DispatchTime = DispatchTime.now() + delayUntilFadeOut
-        DispatchQueue.main.asyncAfter(deadline: when) {
-            self.fadeoutMessage()
-        }
-    }
-    
-    func fadeoutMessage() {
-        let fadeOutDuration: TimeInterval = 0.6
-        UIView.animate(withDuration: fadeOutDuration, animations: { self.messageL.alpha = 0.0 }, completion: {
-            finished in self.messageL.text = ""; self.isRemoveMessageInProgress = false
-        } )
+    func fadeThenRemoveMessage() {
+        print("now fadeThenRemoveMessage")
+        
+        UIView.animate(withDuration: fadeDuration, delay: delayUntilFadeOut, options: [.curveEaseInOut],
+                       animations: { self.messageL.alpha = 0.0 },
+                       completion: { finished in self.messageL.text = ""; self.messageL.alpha = 1.0; self.isRemoveMessageInProgress = false; print("fading complete") } )
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
