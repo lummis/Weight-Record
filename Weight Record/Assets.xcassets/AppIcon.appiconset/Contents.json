@@ -33,13 +33,13 @@
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "greenOval120.png",
+      "filename" : "4arcs120.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "greenOval180.png",
+      "filename" : "4arcs180.png",
       "scale" : "3x"
     }
   ],
