@@ -51,6 +51,11 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
                        completion: { finished in self.messageL.text = ""; self.messageL.alpha = 1.0; self.isRemoveMessageInProgress = false; print("fading complete") } )
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.layer.borderWidth = 2.0
+//        textField.layer.borderColor = UIColor.red as! CGColor
+    }
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         print("tf before: \(textField.text ?? "blank")")
         let rangeString = NSStringFromRange(range)
@@ -91,6 +96,8 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
         
         helper = HealthKitHelper(delegate: self)
         weightTF.delegate = self
+        weightTF.tintColor = UIColor.black
+        
         messageText = ""
         
         helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
@@ -122,7 +129,7 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
     
     func invalidWeight() {
         print("invalid weight")
-        messageText = "valid weight range is \(minPounds) to \(maxPounds) pounds"
+        messageText = "Valid weight range is \(minPounds) to \(maxPounds)"
     }
     
     func updateCells() {
