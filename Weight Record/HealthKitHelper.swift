@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import HealthKit
 
-protocol WeightAndDate {
+protocol WeightAndDateProtocol {
     var weightsAndDates: [ (weight: Double, date: Date) ] { get set }
     var messageText: String { get set }
     func healthKitInteractionDone()

@@ -9,7 +9,7 @@
 import UIKit
 import HealthKit
 
-class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, WeightAndDate, UITextFieldDelegate {
+class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var messageL: UILabel!
     @IBOutlet weak var weightTF: UITextField!
@@ -52,6 +52,7 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        print("tfDidBeginEditing")
         textField.layer.borderWidth = 2.0
 //        textField.layer.borderColor = UIColor.red as! CGColor
     }
@@ -92,14 +93,17 @@ class WeightVC: UIViewController, UITableViewDataSource, UITableViewDelegate, We
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm"
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
+        dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm"
         helper = HealthKitHelper(delegate: self)
         weightTF.delegate = self
         weightTF.tintColor = UIColor.black
-        
+
         messageText = ""
-        
         helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
     }
     
