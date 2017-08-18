@@ -14,6 +14,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     @IBOutlet weak var messageL: UILabel!
     @IBOutlet weak var weightTF: UITextField!
     @IBOutlet weak var noteTF: UITextField!
+    @IBOutlet weak var segmentedC: UISegmentedControl!
     
     let hks = HKHealthStore()
     let minPounds = 40.0
@@ -93,6 +94,11 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+    }
+    
+    @IBAction func segmentedCAction(_ sender: Any) {
+        let index = (sender as! UISegmentedControl).selectedSegmentIndex
+        print("selected segment: \(index)")
     }
     
     override func viewDidAppear(_ animated: Bool) {
