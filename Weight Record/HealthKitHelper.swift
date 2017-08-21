@@ -83,10 +83,12 @@ class HealthKitHelper {
         store.execute(query)
     }
     
-    func saveWeight(pounds: Double, note: String) {
+    // value is always stored in the healthDB as kilograms
+    func saveWeight(weightValue: Double, unit: WeightUnit, note: String) {
         let quantityType: HKQuantityType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!
-        let quantityUnit: HKUnit = HKUnit.pound()
-        let quantity: HKQuantity = HKQuantity(unit: quantityUnit, doubleValue: pounds)
+        let quantityUnit: HKUnit = HKUnit.gramUnit(with: .kilo)
+        let weightInKilograms = weightValue * unit.unitToKgFactor()
+        let quantity: HKQuantity = HKQuantity(unit: quantityUnit, doubleValue: weightInKilograms)
         let now = Date()
         let sample: HKQuantitySample = HKQuantitySample(type: quantityType, quantity: quantity, start: now, end: now, metadata: ["note" : note])
         store.save(sample) {

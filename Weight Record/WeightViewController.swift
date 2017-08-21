@@ -17,8 +17,6 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     @IBOutlet weak var segmentedC: UISegmentedControl!
     
     let hks = HKHealthStore()
-    let minPounds = 40.0
-    let maxPounds = 399.0
     var helper: HealthKitHelper!
     var tableView: UITableView? = nil
     var dateFormatter = DateFormatter()
@@ -28,6 +26,9 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     var weightsAndDates: [ (weight: Double, date: Date) ]  = []
     let delayUntilFadeOut: TimeInterval = 4.0
     let fadeDuration: TimeInterval = 1.0
+    
+    //FIXME: retrieve persisted value
+    var unit: WeightUnit = .kilogram
     
     var messageText: String {
         get {
@@ -94,11 +95,8 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    }
-    
-    @IBAction func segmentedCAction(_ sender: Any) {
-        let index = (sender as! UISegmentedControl).selectedSegmentIndex
-        print("selected segment: \(index)")
+        //FIXME: persist segment selection
+        segmentedC.selectedSegmentIndex = 0 // start with Kg selected
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -113,16 +111,24 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
     }
     
+    @IBAction func segmentedCAction(_ sender: UISegmentedControl) {
+        print("selected segment index: \(sender.selectedSegmentIndex)")
+        unit = WeightUnit(rawValue: sender.selectedSegmentIndex)!
+        weightTF.text = ""
+        updateUI()
+    }
+    
     @IBAction func saveWeightAction(_ sender: Any) {
         print("save weight action")
         
         weightTF.resignFirstResponder()
         noteTF.resignFirstResponder()
         
-        if let wt = (weightTF.text!).roundedDoubleFromString() {
-            if wt > minPounds && wt < maxPounds {
-                print("saving pounds: \(wt), note: \(noteText)")
-                helper.saveWeight(pounds: wt, note: noteText)
+        if var wt = (weightTF.text!).roundedDoubleFromString() {
+            wt *= unit.unitToKgFactor()
+            if wt > minValue(unit) && wt < maxValue(unit) {
+                print("saving kilograms: \(wt), note: \(noteText)")
+                helper.saveWeight(weightValue: wt, unit: unit, note: noteText)
             } else {
                 invalidWeight()
             }
@@ -139,7 +145,23 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     
     func invalidWeight() {
         print("invalid weight")
-        messageText = "Valid weight range is \(minPounds) to \(maxPounds)"
+        
+        messageText = "Valid range is \( minValue(unit) ) to \( maxValue(unit) ) \(unit.abbreviation() )"
+        
+//        if unit == .pound {
+//            messageText = "Valid range is \(minPounds) to \(maxPounds) \(unit.abbreviation())"
+//        } else if unit == .kilogram {
+//            messageText = "Valid range is \(minKilograms) to \(maxKilograms) \(unit.abbreviation())"
+//        } else if unit == .stone {
+//            messageText = "Valid range is \(minStone) to \(maxStone) \(unit.abbreviation())"
+//        } else {
+//            print("unit not a valid choice")
+//            abort()
+//        }
+    }
+    
+    func updateUI() {
+        print("updateUI")
     }
     
     func updateCells() {
@@ -152,7 +174,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "weightAndDateCell", for: indexPath) as! WeightAndDateCell
-        cell.updateFields(withSample: weightsAndDates[indexPath.row])
+        cell.updateFields(withSample: weightsAndDates[indexPath.row], unit: unit)
         return cell
     }
     
