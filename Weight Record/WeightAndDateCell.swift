@@ -33,7 +33,7 @@ class WeightAndDateCell: UITableViewCell {
         dayOfWeekL.font = UIFont.systemFont(ofSize: fontSize, weight: fontWeight)
         dayOfWeekL.text = dayName
         
-        weightL.text = String(sample.weight)
+        weightL.text = String(format: "%5.1f", sample.weight)
         weightL.font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: fontWeight)
         
         dateFormatter.dateFormat = "MMM-dd-yyyy"

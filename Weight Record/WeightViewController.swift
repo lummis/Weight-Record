@@ -96,7 +96,9 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         super.viewDidLoad()
         
         //FIXME: persist segment selection
-        segmentedC.selectedSegmentIndex = 0 // start with Kg selected
+        let segmentIndex = 1
+        segmentedC.selectedSegmentIndex = segmentIndex // start with Lb selected
+        unit = WeightUnit(rawValue: segmentIndex)!
     }
     
     override func viewDidAppear(_ animated: Bool) {

@@ -39,21 +39,20 @@ class HealthKitHelper {
                 if success {
                     self.readWeights(fromDate: fromDate, toDate: toDate)
                 } else {
-                    self.delegate.messageText = "Request HK authorization failed"
+                    self.delegate.messageText = "Your Health app does not permit access"
                 }
             }
         }
     }
     
     func readWeights(fromDate: Date, toDate: Date) {
-        print("start readWeights")
         
         guard let sampleType: HKSampleType = HKSampleType.quantityType(forIdentifier: .bodyMass) else {
             fatalError(" *** sampleType construction should never fail ***")
         }
         let predicate = HKQuery.predicateForSamples(withStart: fromDate, end: toDate, options: [])
         let sortDescriptor: [NSSortDescriptor] = [ NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false) ]
-        let query: HKSampleQuery = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: sortDescriptor) {
+        let query = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: sortDescriptor) {
             (theQuery, results, error) in
             if error != nil {
                 print("error: ", error.debugDescription)
@@ -63,14 +62,19 @@ class HealthKitHelper {
 
             guard let samples = results as! [HKQuantitySample]? else {
                 print("error: \(error.debugDescription)")
-                fatalError("query failed in func 'accessHealthDataBase': \(String(describing: error?.localizedDescription))" )
+                fatalError("query failed in func 'readWeights': \(String(describing: error?.localizedDescription))" )
             }
 
             self.delegate.weightsAndDates = []
+            let unitConversionFactor = 1.0 / self.delegate.unit.unitToKgFactor()
+            print("unitConversionFactor: \(self.delegate.unit.unitToKgFactor() )")
             for sample in samples {
-                let pounds = sample.quantity.doubleValue(for: HKUnit.pound())
+                let kilograms = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))  // db weight always in kilograms
+                let quantity = kilograms * unitConversionFactor
+                
+//                let pounds = sample.quantity.doubleValue(for: HKUnit.pound())
                 let date = sample.startDate
-                self.delegate.weightsAndDates.append( (pounds, date) )
+                self.delegate.weightsAndDates.append( (quantity, date) )
             }
             // if this doesn't run on the main thread it gives:
             // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird...."
