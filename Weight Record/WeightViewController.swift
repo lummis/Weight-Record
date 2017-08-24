@@ -28,7 +28,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     let fadeDuration: TimeInterval = 1.0
     
     //FIXME: retrieve persisted value
-    var unit: WeightUnit = .kilogram
+    var weightDisplayUnit: WeightUnit = .kilogram
     
     var messageText: String {
         get {
@@ -54,9 +54,8 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("tfDidBeginEditing")
+        print("textFieldDidBeginEditing")
         textField.layer.borderWidth = 2.0
-//        textField.layer.borderColor = UIColor.red as! CGColor
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -98,7 +97,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         //FIXME: persist segment selection
         let segmentIndex = 1
         segmentedC.selectedSegmentIndex = segmentIndex // start with Lb selected
-        unit = WeightUnit(rawValue: segmentIndex)!
+        weightDisplayUnit = WeightUnit(rawValue: segmentIndex)!
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -110,12 +109,12 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         weightTF.tintColor = UIColor.black
 
         messageText = ""
-        helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
+        helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture, weightUnit: self.weightDisplayUnit)
     }
     
     @IBAction func segmentedCAction(_ sender: UISegmentedControl) {
         print("selected segment index: \(sender.selectedSegmentIndex)")
-        unit = WeightUnit(rawValue: sender.selectedSegmentIndex)!
+        weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex)!
         weightTF.text = ""
         updateUI()
     }
@@ -126,11 +125,10 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         weightTF.resignFirstResponder()
         noteTF.resignFirstResponder()
         
-        if var wt = (weightTF.text!).roundedDoubleFromString() {
-            wt *= unit.unitToKgFactor()
-            if wt > minValue(unit) && wt < maxValue(unit) {
-                print("saving kilograms: \(wt), note: \(noteText)")
-                helper.saveWeight(weightValue: wt, unit: unit, note: noteText)
+        if let wt = (weightTF.text!).roundedDoubleFromString() {    // rounded to what precision?
+            if wt > minValue(weightDisplayUnit) && wt < maxValue(weightDisplayUnit) {
+                print("saving wt: \(wt), unit: \(weightDisplayUnit), note: \(noteText)")
+                helper.saveWeight(weightValue: wt, unit: weightDisplayUnit, note: noteText)
             } else {
                 invalidWeight()
             }
@@ -142,13 +140,14 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     }
     
     func healthKitInteractionDone() {
-        helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
+        print("healthKitInteractionDone    WAD.count: \(weightsAndDates.count)")
+        helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture, weightUnit: weightDisplayUnit)
     }
     
     func invalidWeight() {
         print("invalid weight")
         
-        messageText = "Valid range is \( minValue(unit) ) to \( maxValue(unit) ) \(unit.abbreviation() )"
+        messageText = "Valid range is \( minValue(weightDisplayUnit) ) to \( maxValue(weightDisplayUnit) ) \(weightDisplayUnit.abbreviation() )"
         
 //        if unit == .pound {
 //            messageText = "Valid range is \(minPounds) to \(maxPounds) \(unit.abbreviation())"
@@ -176,7 +175,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "weightAndDateCell", for: indexPath) as! WeightAndDateCell
-        cell.updateFields(withSample: weightsAndDates[indexPath.row], unit: unit)
+        cell.updateFields(withSample: weightsAndDates[indexPath.row], unit: weightDisplayUnit)
         return cell
     }
     

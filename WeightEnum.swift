@@ -29,7 +29,7 @@ enum WeightUnit: Int {
         case .pound:
             return 0.453592
         case .stone:
-            return 0.157473
+            return 6.35029
         }
     }
     

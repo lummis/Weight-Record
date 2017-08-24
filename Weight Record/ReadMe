@@ -1,4 +1,5 @@
 Darkening Mondays results in a value entered Monday night (say, 11:15pm) being darkened which wasn't the intention
+not very good because a Monday value could be missing or present more than once
 
 get a better name for messageText
 

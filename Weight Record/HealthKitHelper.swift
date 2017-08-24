@@ -23,7 +23,7 @@ class HealthKitHelper {
         self.delegate = delegate // this is used to notify when response is ready
     }
     
-    func getWeightsAndDates(fromDate: Date, toDate: Date) {
+    func getWeightsAndDates(fromDate: Date, toDate: Date, weightUnit: WeightUnit) {
 
         if HKHealthStore.isHealthDataAvailable() {  // only verifies we're on a device and version that implements health kit
             let bodyMassToShare = Set( [HKQuantityType.quantityType(forIdentifier: .bodyMass)!] )   // 'share' means write
@@ -37,20 +37,22 @@ class HealthKitHelper {
                 (success: Bool, error: Error?) in
                 print("requestAuthorization returned; success: \(success)     error: \(error.debugDescription)")
                 if success {
-                    self.readWeights(fromDate: fromDate, toDate: toDate)
+                    self.readWeights(fromDate: fromDate, toDate: toDate, weightUnit: weightUnit)
                 } else {
-                    self.delegate.messageText = "Your Health app does not permit access"
+                    self.delegate.messageText = "Your Apple Health app does not allow access to weights"
                 }
             }
         }
     }
     
-    func readWeights(fromDate: Date, toDate: Date) {
+    func readWeights(fromDate: Date, toDate: Date, weightUnit: WeightUnit) {
         
         guard let sampleType: HKSampleType = HKSampleType.quantityType(forIdentifier: .bodyMass) else {
             fatalError(" *** sampleType construction should never fail ***")
         }
         let predicate = HKQuery.predicateForSamples(withStart: fromDate, end: toDate, options: [])
+        // weight values in the database are kg
+        let unitConversionFactor = 1.0 / weightUnit.unitToKgFactor()
         let sortDescriptor: [NSSortDescriptor] = [ NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false) ]
         let query = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: sortDescriptor) {
             (theQuery, results, error) in
@@ -66,17 +68,14 @@ class HealthKitHelper {
             }
 
             self.delegate.weightsAndDates = []
-            let unitConversionFactor = 1.0 / self.delegate.unit.unitToKgFactor()
-            print("unitConversionFactor: \(self.delegate.unit.unitToKgFactor() )")
             for sample in samples {
                 let kilograms = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))  // db weight always in kilograms
                 let quantity = kilograms * unitConversionFactor
                 
-//                let pounds = sample.quantity.doubleValue(for: HKUnit.pound())
                 let date = sample.startDate
                 self.delegate.weightsAndDates.append( (quantity, date) )
             }
-            // if this doesn't run on the main thread it gives:
+            // if following isn't on the main thread it gives:
             // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird...."
             DispatchQueue.main.async {
                 self.delegate.messageText = "\(self.delegate.weightsAndDates.count) weights"
@@ -91,8 +90,9 @@ class HealthKitHelper {
     func saveWeight(weightValue: Double, unit: WeightUnit, note: String) {
         let quantityType: HKQuantityType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!
         let quantityUnit: HKUnit = HKUnit.gramUnit(with: .kilo)
-        let weightInKilograms = weightValue * unit.unitToKgFactor()
-        let quantity: HKQuantity = HKQuantity(unit: quantityUnit, doubleValue: weightInKilograms)
+        let weightValueInKilograms = weightValue * unit.unitToKgFactor()
+        let quantity: HKQuantity = HKQuantity(unit: quantityUnit, doubleValue: weightValueInKilograms)
+        // now quantityUnit and weightValueInKilograms are unresolved identifiers
         let now = Date()
         let sample: HKQuantitySample = HKQuantitySample(type: quantityType, quantity: quantity, start: now, end: now, metadata: ["note" : note])
         store.save(sample) {
