@@ -95,8 +95,8 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         super.viewDidLoad()
         
         //FIXME: persist segment selection
-        let segmentIndex = 1
-        segmentedC.selectedSegmentIndex = segmentIndex // start with Lb selected
+        let segmentIndex = 1  // start with Lb selected
+        segmentedC.selectedSegmentIndex = segmentIndex
         weightDisplayUnit = WeightUnit(rawValue: segmentIndex)!
     }
     
@@ -119,6 +119,11 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         updateUI()
     }
     
+    func saveWeightsAndDates( wad: [ (weight: Double, date: Date) ] ) {
+        self.weightsAndDates = wad
+        messageText = "\(weightsAndDates.count) weights"
+    }
+    
     @IBAction func saveWeightAction(_ sender: Any) {
         print("save weight action")
         
@@ -139,26 +144,20 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         noteText = ""   // not needed ? 
     }
     
-    func healthKitInteractionDone() {
-        print("healthKitInteractionDone    WAD.count: \(weightsAndDates.count)")
+    func saveWeightSucceeded() {
+        print("saveWeightSucceeded    WAD.count: \(weightsAndDates.count)")
         helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture, weightUnit: weightDisplayUnit)
+    }
+    
+    func saveWeightFailed() {
+        print("saveWeightFailed")
+        exit(0) // will only be called during debugging
     }
     
     func invalidWeight() {
         print("invalid weight")
         
         messageText = "Valid range is \( minValue(weightDisplayUnit) ) to \( maxValue(weightDisplayUnit) ) \(weightDisplayUnit.abbreviation() )"
-        
-//        if unit == .pound {
-//            messageText = "Valid range is \(minPounds) to \(maxPounds) \(unit.abbreviation())"
-//        } else if unit == .kilogram {
-//            messageText = "Valid range is \(minKilograms) to \(maxKilograms) \(unit.abbreviation())"
-//        } else if unit == .stone {
-//            messageText = "Valid range is \(minStone) to \(maxStone) \(unit.abbreviation())"
-//        } else {
-//            print("unit not a valid choice")
-//            abort()
-//        }
     }
     
     func updateUI() {

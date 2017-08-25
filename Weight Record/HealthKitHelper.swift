@@ -10,14 +10,16 @@ import UIKit
 import HealthKit
 
 protocol WeightAndDateProtocol {
-    var weightsAndDates: [ (weight: Double, date: Date) ] { get set }
     var messageText: String { get set }
-    func healthKitInteractionDone()
+    func saveWeightsAndDates( wad: [ (weight: Double, date: Date) ] )
+    func saveWeightSucceeded()
+    func saveWeightFailed()
 }
 
 class HealthKitHelper {
     lazy var store = HKHealthStore()    // lazy var as per tutorial https://cocoacasts.com/managing-permissions-with-healthkit/
     var delegate: WeightVC!
+    var weightsAndDates: [ (weight: Double, date: Date) ] = []
     
     init(delegate: WeightVC) {
         self.delegate = delegate // this is used to notify when response is ready
@@ -68,17 +70,19 @@ class HealthKitHelper {
             }
 
             self.delegate.weightsAndDates = []
+            var weightsAndDates: [ (weight: Double, date: Date) ]  = []
             for sample in samples {
                 let kilograms = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))  // db weight always in kilograms
                 let quantity = kilograms * unitConversionFactor
                 
                 let date = sample.startDate
-                self.delegate.weightsAndDates.append( (quantity, date) )
+                weightsAndDates.append( (quantity, date) )
             }
             // if following isn't on the main thread it gives:
             // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird...."
             DispatchQueue.main.async {
-                self.delegate.messageText = "\(self.delegate.weightsAndDates.count) weights"
+                self.delegate.saveWeightsAndDates(wad: weightsAndDates)
+//                self.delegate.messageText = "\(self.delegate.weightsAndDates.count) weights"
                 self.delegate.updateCells()
             }
         }
@@ -100,10 +104,11 @@ class HealthKitHelper {
             if error == nil {
                 print("sample saved with no error: \(ok)")
                 print("wad.count: \(self.delegate.weightsAndDates.count)")
-                self.delegate.healthKitInteractionDone()
+                self.delegate.saveWeightSucceeded()
                 
             } else {
-                print("sample saved: \(ok) with error: \(String(describing: error))")
+                print("saveWeight failed with error: \(String(describing: error))")
+                self.delegate.saveWeightFailed()
             }
         }
     }
