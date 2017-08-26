@@ -35,13 +35,25 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
             return messageL.text ?? "messageText initial value"
         }
         set {
-            print("debug newValue: \(newValue)    isRemoveMessageInProgress: \(isRemoveMessageInProgress)")
             // don't call fadeThenRemoveMessage if it's already in progress
             if newValue != "" && !isRemoveMessageInProgress {
                 fadeThenRemoveMessage()
             }
-            print("will set newValue: \(newValue)")
             messageL.text = newValue
+        }
+    }
+    
+    var saveWeightSucceeded: Bool {
+        get {
+            return false
+        }
+        set {
+            print("saveWeight succeeded: \(newValue)")
+            if newValue == true {
+                DispatchQueue.main.async {
+                    self.didSaveWeight()
+                }
+            }
         }
     }
     
@@ -120,12 +132,12 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     }
     
     func saveWeightsAndDates( wad: [ (weight: Double, date: Date) ] ) {
-        self.weightsAndDates = wad
+        weightsAndDates = wad
+        updateCells()
         messageText = "\(weightsAndDates.count) weights"
     }
     
     @IBAction func saveWeightAction(_ sender: Any) {
-        print("save weight action")
         
         weightTF.resignFirstResponder()
         noteTF.resignFirstResponder()
@@ -133,7 +145,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         if let wt = (weightTF.text!).roundedDoubleFromString() {    // rounded to what precision?
             if wt > minValue(weightDisplayUnit) && wt < maxValue(weightDisplayUnit) {
                 print("saving wt: \(wt), unit: \(weightDisplayUnit), note: \(noteText)")
-                helper.saveWeight(weightValue: wt, unit: weightDisplayUnit, note: noteText)
+                helper.storeWeight(weightValue: wt, unit: weightDisplayUnit, note: noteText)
             } else {
                 invalidWeight()
             }
@@ -144,8 +156,8 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         noteText = ""   // not needed ? 
     }
     
-    func saveWeightSucceeded() {
-        print("saveWeightSucceeded    WAD.count: \(weightsAndDates.count)")
+    func didSaveWeight() {
+        print("didSaveWeight    WAD.count: \(weightsAndDates.count)")
         helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture, weightUnit: weightDisplayUnit)
     }
     
@@ -162,6 +174,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     
     func updateUI() {
         print("updateUI")
+        updateCells()
     }
     
     func updateCells() {

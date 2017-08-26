@@ -11,15 +11,14 @@ import HealthKit
 
 protocol WeightAndDateProtocol {
     var messageText: String { get set }
+    var saveWeightSucceeded: Bool { get set }
     func saveWeightsAndDates( wad: [ (weight: Double, date: Date) ] )
-    func saveWeightSucceeded()
-    func saveWeightFailed()
+    func didSaveWeight()
 }
 
 class HealthKitHelper {
     lazy var store = HKHealthStore()    // lazy var as per tutorial https://cocoacasts.com/managing-permissions-with-healthkit/
     var delegate: WeightVC!
-    var weightsAndDates: [ (weight: Double, date: Date) ] = []
     
     init(delegate: WeightVC) {
         self.delegate = delegate // this is used to notify when response is ready
@@ -41,7 +40,7 @@ class HealthKitHelper {
                 if success {
                     self.readWeights(fromDate: fromDate, toDate: toDate, weightUnit: weightUnit)
                 } else {
-                    self.delegate.messageText = "Your Apple Health app does not allow access to weights"
+                    self.delegate.messageText = "Your Apple Health app does not permit use of weight"
                 }
             }
         }
@@ -53,7 +52,7 @@ class HealthKitHelper {
             fatalError(" *** sampleType construction should never fail ***")
         }
         let predicate = HKQuery.predicateForSamples(withStart: fromDate, end: toDate, options: [])
-        // weight values in the database are kg
+        // weight values in the database are always in kg
         let unitConversionFactor = 1.0 / weightUnit.unitToKgFactor()
         let sortDescriptor: [NSSortDescriptor] = [ NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false) ]
         let query = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: sortDescriptor) {
@@ -69,21 +68,18 @@ class HealthKitHelper {
                 fatalError("query failed in func 'readWeights': \(String(describing: error?.localizedDescription))" )
             }
 
-            self.delegate.weightsAndDates = []
-            var weightsAndDates: [ (weight: Double, date: Date) ]  = []
+            var results: [ (weight: Double, date: Date) ]  = []
             for sample in samples {
                 let kilograms = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))  // db weight always in kilograms
-                let quantity = kilograms * unitConversionFactor
+                let weightQuantity = kilograms * unitConversionFactor
                 
                 let date = sample.startDate
-                weightsAndDates.append( (quantity, date) )
+                results.append( (weightQuantity, date) )
             }
             // if following isn't on the main thread it gives:
             // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird...."
             DispatchQueue.main.async {
-                self.delegate.saveWeightsAndDates(wad: weightsAndDates)
-//                self.delegate.messageText = "\(self.delegate.weightsAndDates.count) weights"
-                self.delegate.updateCells()
+                self.delegate.saveWeightsAndDates(wad: results)
             }
         }
         
@@ -91,7 +87,7 @@ class HealthKitHelper {
     }
     
     // value is always stored in the healthDB as kilograms
-    func saveWeight(weightValue: Double, unit: WeightUnit, note: String) {
+    func storeWeight(weightValue: Double, unit: WeightUnit, note: String) {
         let quantityType: HKQuantityType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!
         let quantityUnit: HKUnit = HKUnit.gramUnit(with: .kilo)
         let weightValueInKilograms = weightValue * unit.unitToKgFactor()
@@ -101,15 +97,8 @@ class HealthKitHelper {
         let sample: HKQuantitySample = HKQuantitySample(type: quantityType, quantity: quantity, start: now, end: now, metadata: ["note" : note])
         store.save(sample) {
             (ok, error) in
-            if error == nil {
-                print("sample saved with no error: \(ok)")
-                print("wad.count: \(self.delegate.weightsAndDates.count)")
-                self.delegate.saveWeightSucceeded()
-                
-            } else {
-                print("saveWeight failed with error: \(String(describing: error))")
-                self.delegate.saveWeightFailed()
-            }
+            self.delegate.saveWeightSucceeded = ok
+            print("storeWeight completed. ok: \(ok), error: \(String(describing: error))")
         }
     }
     
