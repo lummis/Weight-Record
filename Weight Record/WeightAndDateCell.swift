@@ -33,9 +33,10 @@ class WeightAndDateCell: UITableViewCell {
         dayOfWeekL.font = UIFont.systemFont(ofSize: fontSize, weight: fontWeight)
         dayOfWeekL.text = dayName
         
-        //display weight in displayUnit
+        // show weight in displayUnit, while it is stored in kilograms
         let weightInDisplayUnit = sample.kg / displayUnit.unitToKgFactor()
-        weightL.text = String(format: "%5.1f", weightInDisplayUnit)
+        let weightFormat = displayUnit == WeightUnit.stone ? "%5.2f" : "%5.1f"
+        weightL.text = String(format: weightFormat, weightInDisplayUnit)
         weightL.font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: fontWeight)
         
         dateFormatter.dateFormat = "MMM-dd-yyyy"
