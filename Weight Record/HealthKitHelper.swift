@@ -13,7 +13,7 @@ protocol WeightAndDateProtocol {
     var messageText: String { get set }
     var saveWeightSucceeded: Bool { get set }
     func saveWeightsAndDates( wad: [ (weight: Double, date: Date) ] )
-    func didSaveWeight()
+//    func didSaveWeight()
 }
 
 class HealthKitHelper {

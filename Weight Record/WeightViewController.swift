@@ -110,17 +110,15 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         let segmentIndex = 1  // start with Lb selected
         segmentedC.selectedSegmentIndex = segmentIndex
         weightDisplayUnit = WeightUnit(rawValue: segmentIndex)!
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
         dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm"
         helper = HealthKitHelper(delegate: self)
         weightTF.delegate = self
         weightTF.tintColor = UIColor.black
-
         messageText = ""
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture, weightUnit: self.weightDisplayUnit)
     }
     
@@ -147,10 +145,10 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
                 print("saving wt: \(wt), unit: \(weightDisplayUnit), note: \(noteText)")
                 helper.storeWeight(weightValue: wt, unit: weightDisplayUnit, note: noteText)
             } else {
-                invalidWeight()
+                weightOutOfRange()
             }
         } else {
-            invalidWeight()
+            weightOutOfRange()
         }
         weightText = ""     // blank makes placeholder text appear
         noteText = ""   // not needed ? 
@@ -166,9 +164,8 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         exit(0) // will only be called during debugging
     }
     
-    func invalidWeight() {
-        print("invalid weight")
-        
+    func weightOutOfRange() {
+        print("weightOutOfRange")
         messageText = "Valid range is \( minValue(weightDisplayUnit) ) to \( maxValue(weightDisplayUnit) ) \(weightDisplayUnit.abbreviation() )"
     }
     

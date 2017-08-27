@@ -15,7 +15,8 @@ class WeightAndDateCell: UITableViewCell {
     @IBOutlet weak var hourMinuteL: UILabel!
     @IBOutlet weak var weightL: UILabel!
     
-    // weight argument should is kg because it comes from the healthDB
+    // weight argument should in kg because it comes from the healthDB
+    // unit arg not needed?
     func updateFields(withSample sample: (weight: Double, date: Date), unit: WeightUnit) {
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = .current
