@@ -51,7 +51,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
             print("storeWeight succeeded: \(newValue)")
             if newValue == true {
                 DispatchQueue.main.async {
-                    self.didSaveWeight()
+                    self.helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
                 }
             }
         }
@@ -157,11 +157,6 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         }
         weightText = ""     // blank makes placeholder text appear
         noteText = ""   // not needed ? 
-    }
-    
-    func didSaveWeight() {
-        print("didSaveWeight    WAD.count: \(weightsAndDates.count)")
-        helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
     }
     
     func saveWeightFailed() {
