@@ -15,9 +15,8 @@ class WeightAndDateCell: UITableViewCell {
     @IBOutlet weak var hourMinuteL: UILabel!
     @IBOutlet weak var weightL: UILabel!
     
-    // weight argument should in kg because it comes from the healthDB
-    // unit arg not needed?
-    func updateFields(withSample sample: (weight: Double, date: Date), unit: WeightUnit) {
+    // weight argument is the numeric value with whatever unit is selected in the segmented control
+    func updateFields(withSample sample: (kg: Double, date: Date), displayUnit: WeightUnit) {
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = .current
         
@@ -34,7 +33,9 @@ class WeightAndDateCell: UITableViewCell {
         dayOfWeekL.font = UIFont.systemFont(ofSize: fontSize, weight: fontWeight)
         dayOfWeekL.text = dayName
         
-        weightL.text = String(format: "%5.1f", sample.weight)
+        //display weight in displayUnit
+        let weightInDisplayUnit = sample.kg / displayUnit.unitToKgFactor()
+        weightL.text = String(format: "%5.1f", weightInDisplayUnit)
         weightL.font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: fontWeight)
         
         dateFormatter.dateFormat = "MMM-dd-yyyy"

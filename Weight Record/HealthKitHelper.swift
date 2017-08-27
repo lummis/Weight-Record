@@ -12,7 +12,7 @@ import HealthKit
 protocol WeightAndDateProtocol {
     var messageText: String { get set }
     var saveWeightSucceeded: Bool { get set }
-    func saveWeightsAndDates( wad: [ (weight: Double, date: Date) ] )
+    func saveWeightsAndDates( wad: [ (kg: Double, date: Date) ] )
 //    func didSaveWeight()
 }
 
@@ -24,7 +24,7 @@ class HealthKitHelper {
         self.delegate = delegate // this is used to notify when response is ready
     }
     
-    func getWeightsAndDates(fromDate: Date, toDate: Date, weightUnit: WeightUnit) {
+    func getWeightsAndDates(fromDate: Date, toDate: Date) {
 
         if HKHealthStore.isHealthDataAvailable() {  // only verifies we're on a device and version that implements health kit
             let bodyMassToShare = Set( [HKQuantityType.quantityType(forIdentifier: .bodyMass)!] )   // 'share' means write
@@ -38,7 +38,7 @@ class HealthKitHelper {
                 (success: Bool, error: Error?) in
                 print("requestAuthorization returned; success: \(success)     error: \(error.debugDescription)")
                 if success {
-                    self.readWeights(fromDate: fromDate, toDate: toDate, weightUnit: weightUnit)
+                    self.readWeights(fromDate: fromDate, toDate: toDate)
                 } else {
                     self.delegate.messageText = "Your Apple Health app does not permit use of weight"
                 }
@@ -46,14 +46,14 @@ class HealthKitHelper {
         }
     }
     
-    func readWeights(fromDate: Date, toDate: Date, weightUnit: WeightUnit) {
+    func readWeights(fromDate: Date, toDate: Date) {
+        
+        // weight values in the database are always in kg
         
         guard let sampleType: HKSampleType = HKSampleType.quantityType(forIdentifier: .bodyMass) else {
             fatalError(" *** sampleType construction should never fail ***")
         }
         let predicate = HKQuery.predicateForSamples(withStart: fromDate, end: toDate, options: [])
-        // weight values in the database are always in kg
-        let unitConversionFactor = 1.0 / weightUnit.unitToKgFactor()
         let sortDescriptor: [NSSortDescriptor] = [ NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false) ]
         let query = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: sortDescriptor) {
             (theQuery, results, error) in
@@ -68,13 +68,11 @@ class HealthKitHelper {
                 fatalError("query failed in func 'readWeights': \(String(describing: error?.localizedDescription))" )
             }
 
-            var results: [ (weight: Double, date: Date) ]  = []
+            var results: [ (kg: Double, date: Date) ]  = []
             for sample in samples {
                 let kilograms = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))  // db weight always in kilograms
-                let weightQuantity = kilograms * unitConversionFactor
-                
                 let date = sample.startDate
-                results.append( (weightQuantity, date) )
+                results.append( (kilograms, date) )
             }
             // if following isn't on the main thread it gives:
             // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird...."
@@ -86,12 +84,11 @@ class HealthKitHelper {
         store.execute(query)
     }
     
-    // value is always stored in the healthDB as kilograms
-    func storeWeight(weightValue: Double, unit: WeightUnit, note: String) {
+    // weightValue arg is kilogram & healthDB weight is always in kg
+    func storeWeight(kg: Double, unit: WeightUnit, note: String) {
         let quantityType: HKQuantityType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!
         let quantityUnit: HKUnit = HKUnit.gramUnit(with: .kilo)
-        let weightValueInKilograms = weightValue * unit.unitToKgFactor()
-        let quantity: HKQuantity = HKQuantity(unit: quantityUnit, doubleValue: weightValueInKilograms)
+        let quantity: HKQuantity = HKQuantity(unit: quantityUnit, doubleValue: kg)
         // now quantityUnit and weightValueInKilograms are unresolved identifiers
         let now = Date()
         let sample: HKQuantitySample = HKQuantitySample(type: quantityType, quantity: quantity, start: now, end: now, metadata: ["note" : note])

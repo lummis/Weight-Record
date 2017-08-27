@@ -23,12 +23,12 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     var fromDate: Date!
     var toDate: Date!
     var isRemoveMessageInProgress: Bool = false
-    var weightsAndDates: [ (weight: Double, date: Date) ]  = []
+    var weightsAndDates: [ (kg: Double, date: Date) ]  = []
+    //FIXME: persist value
+    // weight is always saved and retrieved in kg but is displayed in kg, lb, or st
+    var weightDisplayUnit: WeightUnit = .kilogram
     let delayUntilFadeOut: TimeInterval = 4.0
     let fadeDuration: TimeInterval = 1.0
-    
-    //FIXME: retrieve persisted value
-    var weightDisplayUnit: WeightUnit = .kilogram
     
     var messageText: String {
         get {
@@ -58,11 +58,16 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     }
     
     func fadeThenRemoveMessage() {
-        print("now fadeThenRemoveMessage")
+        print("begin fadeThenRemoveMessage")
         
         UIView.animate(withDuration: fadeDuration, delay: delayUntilFadeOut, options: [.curveEaseInOut],
                        animations: { self.messageL.alpha = 0.0 },
-                       completion: { finished in self.messageL.text = ""; self.messageL.alpha = 1.0; self.isRemoveMessageInProgress = false; print("fading complete") } )
+                       completion: { finished in
+                        self.messageL.text = ""
+                        self.messageL.alpha = 1.0
+                        self.isRemoveMessageInProgress = false
+                        print("end fadeThenRemoveMessage")
+        } )
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -119,7 +124,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture, weightUnit: self.weightDisplayUnit)
+        helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
     }
     
     @IBAction func segmentedCAction(_ sender: UISegmentedControl) {
@@ -129,7 +134,8 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         updateUI()
     }
     
-    func saveWeightsAndDates( wad: [ (weight: Double, date: Date) ] ) {
+    // need a better name; this function receives wad from helper and stores it in viewcontroller
+    func saveWeightsAndDates( wad: [ (kg: Double, date: Date) ] ) {
         weightsAndDates = wad
         updateCells()
         messageText = "\(weightsAndDates.count) weights"
@@ -143,7 +149,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         if let wt = (weightTF.text!).roundedDoubleFromString() {    // rounded to what precision?
             if wt > minValue(weightDisplayUnit) && wt < maxValue(weightDisplayUnit) {
                 print("saving wt: \(wt), unit: \(weightDisplayUnit), note: \(noteText)")
-                helper.storeWeight(weightValue: wt, unit: weightDisplayUnit, note: noteText)
+                helper.storeWeight(kg: wt * weightDisplayUnit.unitToKgFactor(), unit: weightDisplayUnit, note: noteText)
             } else {
                 weightOutOfRange()
             }
@@ -156,7 +162,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     
     func didSaveWeight() {
         print("didSaveWeight    WAD.count: \(weightsAndDates.count)")
-        helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture, weightUnit: weightDisplayUnit)
+        helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
     }
     
     func saveWeightFailed() {
@@ -184,7 +190,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "weightAndDateCell", for: indexPath) as! WeightAndDateCell
-        cell.updateFields(withSample: weightsAndDates[indexPath.row], unit: weightDisplayUnit)
+        cell.updateFields(withSample: weightsAndDates[indexPath.row], displayUnit: weightDisplayUnit)
         return cell
     }
     
