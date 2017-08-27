@@ -11,9 +11,8 @@ import HealthKit
 
 protocol WeightAndDateProtocol {
     var messageText: String { get set }
-    var saveWeightSucceeded: Bool { get set }
-    func saveWeightsAndDates( wad: [ (kg: Double, date: Date) ] )
-//    func didSaveWeight()
+    var storeWeightSucceeded: Bool { get set }
+    func saveAndDisplayWeights( wad: [ (kg: Double, date: Date) ] )
 }
 
 class HealthKitHelper {
@@ -40,7 +39,7 @@ class HealthKitHelper {
                 if success {
                     self.readWeights(fromDate: fromDate, toDate: toDate)
                 } else {
-                    self.delegate.messageText = "Your Apple Health app does not permit use of weight"
+                    self.delegate.messageText = "Your Apple Health app does not permit this app to use weight"
                 }
             }
         }
@@ -76,8 +75,9 @@ class HealthKitHelper {
             }
             // if following isn't on the main thread it gives:
             // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird...."
+            // would this be better as a "completeion: " arg?
             DispatchQueue.main.async {
-                self.delegate.saveWeightsAndDates(wad: results)
+                self.delegate.saveAndDisplayWeights(wad: results)
             }
         }
         
@@ -94,7 +94,7 @@ class HealthKitHelper {
         let sample: HKQuantitySample = HKQuantitySample(type: quantityType, quantity: quantity, start: now, end: now, metadata: ["note" : note])
         store.save(sample) {
             (ok, error) in
-            self.delegate.saveWeightSucceeded = ok
+            self.delegate.storeWeightSucceeded = ok
             print("storeWeight completed. ok: \(ok), error: \(String(describing: error))")
         }
     }

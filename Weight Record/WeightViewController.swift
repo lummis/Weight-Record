@@ -36,19 +36,19 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         }
         set {
             // don't call fadeThenRemoveMessage if it's already in progress
-            if newValue != "" && !isRemoveMessageInProgress {
+            if newValue != "" {
                 fadeThenRemoveMessage()
             }
             messageL.text = newValue
         }
     }
     
-    var saveWeightSucceeded: Bool {
+    var storeWeightSucceeded: Bool {
         get {
             return false
         }
         set {
-            print("saveWeight succeeded: \(newValue)")
+            print("storeWeight succeeded: \(newValue)")
             if newValue == true {
                 DispatchQueue.main.async {
                     self.didSaveWeight()
@@ -65,7 +65,6 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
                        completion: { finished in
                         self.messageL.text = ""
                         self.messageL.alpha = 1.0
-                        self.isRemoveMessageInProgress = false
                         print("end fadeThenRemoveMessage")
         } )
     }
@@ -128,14 +127,14 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     }
     
     @IBAction func segmentedCAction(_ sender: UISegmentedControl) {
-        print("selected segment index: \(sender.selectedSegmentIndex)")
+        print("selected segment with index: \(sender.selectedSegmentIndex)")
         weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex)!
         weightTF.text = ""
-        updateUI()
+        updateCells()
     }
     
     // need a better name; this function receives wad from helper and stores it in viewcontroller
-    func saveWeightsAndDates( wad: [ (kg: Double, date: Date) ] ) {
+    func saveAndDisplayWeights( wad: [ (kg: Double, date: Date) ] ) {
         weightsAndDates = wad
         updateCells()
         messageText = "\(weightsAndDates.count) weights"
@@ -175,16 +174,12 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         messageText = "Valid range is \( minValue(weightDisplayUnit) ) to \( maxValue(weightDisplayUnit) ) \(weightDisplayUnit.abbreviation() )"
     }
     
-    func updateUI() {
-        print("updateUI")
-        updateCells()
-    }
-    
     func updateCells() {
         if tableView != nil && !weightsAndDates.isEmpty {
             tableView!.reloadData()
         } else {
-            fatalError("updateCells failed; tableView is nil or weightsAndDates is empty")
+            messageText = "Can't access weight in the Apple Health app. Verify that it is set to permit 'write' and 'read'."
+            print("updateCells failed; tableView is nil or weightsAndDates is empty")
         }
     }
     
