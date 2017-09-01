@@ -76,9 +76,6 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        print("tf before: \(textField.text ?? "blank")")
-        let rangeString = NSStringFromRange(range)
-        print("range: \(range)      rangeString: \(rangeString)     replacementString: \(string)")
         if string == "" && textField.text?.characters.count == 1 {
             weightText = ""
         }
