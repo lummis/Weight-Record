@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D096D4D1F57B202009D5C14 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D096D4C1F57B202009D5C14 /* Model.swift */; };
 		7D0FBDA91F1BAD27008459F7 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D0FBDA81F1BAD27008459F7 /* HealthKit.framework */; };
 		7DAD52AB1F1AF54000001513 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAD52AA1F1AF54000001513 /* AppDelegate.swift */; };
 		7DAD52B21F1AF54100001513 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7DAD52B11F1AF54100001513 /* Assets.xcassets */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7D096D4C1F57B202009D5C14 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		7D0FBDA81F1BAD27008459F7 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		7DAD52A71F1AF54000001513 /* Weight Record.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Weight Record.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DAD52AA1F1AF54000001513 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				7DAD52BF1F1AF62D00001513 /* WeightViewController.swift */,
+				7D096D4C1F57B202009D5C14 /* Model.swift */,
 				7DAD52C31F1AF64000001513 /* HealthKitHelper.swift */,
 				7DAD52C11F1AF63800001513 /* WeightAndDateCell.swift */,
 			);
@@ -181,6 +184,7 @@
 				7DAD52C41F1AF64000001513 /* HealthKitHelper.swift in Sources */,
 				7DAD52C01F1AF62D00001513 /* WeightViewController.swift in Sources */,
 				7DAD52AB1F1AF54000001513 /* AppDelegate.swift in Sources */,
+				7D096D4D1F57B202009D5C14 /* Model.swift in Sources */,
 				7DC877AE1F4A897A00C73E89 /* WeightEnum.swift in Sources */,
 				7DAD52C21F1AF63800001513 /* WeightAndDateCell.swift in Sources */,
 			);

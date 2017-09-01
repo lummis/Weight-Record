@@ -24,9 +24,10 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     var toDate: Date!
     var isRemoveMessageInProgress: Bool = false
     var weightsAndDates: [ (kg: Double, date: Date) ]  = []
-    //FIXME: persist value
+    
     // weight is always saved and retrieved in kg but is displayed in kg, lb, or st
-    var weightDisplayUnit: WeightUnit = .kilogram
+    let defaultWeightDisplayUnit: WeightUnit = .pound
+    var weightDisplayUnit: WeightUnit = .pound  // always the same as default
     let delayUntilFadeOut: TimeInterval = 4.0
     let fadeDuration: TimeInterval = 1.0
     
@@ -110,8 +111,17 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //FIXME: persist segment selection
-        let segmentIndex = 1  // start with Lb selected
+        // persist segment selection
+        let model = Model()
+        var segmentIndex: Int
+        let rv = model.weightDisplayUnitRawValue()
+        if rv == nil {
+            // first time executing
+            model.storePreferred(weightDisplayUnitRawValue: defaultWeightDisplayUnit.rawValue)
+            segmentIndex = defaultWeightDisplayUnit.rawValue
+        } else {
+            segmentIndex = rv!
+        }
         segmentedC.selectedSegmentIndex = segmentIndex
         weightDisplayUnit = WeightUnit(rawValue: segmentIndex)!
         dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm"
@@ -119,6 +129,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         weightTF.delegate = self
         weightTF.tintColor = UIColor.black
         messageText = ""
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -127,8 +138,8 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     }
     
     @IBAction func segmentedCAction(_ sender: UISegmentedControl) {
-        print("selected segment with index: \(sender.selectedSegmentIndex)")
         weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex)!
+        Model().storePreferred(weightDisplayUnitRawValue: weightDisplayUnit.rawValue)
         weightTF.text = ""
         updateCells()
     }
