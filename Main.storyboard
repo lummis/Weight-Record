@@ -206,12 +206,39 @@
                     <view key="view" contentMode="scaleToFill" id="MCY-q8-ZJP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3V1-jc-KmO">
+                                <rect key="frame" x="16" y="32" width="342" height="29"/>
+                                <fontDescription key="fontDescription" name="Optima-Bold" family="Optima" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lW8-BJ-6d9">
+                                <rect key="frame" x="133" y="318" width="109" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="109" id="qoG-O2-k3u"/>
+                                    <constraint firstAttribute="height" constant="30" id="rwn-gi-lLK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Optima-Bold" family="Optima" pointSize="20"/>
+                                <state key="normal" title="Done"/>
+                                <connections>
+                                    <action selector="doneVAction:" destination="cvF-pl-rmI" eventType="touchUpInside" id="XkL-eu-wbx"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="3V1-jc-KmO" firstAttribute="centerX" secondItem="MCY-q8-ZJP" secondAttribute="centerX" id="H8f-Su-2aq"/>
+                            <constraint firstItem="3V1-jc-KmO" firstAttribute="leading" secondItem="MCY-q8-ZJP" secondAttribute="leadingMargin" id="b5c-0u-lwU"/>
+                            <constraint firstItem="3V1-jc-KmO" firstAttribute="top" secondItem="w5B-E1-o7S" secondAttribute="bottom" constant="12" id="pNG-Wk-WpL"/>
+                            <constraint firstItem="lW8-BJ-6d9" firstAttribute="centerY" secondItem="MCY-q8-ZJP" secondAttribute="centerY" id="sKK-9d-2fs"/>
+                            <constraint firstItem="lW8-BJ-6d9" firstAttribute="centerX" secondItem="MCY-q8-ZJP" secondAttribute="centerX" id="ulv-ha-GNl"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5iD-9T-5a8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3364" y="-597"/>
+            <point key="canvasLocation" x="-3364" y="-597.75112443778119"/>
         </scene>
     </scenes>
     <resources>
