@@ -219,7 +219,7 @@
                                     <constraint firstAttribute="width" constant="109" id="qoG-O2-k3u"/>
                                     <constraint firstAttribute="height" constant="30" id="rwn-gi-lLK"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Optima-Bold" family="Optima" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="Optima-Bold" family="Optima" pointSize="24"/>
                                 <state key="normal" title="Done"/>
                                 <connections>
                                     <action selector="doneVAction:" destination="cvF-pl-rmI" eventType="touchUpInside" id="XkL-eu-wbx"/>
