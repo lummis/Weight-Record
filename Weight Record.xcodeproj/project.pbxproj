@@ -18,6 +18,7 @@
 		7DAD52CA1F1AF6E300001513 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DAD52C91F1AF6E300001513 /* Main.storyboard */; };
 		7DC877AE1F4A897A00C73E89 /* WeightEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC877AD1F4A897A00C73E89 /* WeightEnum.swift */; };
 		7DD9A3521F5CFAC30033D1B0 /* GearIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DD9A3511F5CFAC30033D1B0 /* GearIcon.png */; };
+		7DD9A3571F5CFDB10033D1B0 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD9A3561F5CFDB10033D1B0 /* SettingsVC.swift */; };
 		7DE6EECE1F2ADDCD0078858A /* ReadMe in Resources */ = {isa = PBXBuildFile; fileRef = 7DE6EECD1F2ADDCD0078858A /* ReadMe */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +37,7 @@
 		7DAD52C91F1AF6E300001513 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		7DC877AD1F4A897A00C73E89 /* WeightEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeightEnum.swift; sourceTree = "<group>"; };
 		7DD9A3511F5CFAC30033D1B0 /* GearIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GearIcon.png; sourceTree = "<group>"; };
+		7DD9A3561F5CFDB10033D1B0 /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		7DE6EECD1F2ADDCD0078858A /* ReadMe */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ReadMe; path = "Weight Record/ReadMe"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -57,6 +59,7 @@
 				7DE6EECD1F2ADDCD0078858A /* ReadMe */,
 				7DAD52C91F1AF6E300001513 /* Main.storyboard */,
 				7DAD52A91F1AF54000001513 /* Weight Record */,
+				7DD9A3561F5CFDB10033D1B0 /* SettingsVC.swift */,
 				7DC877AD1F4A897A00C73E89 /* WeightEnum.swift */,
 				7DD9A3531F5CFACD0033D1B0 /* Images */,
 				7DAD52BC1F1AF56000001513 /* Usual */,
@@ -199,6 +202,7 @@
 				7D096D4D1F57B202009D5C14 /* Model.swift in Sources */,
 				7DC877AE1F4A897A00C73E89 /* WeightEnum.swift in Sources */,
 				7DAD52C21F1AF63800001513 /* WeightAndDateCell.swift in Sources */,
+				7DD9A3571F5CFDB10033D1B0 /* SettingsVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
