@@ -186,6 +186,9 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         }
     }
     
+    @IBAction func gearBAction(_ sender: Any) {
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "weightAndDateCell", for: indexPath) as! WeightAndDateCell
         cell.updateFields(withSample: weightsAndDates[indexPath.row], displayUnit: weightDisplayUnit)

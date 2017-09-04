@@ -88,7 +88,7 @@
                                 </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight Record" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M0b-De-qtC">
-                                <rect key="frame" x="109" y="20" width="156.5" height="29"/>
+                                <rect key="frame" x="109.5" y="20" width="156.5" height="29"/>
                                 <fontDescription key="fontDescription" name="Optima-Bold" family="Optima" pointSize="24"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -149,6 +149,17 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardAppearance="alert" enablesReturnKeyAutomatically="YES"/>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K5F-kk-vcz" userLabel="gearB">
+                                <rect key="frame" x="16" y="20" width="36" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="36" id="58B-8T-VZV"/>
+                                    <constraint firstAttribute="height" constant="36" id="yYU-CD-Yho"/>
+                                </constraints>
+                                <state key="normal" image="GearIcon.png"/>
+                                <connections>
+                                    <action selector="gearBAction:" destination="I1G-ah-9Vk" eventType="touchUpInside" id="8P8-SJ-KRy"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -159,6 +170,8 @@
                             <constraint firstItem="TYt-ul-8pw" firstAttribute="centerY" secondItem="x9n-6h-A62" secondAttribute="centerY" constant="-2" id="RVm-Wm-w0m"/>
                             <constraint firstItem="M0b-De-qtC" firstAttribute="top" secondItem="FAT-uq-VPv" secondAttribute="bottom" id="XnA-Bs-Nir"/>
                             <constraint firstAttribute="leadingMargin" secondItem="ras-7C-Wba" secondAttribute="leading" id="avh-dk-6Zr"/>
+                            <constraint firstItem="K5F-kk-vcz" firstAttribute="top" secondItem="FAT-uq-VPv" secondAttribute="bottom" id="dh9-p3-NHr"/>
+                            <constraint firstItem="K5F-kk-vcz" firstAttribute="leading" secondItem="bxE-Bb-PKl" secondAttribute="leadingMargin" id="fAp-8f-lvq"/>
                             <constraint firstItem="ras-7C-Wba" firstAttribute="top" secondItem="x9n-6h-A62" secondAttribute="bottom" constant="14" id="hjb-27-r8k"/>
                             <constraint firstAttribute="leadingMargin" secondItem="TYt-ul-8pw" secondAttribute="leading" id="j4i-jY-a3Q"/>
                             <constraint firstItem="i7W-hG-5cy" firstAttribute="top" secondItem="ras-7C-Wba" secondAttribute="bottom" constant="20" id="kdh-ZW-U9f"/>
@@ -182,4 +195,7 @@
             <point key="canvasLocation" x="-3592.8000000000002" y="-619.34032983508246"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="GearIcon.png" width="200" height="200"/>
+    </resources>
 </document>
