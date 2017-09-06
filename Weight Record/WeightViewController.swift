@@ -61,6 +61,28 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         }
     }
     
+    // this is the text in the weightTF outlet
+    // it probably doesn't have to be managed this way but it's convenient
+    var weightText: String {
+        get {
+            return weightTF.text ?? ""
+        }
+        
+        set {
+            weightTF.text = newValue
+        }
+    }
+    
+    var noteText: String {
+        get{
+            return noteTF.text!
+        }
+        
+        set{
+            noteTF.text = newValue  // if empty show placeholder text
+        }
+    }
+    
     func fadeThenRemoveMessage() {
         print("begin fadeThenRemoveMessage")
         
@@ -81,31 +103,9 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if string == "" && textField.text?.characters.count == 1 {
             weightText = ""
+            textField.resignFirstResponder()
         }
         return true
-    }
-    
-    // this is the text in the weightTF outlet
-    // it probably doesn't have to be managed this way but it's convenient
-    var weightText: String {
-        get {
-            return weightTF.text ?? ""
-        }
-        
-        set {
-            weightTF.text = newValue
-        }
-    }
-    
-    // I guess the following is not needed; originally it did more
-    var noteText: String {
-        get{
-            return noteTF.text!
-        }
-        
-        set{
-            noteTF.text = newValue  // if empty show placeholder text
-        }
     }
     
     override func viewDidLoad() {
@@ -116,6 +116,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         helper = HealthKitHelper(delegate: self)
         weightTF.delegate = self
         weightTF.tintColor = UIColor.black
+        noteTF.delegate = self
         messageText = ""
         
     }
@@ -155,12 +156,13 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
             weightOutOfRange()
         }
         weightText = ""     // blank makes placeholder text appear
+        weightTF.layer.borderWidth = 0.0
         noteText = ""   // not needed ? 
     }
     
     func saveWeightFailed() {
         print("saveWeightFailed")
-        exit(0) // will only be called during debugging
+        exit(0) // only called during debugging
     }
     
     func weightOutOfRange() {
@@ -200,6 +202,11 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         assert(section == 0, "fatal error: tableView asks for number of rows in section \(section)")
         return weightsAndDates.count
+    }
+    
+    // for pausing to debug
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("touchesBegan")
     }
 }
 
