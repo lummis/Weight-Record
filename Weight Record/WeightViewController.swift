@@ -209,7 +209,11 @@ extension String {
     // if string doesn't convert to a number return nil
     func roundedDoubleFromString() -> Double? {
         if let x = Double(self) {
-            return round(x * 10.0) / 10.0
+            if Model.shared.weightDisplayUnit == .stone {
+                return round(x * 100.0) / 100.0
+            } else {
+                return round(x * 10.0) / 10.0
+            }
         } else {
             return nil
         }
