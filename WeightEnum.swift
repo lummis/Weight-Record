@@ -9,7 +9,8 @@
 import Foundation
 
 enum WeightUnit: Int {
-    case kilogram = 0, pound, stone
+    // don't start with rawValue == 0 so 0 can be used to signal first execution
+    case kilogram = 10, pound, stone
     
     func abbreviation() -> String {
         switch self {
@@ -32,7 +33,6 @@ enum WeightUnit: Int {
             return 6.35029
         }
     }
-    
 }
 
 func minValue(_ unit: WeightUnit) -> Double {

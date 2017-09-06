@@ -26,8 +26,15 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     var weightsAndDates: [ (kg: Double, date: Date) ]  = []
     
     // weight is always saved and retrieved in kg but is displayed in kg, lb, or st
-    let defaultWeightDisplayUnit: WeightUnit = .pound
-    var weightDisplayUnit: WeightUnit = .pound  // always the same as default
+//    let defaultWeightDisplayUnit: WeightUnit = .pound
+//    var weightDisplayUnit: WeightUnit = .pound  // always the same as default
+    
+    var weightDisplayUnit: WeightUnit {
+        get {
+            return Model.shared.weightDisplayUnit
+        }
+    }
+    
     let delayUntilFadeOut: TimeInterval = 4.0
     let fadeDuration: TimeInterval = 1.0
     
@@ -109,18 +116,21 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         super.viewDidLoad()
         
         // persist segment selection
-        let model = Model()
-        var segmentIndex: Int
-        let rv = model.weightDisplayUnitRawValue()
-        if rv == nil {
-            // first time executing
-            model.storePreferred(weightDisplayUnitRawValue: defaultWeightDisplayUnit.rawValue)
-            segmentIndex = defaultWeightDisplayUnit.rawValue
-        } else {
-            segmentIndex = rv!
-        }
-        segmentedC.selectedSegmentIndex = segmentIndex
-        weightDisplayUnit = WeightUnit(rawValue: segmentIndex)!
+//        let model = Model.shared
+//        var segmentIndex: Int
+//        let rv = model.weightDisplayUnitRawValue()
+//        if rv == nil {
+//            // first time executing
+//            model.storePreferred(weightDisplayUnitRawValue: defaultWeightDisplayUnit.rawValue)
+//            segmentIndex = defaultWeightDisplayUnit.rawValue
+//        } else {
+//            segmentIndex = rv!
+//        }
+//        segmentedC.selectedSegmentIndex = segmentIndex
+//        weightDisplayUnit = WeightUnit(rawValue: segmentIndex)!
+        
+//        weightDisplayUnit = Model.shared.weightDisplayUnit
+        segmentedC.selectedSegmentIndex = weightDisplayUnit.rawValue - 10
         dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm"
         helper = HealthKitHelper(delegate: self)
         weightTF.delegate = self
@@ -135,8 +145,9 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     }
     
     @IBAction func segmentedCAction(_ sender: UISegmentedControl) {
-        weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex)!
-        Model().storePreferred(weightDisplayUnitRawValue: weightDisplayUnit.rawValue)
+        Model.shared.weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex + 10)!
+//        weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex)!
+//        Model().storePreferred(weightDisplayUnitRawValue: weightDisplayUnit.rawValue)
         weightTF.text = ""
         updateCells()
     }
