@@ -183,7 +183,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     
     // highlight field and unhighlight other textFields that previously were emphasized
     // field: nil unhighlights fields previously emphasized fields without emphasizing anything new
-    var emphasizedFields: Set< UITextField > = []
+    var emphasizedFields: Set<UITextField> = []
     func emphasizeTextField(_ field: UITextField?) {
         emphasizedFields.forEach(){
             $0.layer.borderWidth = 0
