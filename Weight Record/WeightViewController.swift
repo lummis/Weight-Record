@@ -97,7 +97,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         print("textFieldDidBeginEditing")
-        textField.layer.borderWidth = 2.0
+        emphasizeTextField(textField)
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -118,7 +118,6 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         weightTF.tintColor = UIColor.black
         noteTF.delegate = self
         messageText = ""
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -131,6 +130,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         Model.shared.weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex + 10)!
         weightTF.text = ""
         updateCells()
+        emphasizeTextField(nil) // deemphasize whatever is now emphasized
     }
     
     // need a better name; this function receives wad from helper and stores it in viewcontroller
@@ -141,7 +141,6 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     }
     
     @IBAction func saveWeightAction(_ sender: Any) {
-        
         weightTF.resignFirstResponder()
         noteTF.resignFirstResponder()
         
@@ -156,8 +155,8 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
             weightOutOfRange()
         }
         weightText = ""     // blank makes placeholder text appear
-        weightTF.layer.borderWidth = 0.0
-        noteText = ""   // not needed ? 
+        noteText = ""   // not needed ?
+        emphasizeTextField(nil)
     }
     
     func saveWeightFailed() {
@@ -180,6 +179,17 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     }
     
     @IBAction func gearBAction(_ sender: Any) {
+    }
+    
+    // highlight field and unhighlight other textFields that previously were emphasized
+    // field: nil unhighlights fields previously emphasized fields without emphasizing anything new
+    var emphasizedFields: Set< UITextField > = []
+    func emphasizeTextField(_ field: UITextField?) {
+        emphasizedFields.forEach(){ $0.layer.borderWidth = 0 }
+        if field != nil {
+            emphasizedFields.insert(field!)
+            field!.layer.borderWidth = 2
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
