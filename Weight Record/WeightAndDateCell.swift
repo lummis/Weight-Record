@@ -33,8 +33,10 @@ class WeightAndDateCell: UITableViewCell {
         
         // show weight in displayUnit, while it is stored in kilograms
         let weightInDisplayUnit = sample.kg / displayUnit.unitToKgFactor()
-        let weightFormat = displayUnit == WeightUnit.stone ? "%5.2f" : "%5.1f"
-        weightL.text = String(format: weightFormat, weightInDisplayUnit)
+        weightL.text = displayUnit == WeightUnit.stone ? weightInDisplayUnit.stringWithRounding(precision: 2)
+            : weightInDisplayUnit.stringWithRounding(precision: 1)
+//        let weightFormat = displayUnit == WeightUnit.stone ? "%5.2f" : "%5.1f"
+//        weightL.text = String(format: weightFormat, weightInDisplayUnit)
         weightL.font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: fontWeight)
         
         dateFormatter.dateFormat = "MMM-dd-yyyy"
@@ -45,6 +47,22 @@ class WeightAndDateCell: UITableViewCell {
         hourMinuteL.text = dateFormatter.string(from: sample.date)
         hourMinuteL.font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: fontWeight)
         
+    }
+}
+
+extension Double {
+    
+    func stringWithRounding(precision: Int) -> String {
+        let minPrecision = 0
+        let maxPrecision = 9
+        var p = ""
+        if precision > maxPrecision || precision < minPrecision {
+            print("precision arg. must be in range \(minPrecision) to \(maxPrecision)")
+        } else {
+            p = String(format: "%1d", precision)
+        }
+        let theFormat = "%." + p + "f"
+        return String(format: theFormat, self)
     }
     
 }

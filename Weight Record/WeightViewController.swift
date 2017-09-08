@@ -130,7 +130,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         Model.shared.weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex + 10)!
         weightTF.text = ""
         updateCells()
-        emphasizeTextField(nil) // deemphasize whatever is now emphasized
+        emphasizeTextField(nil) // deemphasize all UITextFields
     }
     
     // need a better name; this function receives wad from helper and stores it in viewcontroller
@@ -144,7 +144,8 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         weightTF.resignFirstResponder()
         noteTF.resignFirstResponder()
         
-        if let wt = (weightTF.text!).roundedDoubleFromString() {    // rounded to what precision?
+//        if let wt = (weightTF.text!).roundedDoubleFromString() {    // rounded to what precision?
+        if let wt = Double(weightTF.text!) {
             if wt > minValue(weightDisplayUnit) && wt < maxValue(weightDisplayUnit) {
                 print("saving wt: \(wt), unit: \(weightDisplayUnit), note: \(noteText)")
                 helper.storeWeight(kg: wt * weightDisplayUnit.unitToKgFactor(), unit: weightDisplayUnit, note: noteText)
@@ -224,19 +225,33 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     }
 }
 
-extension String {
-    
-    // returns String converted to Double with one significant decimal
-    // if string doesn't convert to a number return nil
-    func roundedDoubleFromString() -> Double? {
-        if let x = Double(self) {
-            if Model.shared.weightDisplayUnit == .stone {
-                return round(x * 100.0) / 100.0
-            } else {
-                return round(x * 10.0) / 10.0
-            }
-        } else {
-            return nil
-        }
-    }
-}
+//extension String {
+//    
+//    // returns String converted to Double with one significant decimal
+//    // if string doesn't convert to a number return nil
+//    func roundedDoubleFromString() -> Double? {
+//        if let x = Double(self) {
+//            if Model.shared.weightDisplayUnit == .stone {
+//                return round(x * 100.0) / 100.0
+//            } else {
+//                return round(x * 10.0) / 10.0
+//            }
+//        } else {
+//            return nil
+//        }
+//    }
+//    
+//    // precision is the number of digits after the decimal point
+//    // if the target (String) doesn't convert to a Float return nil
+//    // Float is used because apparently there is no pow function for Doubles
+//    func stringToRoundedDouble(precision: Int) -> Double? {
+//        let precisionAsFloat = Float(precision)
+//        if let x = Float(self) {
+//            let factor = pow(10, precisionAsFloat)
+//            return Double (round(x * factor) / factor)
+//        } else {
+//            return nil
+//        }
+//        
+//    }
+//}
