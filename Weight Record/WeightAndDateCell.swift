@@ -52,15 +52,11 @@ class WeightAndDateCell: UITableViewCell {
 
 extension Double {
     
+    // precision means the number of digits after the decimal place
+    // 0 means no fractional part and also no decimal point
+    // negative precision has no consistent meaning and seems to act the same as 0
     func stringWithRounding(precision: Int) -> String {
-        let minPrecision = 0
-        let maxPrecision = 9
-        var p = ""
-        if precision > maxPrecision || precision < minPrecision {
-            print("precision arg. must be in range \(minPrecision) to \(maxPrecision)")
-        } else {
-            p = String(format: "%1d", precision)
-        }
+        let p = String(format: "%1d", precision)
         let theFormat = "%." + p + "f"
         return String(format: theFormat, self)
     }

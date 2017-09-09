@@ -111,7 +111,6 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        segmentedC.selectedSegmentIndex = weightDisplayUnit.rawValue - 10
         dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm"
         helper = HealthKitHelper(delegate: self)
         weightTF.delegate = self
@@ -179,9 +178,6 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         }
     }
     
-    @IBAction func gearBAction(_ sender: Any) {
-    }
-    
     // highlight field and unhighlight other textFields that previously were emphasized
     // field: nil unhighlights fields previously emphasized fields without emphasizing anything new
     var emphasizedFields: Set<UITextField> = []
@@ -199,8 +195,10 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        
+        print("prepare")
         print(segue.identifier!)
+        let svc = segue.destination as! SettingsVC
+        svc.wvc = self
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
