@@ -75,7 +75,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     
     var noteText: String {
         get{
-            return noteTF.text!
+            return noteTF.text ?? ""
         }
         
         set{
