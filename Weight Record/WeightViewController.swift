@@ -13,8 +13,9 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
 
     @IBOutlet weak var messageL: UILabel!
     @IBOutlet weak var weightTF: UITextField!
+    @IBOutlet weak var noteTFParent: UIView!
     @IBOutlet weak var noteTF: UITextField!
-    @IBOutlet weak var segmentedC: UISegmentedControl!
+    
     
     let hks = HKHealthStore()
     var helper: HealthKitHelper!
@@ -116,6 +117,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         weightTF.delegate = self
         weightTF.tintColor = UIColor.black
         noteTF.delegate = self
+        noteText = ""
         messageText = ""
     }
     
