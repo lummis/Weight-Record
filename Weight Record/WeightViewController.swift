@@ -13,7 +13,6 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
 
     @IBOutlet weak var messageL: UILabel!
     @IBOutlet weak var weightTF: UITextField!
-    @IBOutlet weak var noteTFParent: UIView!
     @IBOutlet weak var noteTF: UITextField!
     
     
@@ -98,7 +97,10 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         print("textFieldDidBeginEditing")
-        emphasizeTextField(textField)
+
+//        emphasizeField(textField)
+        textField.isHighlighted = true
+
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -117,6 +119,15 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         weightTF.delegate = self
         weightTF.tintColor = UIColor.black
         noteTF.delegate = self
+        
+        let lv: UIView = UIView(frame: CGRect(x: 10, y: 0, width: 50, height: 20))
+        lv.backgroundColor = UIColor.green
+//        noteTF.borderStyle = .roundedRect
+        noteTF.leftView = lv
+        
+        noteTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
+
+        noteText = ""
         noteText = ""
         messageText = ""
     }
@@ -125,13 +136,16 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         super.viewDidAppear(animated)
         
         helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
+        let rect: CGRect = noteTF.textRect(forBounds: noteTF.bounds)
+        print("rect: ", rect)
+        noteTF.drawText(in: CGRect(x: 10, y: 0, width: rect.width - 20, height: rect.height))
     }
     
     @IBAction func segmentedCAction(_ sender: UISegmentedControl) {
         Model.shared.weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex + 10)!
         weightTF.text = ""
         updateCells()
-        emphasizeTextField(nil) // deemphasize all UITextFields
+        emphasizeField(nil) // deemphasize all UITextFields
     }
     
     // need a better name; this function receives wad from helper and stores it in viewcontroller
@@ -158,7 +172,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         }
         weightText = ""     // blank makes placeholder text appear
         noteText = ""   // not needed ?
-        emphasizeTextField(nil)
+        emphasizeField(nil)
     }
     
     func saveWeightFailed() {
@@ -183,7 +197,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     // highlight field and unhighlight other textFields that previously were emphasized
     // field: nil unhighlights fields previously emphasized fields without emphasizing anything new
     var emphasizedFields: Set<UITextField> = []
-    func emphasizeTextField(_ field: UITextField?) {
+    func emphasizeField(_ field: UITextField?) {
         emphasizedFields.forEach(){
             $0.layer.borderWidth = 0
             $0.layer.borderColor = UIColor.clear.cgColor
