@@ -104,7 +104,8 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if string == "" && textField.text?.characters.count == 1 {
+        
+        if string == "" && textField.text?.characters.count == 0 {
             weightText = ""
             textField.resignFirstResponder()
         }
@@ -120,10 +121,10 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         weightTF.tintColor = UIColor.black
         noteTF.delegate = self
         
-        let lv: UIView = UIView(frame: CGRect(x: 10, y: 0, width: 50, height: 20))
-        lv.backgroundColor = UIColor.green
-//        noteTF.borderStyle = .roundedRect
-        noteTF.leftView = lv
+//        let lv: UIView = UIView(frame: CGRect(x: 10, y: 0, width: 50, height: 20))
+//        lv.backgroundColor = UIColor.green
+////        noteTF.borderStyle = .roundedRect
+//        noteTF.leftView = lv
         
         noteTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
 
@@ -136,9 +137,9 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         super.viewDidAppear(animated)
         
         helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
-        let rect: CGRect = noteTF.textRect(forBounds: noteTF.bounds)
-        print("rect: ", rect)
-        noteTF.drawText(in: CGRect(x: 10, y: 0, width: rect.width - 20, height: rect.height))
+//        let rect: CGRect = noteTF.textRect(forBounds: noteTF.bounds)
+//        print("rect: ", rect)
+//        noteTF.drawText(in: CGRect(x: 10, y: 0, width: rect.width - 20, height: rect.height))
     }
     
     @IBAction func segmentedCAction(_ sender: UISegmentedControl) {
