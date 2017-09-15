@@ -35,18 +35,3 @@ enum WeightUnit: Int {
     }
 }
 
-func minValue(_ unit: WeightUnit) -> Double {
-    switch(unit) {
-    case .kilogram: return 18.0     // 18.143695
-    case .pound:    return 40.0
-    case .stone:   return 2.85     // 2.857143
-    }
-}
-
-func maxValue(_ unit: WeightUnit) -> Double {
-    switch(unit) {
-    case .kilogram: return 180.0    // 180.873356
-    case .pound:    return 399.0
-    case .stone:    return 28.5     // 28.5000
-    }
-}

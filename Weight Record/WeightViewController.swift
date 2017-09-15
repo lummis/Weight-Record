@@ -14,6 +14,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     @IBOutlet weak var messageL: UILabel!
     @IBOutlet weak var weightTF: UITextField!
     @IBOutlet weak var noteTF: UITextField!
+    @IBOutlet weak var saveB: UIButton!
     
     
     let hks = HKHealthStore()
@@ -23,6 +24,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     var fromDate: Date!
     var toDate: Date!
     var isRemoveMessageInProgress: Bool = false
+    var isWeightInValidRange: Bool = false
     var weightsAndDates: [ (kg: Double, date: Date) ]  = []
     
     var weightDisplayUnit: WeightUnit {
@@ -63,15 +65,15 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     
     // this is the text in the weightTF outlet
     // it probably doesn't have to be managed this way but it's convenient
-    var weightText: String {
-        get {
-            return weightTF.text ?? ""
-        }
-        
-        set {
-            weightTF.text = newValue
-        }
-    }
+//    var weightText: String {
+//        get {
+//            return weightTF.text ?? ""
+//        }
+//        
+//        set {
+//            weightTF.text = newValue
+//        }
+//    }
     
     var noteText: String {
         get{
@@ -83,6 +85,66 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         }
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm"
+        helper = HealthKitHelper(delegate: self)
+        weightTF.delegate = self
+        weightTF.tintColor = UIColor.black
+        noteTF.delegate = self
+        
+        //        let lv: UIView = UIView(frame: CGRect(x: 10, y: 0, width: 50, height: 20))
+        //        lv.backgroundColor = UIColor.green
+        ////        noteTF.borderStyle = .roundedRect
+        //        noteTF.leftView = lv
+        
+        noteTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
+        
+        noteText = ""
+        noteText = ""
+        messageText = ""
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        saveB.isEnabled = false
+        helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
+        //        let rect: CGRect = noteTF.textRect(forBounds: noteTF.bounds)
+        //        print("rect: ", rect)
+        //        noteTF.drawText(in: CGRect(x: 10, y: 0, width: rect.width - 20, height: rect.height))
+        
+//        let nc = NotificationCenter.default
+//        let nn = Notification.Name("UITextFieldTextDidChange")
+        
+//        nc.addObserver(forName: nn, object: nil, queue: nil) {
+//            (notification) in
+//            print("xyzzz")
+//            self.weightValueDidChange()
+        
+//        nc.addObserver(self,
+//                       selector: #selector(gotNotification),
+//                       name: nn,
+//                       object: nil)
+        }
+    
+    @IBAction func weightTFTextChanged() {
+        
+        print("weightTFTextChanged; value now is \( Double(weightTF.text!) ?? 0.0 )")
+        print("saveB was Enabled: \(saveB.isEnabled)")
+        
+        saveB.isEnabled = false
+        if let w: String = weightTF.text {
+            if let wt: Double = Double(w) {
+                if wt >= minValue(weightDisplayUnit) && wt <= maxValue(weightDisplayUnit) {
+                    saveB.isEnabled = true
+                }
+            }
+        }
+        
+    }
+
     func fadeThenRemoveMessage() {
         print("begin fadeThenRemoveMessage")
         
@@ -103,44 +165,23 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
 
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        if string == "" && textField.text?.characters.count == 0 {
-            weightText = ""
-            textField.resignFirstResponder()
-        }
-        return true
-    }
+//    func textFieldTextDidChange(textField: UITextField) {
+//        print("this is the textField")
+//        print("new text: \(String(describing: textField.text))")
+//    }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        dateFormatter.dateFormat = "yyyy-MMM-dd HH:mm"
-        helper = HealthKitHelper(delegate: self)
-        weightTF.delegate = self
-        weightTF.tintColor = UIColor.black
-        noteTF.delegate = self
-        
-//        let lv: UIView = UIView(frame: CGRect(x: 10, y: 0, width: 50, height: 20))
-//        lv.backgroundColor = UIColor.green
-////        noteTF.borderStyle = .roundedRect
-//        noteTF.leftView = lv
-        
-        noteTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
-
-        noteText = ""
-        noteText = ""
-        messageText = ""
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
-//        let rect: CGRect = noteTF.textRect(forBounds: noteTF.bounds)
-//        print("rect: ", rect)
-//        noteTF.drawText(in: CGRect(x: 10, y: 0, width: rect.width - 20, height: rect.height))
-    }
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        print ("should change characters in range")
+//        print (Double(weightTF.text!)! * weightDisplayUnit.unitToKgFactor())
+//        print()
+//        
+//        if string == "" && textField.text?.characters.count == 0 {
+//            weightText = ""
+//            textField.resignFirstResponder()
+//        }
+//        
+//        return true
+//    }
     
     @IBAction func segmentedCAction(_ sender: UISegmentedControl) {
         Model.shared.weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex + 10)!
@@ -160,19 +201,21 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         weightTF.resignFirstResponder()
         noteTF.resignFirstResponder()
         
-//        if let wt = (weightTF.text!).roundedDoubleFromString() {    // rounded to what precision?
         if let wt = Double(weightTF.text!) {
-            if wt > minValue(weightDisplayUnit) && wt < maxValue(weightDisplayUnit) {
+            if wt >= minValue(weightDisplayUnit) && wt <= maxValue(weightDisplayUnit) {
                 print("saving wt: \(wt), unit: \(weightDisplayUnit), note: \(noteText)")
                 helper.storeWeight(kg: wt * weightDisplayUnit.unitToKgFactor(), unit: weightDisplayUnit, note: noteText)
             } else {
-                weightOutOfRange()
+                print("weight not in valid range")
             }
         } else {
-            weightOutOfRange()
+            print("weight not valid")
         }
-        weightText = ""     // blank makes placeholder text appear
+        
+        weightTF.text = ""     // blank makes placeholder text appear
+//        saveB.isEnabled = false
         noteText = ""   // not needed ?
+        
         emphasizeField(nil)
     }
     
@@ -213,6 +256,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         print("prepare")
+        weightTF.text = ""
         print(segue.identifier!)
         let svc = segue.destination as! SettingsVC
         svc.wvc = self
@@ -238,6 +282,30 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("touchesBegan")
     }
+}
+
+extension WeightVC {
+
+    func minValue(_ unit: WeightUnit) -> Double {
+        switch(unit) {
+        case .kilogram: return 18.0     // 18.143695
+        case .pound:    return 40.0
+        case .stone:   return 2.85     // 2.857143
+        }
+    }
+    
+    func maxValue(_ unit: WeightUnit) -> Double {
+        switch(unit) {
+        case .kilogram: return 180.0    // 180.873356
+        case .pound:    return 399.0
+        case .stone:    return 28.5     // 28.5000
+        }
+     }
+    
+    func weightValueDidChange() {
+        print("weightValueDidChange")
+    }
+
 }
 
 //extension String {
