@@ -11,12 +11,13 @@
 import Foundation
 import HealthKit
 
-let userDefaults = UserDefaults.standard
-
 class Model {
     
     static var shared = Model()
-    let weightDisplayUnitDefault: WeightUnit = .kilogram
+    
+    private let userDefaults = UserDefaults.standard
+    private let weightDisplayUnitDefault: WeightUnit = .kilogram
+    
     var weightDisplayUnit: WeightUnit {
         willSet (newUnit) {
             if newUnit != weightDisplayUnit {
@@ -32,20 +33,17 @@ class Model {
         } else {
             if let unit = WeightUnit(rawValue: rawValue) {
                 weightDisplayUnit = unit
-            } else {
+            } else {    // if a wacky value is stored in userDefaults
                 weightDisplayUnit = weightDisplayUnitDefault
             }
         }
     }
     
+    // return the value stored in userDefaults
     // return nil if the key was never set
-    func weightDisplayUnitRawValue() -> WeightUnit.RawValue? {
+    internal func weightDisplayUnitRawValue() -> WeightUnit.RawValue? {
         let rawValue = userDefaults.integer(forKey: "weightDisplayUnitRawValue")
-            if rawValue == 0 {
-                return nil
-            } else {
-                return rawValue
-            }
+        return rawValue == 0 ? nil : rawValue
     }
     
 }

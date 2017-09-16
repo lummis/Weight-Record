@@ -93,17 +93,12 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         weightTF.delegate = self
         weightTF.tintColor = UIColor.black
         noteTF.delegate = self
-        
-        //        let lv: UIView = UIView(frame: CGRect(x: 10, y: 0, width: 50, height: 20))
-        //        lv.backgroundColor = UIColor.green
-        ////        noteTF.borderStyle = .roundedRect
-        //        noteTF.leftView = lv
-        
-        noteTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
-        
         noteText = ""
         noteText = ""
         messageText = ""
+        
+        // move text right a little
+        noteTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -111,29 +106,9 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         
         saveB.isEnabled = false
         helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
-        //        let rect: CGRect = noteTF.textRect(forBounds: noteTF.bounds)
-        //        print("rect: ", rect)
-        //        noteTF.drawText(in: CGRect(x: 10, y: 0, width: rect.width - 20, height: rect.height))
-        
-//        let nc = NotificationCenter.default
-//        let nn = Notification.Name("UITextFieldTextDidChange")
-        
-//        nc.addObserver(forName: nn, object: nil, queue: nil) {
-//            (notification) in
-//            print("xyzzz")
-//            self.weightValueDidChange()
-        
-//        nc.addObserver(self,
-//                       selector: #selector(gotNotification),
-//                       name: nn,
-//                       object: nil)
         }
     
     @IBAction func weightTFTextChanged() {
-        
-        print("weightTFTextChanged; value now is \( Double(weightTF.text!) ?? 0.0 )")
-        print("saveB was Enabled: \(saveB.isEnabled)")
-        
         saveB.isEnabled = false
         if let w: String = weightTF.text {
             if let wt: Double = Double(w) {
@@ -142,46 +117,24 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
                 }
             }
         }
-        
     }
 
     func fadeThenRemoveMessage() {
-        print("begin fadeThenRemoveMessage")
         
-        UIView.animate(withDuration: fadeDuration, delay: delayUntilFadeOut, options: [.curveEaseInOut],
+        UIView.animate(withDuration: fadeDuration,
+                       delay: delayUntilFadeOut,
+                       options: [.curveEaseInOut],
                        animations: { self.messageL.alpha = 0.0 },
                        completion: { finished in
                         self.messageL.text = ""
                         self.messageL.alpha = 1.0
-                        print("end fadeThenRemoveMessage")
-        } )
+        }
+        )
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("textFieldDidBeginEditing")
-
-//        emphasizeField(textField)
         textField.isHighlighted = true
-
     }
-    
-//    func textFieldTextDidChange(textField: UITextField) {
-//        print("this is the textField")
-//        print("new text: \(String(describing: textField.text))")
-//    }
-    
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        print ("should change characters in range")
-//        print (Double(weightTF.text!)! * weightDisplayUnit.unitToKgFactor())
-//        print()
-//        
-//        if string == "" && textField.text?.characters.count == 0 {
-//            weightText = ""
-//            textField.resignFirstResponder()
-//        }
-//        
-//        return true
-//    }
     
     @IBAction func segmentedCAction(_ sender: UISegmentedControl) {
         Model.shared.weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex + 10)!
@@ -213,10 +166,8 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         }
         
         weightTF.text = ""     // blank makes placeholder text appear
-//        saveB.isEnabled = false
         noteText = ""   // not needed ?
-        
-        emphasizeField(nil)
+        emphasizeField(nil) // nil means remove all empasis
     }
     
     func saveWeightFailed() {
@@ -224,10 +175,10 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         exit(0) // only called during debugging
     }
     
-    func weightOutOfRange() {
-        print("weightOutOfRange")
-        messageText = "Valid range is \( minValue(weightDisplayUnit) ) to \( maxValue(weightDisplayUnit) ) \(weightDisplayUnit.abbreviation() )"
-    }
+//    func weightOutOfRange() {
+//        print("weightOutOfRange")
+//        messageText = "Valid range is \( minValue(weightDisplayUnit) ) to \( maxValue(weightDisplayUnit) ) \(weightDisplayUnit.abbreviation() )"
+//    }
     
     func updateCells() {
         if tableView != nil && !weightsAndDates.isEmpty {
@@ -307,34 +258,3 @@ extension WeightVC {
     }
 
 }
-
-//extension String {
-//    
-//    // returns String converted to Double with one significant decimal
-//    // if string doesn't convert to a number return nil
-//    func roundedDoubleFromString() -> Double? {
-//        if let x = Double(self) {
-//            if Model.shared.weightDisplayUnit == .stone {
-//                return round(x * 100.0) / 100.0
-//            } else {
-//                return round(x * 10.0) / 10.0
-//            }
-//        } else {
-//            return nil
-//        }
-//    }
-//    
-//    // precision is the number of digits after the decimal point
-//    // if the target (String) doesn't convert to a Float return nil
-//    // Float is used because apparently there is no pow function for Doubles
-//    func stringToRoundedDouble(precision: Int) -> Double? {
-//        let precisionAsFloat = Float(precision)
-//        if let x = Float(self) {
-//            let factor = pow(10, precisionAsFloat)
-//            return Double (round(x * factor) / factor)
-//        } else {
-//            return nil
-//        }
-//        
-//    }
-//}

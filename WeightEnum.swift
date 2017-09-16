@@ -8,11 +8,12 @@
 
 import Foundation
 
-enum WeightUnit: Int {
+internal enum WeightUnit: Int {
+    
     // don't start with rawValue == 0 so 0 can be used to signal first execution
     case kilogram = 10, pound, stone
     
-    func abbreviation() -> String {
+    internal func abbreviation() -> String {
         switch self {
         case .kilogram:
             return "kg"
@@ -23,7 +24,7 @@ enum WeightUnit: Int {
         }
     }
     
-    func unitToKgFactor() -> Double {
+    internal func unitToKgFactor() -> Double {
         switch self {
         case .kilogram:
             return 1.0
