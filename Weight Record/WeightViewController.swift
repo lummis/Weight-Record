@@ -232,6 +232,10 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     // for pausing to debug
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("touchesBegan")
+        super.touchesBegan(touches, with: event)
+        
+        weightTF.text = ""
+        view.endEditing(true)
     }
 }
 
