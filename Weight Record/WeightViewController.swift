@@ -16,7 +16,6 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     @IBOutlet weak var noteTF: UITextField!
     @IBOutlet weak var saveB: UIButton!
     
-    
     let hks = HKHealthStore()
     var helper: HealthKitHelper!
     var tableView: UITableView? = nil
@@ -63,18 +62,6 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         }
     }
     
-    // this is the text in the weightTF outlet
-    // it probably doesn't have to be managed this way but it's convenient
-//    var weightText: String {
-//        get {
-//            return weightTF.text ?? ""
-//        }
-//        
-//        set {
-//            weightTF.text = newValue
-//        }
-//    }
-    
     var noteText: String {
         get{
             return noteTF.text ?? ""
@@ -93,6 +80,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         weightTF.delegate = self
         weightTF.tintColor = UIColor.black
         noteTF.delegate = self
+        initializeWeightTF(weightDisplayUnit)
         noteText = ""
         noteText = ""
         messageText = ""
@@ -138,7 +126,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     
     @IBAction func segmentedCAction(_ sender: UISegmentedControl) {
         Model.shared.weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex + 10)!
-        weightTF.text = ""
+        initializeWeightTF(weightDisplayUnit)
         updateCells()
         emphasizeField(nil) // deemphasize all UITextFields
     }
@@ -165,20 +153,20 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
             print("weight not valid")
         }
         
-        weightTF.text = ""     // blank makes placeholder text appear
+        initializeWeightTF(weightDisplayUnit)
         noteText = ""   // not needed ?
         emphasizeField(nil) // nil means remove all empasis
     }
-    
+
+    func initializeWeightTF(_ unit: WeightUnit) {
+        weightTF.text = unit.pluralName() + "..."
+    }
+
+    // for debugging
     func saveWeightFailed() {
         print("saveWeightFailed")
-        exit(0) // only called during debugging
+        exit(0)
     }
-    
-//    func weightOutOfRange() {
-//        print("weightOutOfRange")
-//        messageText = "Valid range is \( minValue(weightDisplayUnit) ) to \( maxValue(weightDisplayUnit) ) \(weightDisplayUnit.abbreviation() )"
-//    }
     
     func updateCells() {
         if tableView != nil && !weightsAndDates.isEmpty {
@@ -189,31 +177,35 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         }
     }
     
-    // highlight field and unhighlight other textFields that previously were emphasized
-    // field: nil unhighlights fields previously emphasized fields without emphasizing anything new
-    var emphasizedFields: Set<UITextField> = []
-    func emphasizeField(_ field: UITextField?) {
-        emphasizedFields.forEach(){
-            $0.layer.borderWidth = 0
-            $0.layer.borderColor = UIColor.clear.cgColor
-        }
-        if field != nil {
-            emphasizedFields.insert(field!)
-            field!.layer.borderWidth = 2
-            field!.layer.borderColor = UIColor(red: 0.0, green: 128.0/255.0, blue: 0.0, alpha: 1.0).cgColor
-        }
-    }
+                // not being used ???
+                var emphasizedFields: Set<UITextField> = []
+                
+                // highlight field & unhighlight any other textField that may have previously been emphasized
+                // if field is nil unhighlight all fields
+                func emphasizeField(_ field: UITextField?) {
+                    emphasizedFields.forEach(){
+                        $0.layer.borderWidth = 0
+                        $0.layer.borderColor = UIColor.clear.cgColor
+                    }
+                    if field != nil {
+                        emphasizedFields.insert(field!)
+                        field!.layer.borderWidth = 2
+                        field!.layer.borderColor = UIColor(red: 0.0, green: 128.0/255.0, blue: 0.0, alpha: 1.0).cgColor
+                    }
+                }
+                //
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         print("prepare")
-        weightTF.text = ""
+        initializeWeightTF(weightDisplayUnit)
         print(segue.identifier!)
         let svc = segue.destination as! SettingsVC
         svc.wvc = self
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        initializeWeightTF(weightDisplayUnit)
         let cell = tableView.dequeueReusableCell(withIdentifier: "weightAndDateCell", for: indexPath) as! WeightAndDateCell
         cell.updateFields(withSample: weightsAndDates[indexPath.row], displayUnit: weightDisplayUnit)
         return cell
@@ -234,7 +226,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         print("touchesBegan")
         super.touchesBegan(touches, with: event)
         
-        weightTF.text = ""
+        initializeWeightTF(weightDisplayUnit)
         view.endEditing(true)
     }
 }
@@ -256,9 +248,5 @@ extension WeightVC {
         case .stone:    return 28.5     // 28.5000
         }
      }
-    
-    func weightValueDidChange() {
-        print("weightValueDidChange")
-    }
 
 }

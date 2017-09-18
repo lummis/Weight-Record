@@ -13,14 +13,25 @@ internal enum WeightUnit: Int {
     // don't start with rawValue == 0 so 0 can be used to signal first execution
     case kilogram = 10, pound, stone
     
+    internal func pluralName() -> String {
+        switch self {
+        case .kilogram:
+            return "Kilograms"
+        case .pound:
+            return "Pounds"
+        case .stone:
+            return "Stone"
+        }
+    }
+    
     internal func abbreviation() -> String {
         switch self {
         case .kilogram:
-            return "kg"
+            return "Kg."
         case .pound:
-            return "lb"
+            return "Lb."
         case .stone:
-            return "st"
+            return "St."
         }
     }
     

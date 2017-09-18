@@ -47,3 +47,19 @@ class Model {
     }
     
 }
+
+extension Double {
+    
+    // for print formatting: stringWithRounding(precision: Int) -> String
+    // precision is the number of digits dessired after the decimal place
+    // 0 means no fractional part and also no decimal point
+    // if the Double has no fractional part 'precision' zeros will be added
+    // negative precision seems to act the same as 0. don't use negative without further testing
+    func stringWithRounding(precision: Int) -> String {
+        assert(precision >= 0, "negative precision is not supported in 'func stringWithRounding'")
+        let p = String(format: "%1d", precision)
+        let theFormat = "%." + p + "f"
+        return String(format: theFormat, self)
+    }
+    
+}
