@@ -73,7 +73,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                             </textField>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="38" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qEi-hi-bqI">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qEi-hi-bqI">
                                 <rect key="frame" x="0.0" y="200" width="375" height="467"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
@@ -86,7 +86,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Day" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r9f-iE-qvo">
-                                                    <rect key="frame" x="8" y="6" width="54" height="24"/>
+                                                    <rect key="frame" x="8" y="0.5" width="54" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="54" id="MbH-h9-69W"/>
                                                     </constraints>
@@ -95,39 +95,49 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MDY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6by-PG-mpx">
-                                                    <rect key="frame" x="72" y="6" width="43" height="24"/>
+                                                    <rect key="frame" x="72" y="0.5" width="43" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HH:mm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3WE-BK-6Js">
-                                                    <rect key="frame" x="125" y="6" width="68.5" height="24"/>
+                                                    <rect key="frame" x="125" y="0.5" width="68.5" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="weight" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NMe-GO-1Xe">
-                                                    <rect key="frame" x="296.5" y="6" width="60.5" height="24"/>
+                                                    <rect key="frame" x="296.5" y="0.5" width="60.5" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="note" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NJr-Kd-wuf" userLabel="noteL">
+                                                    <rect key="frame" x="8" y="15" width="358" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="3WE-BK-6Js" firstAttribute="centerY" secondItem="PZ2-2p-gEJ" secondAttribute="centerY" id="1J1-MM-9UD"/>
+                                                <constraint firstItem="6by-PG-mpx" firstAttribute="centerY" secondItem="r9f-iE-qvo" secondAttribute="centerY" id="7se-ji-n4E"/>
                                                 <constraint firstItem="r9f-iE-qvo" firstAttribute="leading" secondItem="PZ2-2p-gEJ" secondAttribute="leadingMargin" id="KfG-bz-lVq"/>
+                                                <constraint firstItem="NJr-Kd-wuf" firstAttribute="centerY" secondItem="PZ2-2p-gEJ" secondAttribute="centerY" multiplier="1.35" id="PFw-EN-EbN"/>
                                                 <constraint firstItem="3WE-BK-6Js" firstAttribute="leading" secondItem="6by-PG-mpx" secondAttribute="trailing" constant="10" id="PRy-cp-ZI0"/>
                                                 <constraint firstItem="NMe-GO-1Xe" firstAttribute="trailing" secondItem="PZ2-2p-gEJ" secondAttribute="trailingMargin" constant="-10" id="Pb8-20-t1g"/>
-                                                <constraint firstItem="NMe-GO-1Xe" firstAttribute="centerY" secondItem="PZ2-2p-gEJ" secondAttribute="centerY" id="Pn1-fU-jOV"/>
+                                                <constraint firstItem="NMe-GO-1Xe" firstAttribute="centerY" secondItem="r9f-iE-qvo" secondAttribute="centerY" id="UKr-A5-Ypk"/>
                                                 <constraint firstItem="6by-PG-mpx" firstAttribute="leading" secondItem="r9f-iE-qvo" secondAttribute="trailing" constant="10" id="WH5-pp-7tl"/>
-                                                <constraint firstItem="r9f-iE-qvo" firstAttribute="centerY" secondItem="PZ2-2p-gEJ" secondAttribute="centerY" id="gbU-ds-08u"/>
-                                                <constraint firstItem="6by-PG-mpx" firstAttribute="centerY" secondItem="PZ2-2p-gEJ" secondAttribute="centerY" id="vmH-9f-8Nq"/>
+                                                <constraint firstItem="NJr-Kd-wuf" firstAttribute="leading" secondItem="PZ2-2p-gEJ" secondAttribute="leadingMargin" id="Wtc-Nc-Rj5"/>
+                                                <constraint firstItem="r9f-iE-qvo" firstAttribute="centerY" secondItem="PZ2-2p-gEJ" secondAttribute="centerY" multiplier="0.67" id="gbU-ds-08u"/>
+                                                <constraint firstItem="3WE-BK-6Js" firstAttribute="centerY" secondItem="r9f-iE-qvo" secondAttribute="centerY" id="s0v-47-AMF"/>
+                                                <constraint firstItem="NJr-Kd-wuf" firstAttribute="centerX" secondItem="PZ2-2p-gEJ" secondAttribute="centerX" id="uZK-ys-j2t"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="dayOfWeekL" destination="r9f-iE-qvo" id="DbS-d0-8b1"/>
                                             <outlet property="hourMinuteL" destination="3WE-BK-6Js" id="taE-jH-j4Z"/>
                                             <outlet property="monthDayYearL" destination="6by-PG-mpx" id="VBb-54-uK8"/>
+                                            <outlet property="noteL" destination="NJr-Kd-wuf" id="g63-vD-SGB"/>
                                             <outlet property="weightL" destination="NMe-GO-1Xe" id="7uf-Q9-AWX"/>
                                         </connections>
                                     </tableViewCell>
@@ -176,7 +186,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2DR-ok-XpS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3346" y="-591"/>
+            <point key="canvasLocation" x="-3346.4000000000001" y="-591.45427286356824"/>
         </scene>
         <!--SettingsVC-->
         <scene sceneID="jPd-HW-Qlk">

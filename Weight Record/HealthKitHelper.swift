@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 import HealthKit
 
-protocol WeightAndDateProtocol {
+protocol WeightAndDateDelegate {
     var messageText: String { get set }
     var storeWeightSucceeded: Bool { get set }
-    func saveAndDisplayWeights( wad: [ (kg: Double, date: Date) ] )
+    func saveAndDisplayWeights( wad: [ (kg: Double, date: Date, note: String?) ] )
 }
 
 class HealthKitHelper {
@@ -39,7 +39,7 @@ class HealthKitHelper {
                 if success {
                     self.readWeights(fromDate: fromDate, toDate: toDate)
                 } else {
-                    self.delegate.messageText = "Your Apple Health app does not permit this app to use weight"
+                    self.delegate.messageText = "Your Apple Health app needs to be set to permit this app to use weight values"
                 }
             }
         }
@@ -54,7 +54,10 @@ class HealthKitHelper {
         }
         let predicate = HKQuery.predicateForSamples(withStart: fromDate, end: toDate, options: [])
         let sortDescriptor: [NSSortDescriptor] = [ NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false) ]
-        let query = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: sortDescriptor) {
+        let query = HKSampleQuery(sampleType: sampleType,
+                                  predicate: predicate,
+                                  limit: HKObjectQueryNoLimit,
+                                  sortDescriptors: sortDescriptor) {
             (theQuery, results, error) in
             if error != nil {
                 print("error: ", error.debugDescription)
@@ -67,11 +70,15 @@ class HealthKitHelper {
                 fatalError("query failed in func 'readWeights': \(String(describing: error?.localizedDescription))" )
             }
 
-            var results: [ (kg: Double, date: Date) ]  = []
+            var results: [ (kg: Double, date: Date, note: String?) ]  = []
             for sample in samples {
-                let kilograms = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))  // db weight always in kilograms
-                let date = sample.startDate
-                results.append( (kilograms, date) )
+               let kilograms = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))  // db weight always in kilograms
+               let date = sample.startDate
+               var note = ""
+               if let metaNote = sample.metadata?["- - -"] {
+                  note = metaNote as! String
+               }
+               results.append( (kilograms, date, note) )
             }
             // if following isn't on the main thread it gives:
             // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird...."
@@ -80,7 +87,6 @@ class HealthKitHelper {
                 self.delegate.saveAndDisplayWeights(wad: results)
             }
         }
-        
         store.execute(query)
     }
     

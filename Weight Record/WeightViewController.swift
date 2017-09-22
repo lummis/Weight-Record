@@ -9,7 +9,7 @@
 import UIKit
 import HealthKit
 
-class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
+class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var messageL: UILabel!
     @IBOutlet weak var weightTF: UITextField!
@@ -24,7 +24,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     var toDate: Date!
     var isRemoveMessageInProgress: Bool = false
     var isWeightInValidRange: Bool = false
-    var weightsAndDates: [ (kg: Double, date: Date) ]  = []
+    var weightsAndDates: [ (kg: Double, date: Date, note: String?) ]  = []
     
     var weightDisplayUnit: WeightUnit {
         get {
@@ -132,7 +132,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
     }
     
     // need a better name; this function receives wad from helper and stores it in viewcontroller
-    func saveAndDisplayWeights( wad: [ (kg: Double, date: Date) ] ) {
+    func saveAndDisplayWeights( wad: [ (kg: Double, date: Date, note: String?) ] ) {
         weightsAndDates = wad
         updateCells()
         messageText = "\(weightsAndDates.count) weights"
@@ -177,7 +177,7 @@ class WeightVC: UIViewController, WeightAndDateProtocol, UITableViewDataSource, 
         }
     }
     
-                // not being used ???
+                // this indented section is not being used ???
                 var emphasizedFields: Set<UITextField> = []
                 
                 // highlight field & unhighlight any other textField that may have previously been emphasized
