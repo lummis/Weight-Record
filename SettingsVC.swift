@@ -10,22 +10,22 @@ import Foundation
 import UIKit
 
 class SettingsVC : UIViewController {
-    
-    @IBOutlet weak var segmentedC: UISegmentedControl!
-    var wvc: WeightVC!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        segmentedC.selectedSegmentIndex = Model.shared.weightDisplayUnit.rawValue - 10
-    }
-    
-    @IBAction func doneVAction(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func segmentedCAction(_ sender: UISegmentedControl) {
-        Model.shared.weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex + 10)!
-    }
-    
+   
+   @IBOutlet weak var segmentedC: UISegmentedControl!
+   var wvc: WeightVC!
+   
+   override func viewDidLoad() {
+      super.viewDidLoad()
+      
+      segmentedC.selectedSegmentIndex = Model.shared.weightDisplayUnit.rawValue - 10
+   }
+   
+   @IBAction func doneVAction(_ sender: Any) {
+      dismiss(animated: true, completion: nil)
+   }
+   
+   @IBAction func segmentedCAction(_ sender: UISegmentedControl) {
+      Model.shared.weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex + 10)!
+   }
+   
 }

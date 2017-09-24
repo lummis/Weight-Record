@@ -44,11 +44,7 @@ class WeightAndDateCell: UITableViewCell {
       hourMinuteL.text = dateFormatter.string(from: sample.date)
       hourMinuteL.font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: fontWeight)
       
-      if sample.note == "" {
-         commentDisplayL.text = "empty string"
-      } else {
-         commentDisplayL.text = sample.note
-      }
+      commentDisplayL.text = sample.note == "" ? "" : sample.note
    }
 }
 

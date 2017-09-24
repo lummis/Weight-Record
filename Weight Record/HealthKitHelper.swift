@@ -12,7 +12,7 @@ import HealthKit
 protocol WeightAndDateDelegate {
    var messageText: String { get set }
    var storeWeightSucceeded: Bool { get set }
-   func saveAndDisplayWeightsAndNotes( wadan: [ (kg: Double, date: Date, note: String) ] )
+   func saveWeightsAndDatesAndNotesThenDisplay( wadan: [ (kg: Double, date: Date, note: String) ] )
 }
 
 class HealthKitHelper {
@@ -20,10 +20,10 @@ class HealthKitHelper {
    var delegate: WeightVC!
    
    init(delegate: WeightVC) {
-      self.delegate = delegate // this is used to notify when response is ready
+      self.delegate = delegate // we need to notify delegate when response is ready
    }
    
-   func getWeightsAndDates(fromDate: Date, toDate: Date) {
+   internal func getWeightsAndDates(fromDate: Date, toDate: Date) {
       
       if HKHealthStore.isHealthDataAvailable() {  // only verifies we're on a device and version that implements health kit
          let bodyMassToShare = Set( [HKQuantityType.quantityType(forIdentifier: .bodyMass)!] )   // 'share' means write
@@ -45,7 +45,7 @@ class HealthKitHelper {
       }
    }
    
-   func readWeights(fromDate: Date, toDate: Date) {
+   private func readWeights(fromDate: Date, toDate: Date) {
       
       // weight values in the database are always in kg
       
@@ -84,7 +84,7 @@ class HealthKitHelper {
                                  // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird...."
                                  // would this be better as a "completeion: " arg?
                                  DispatchQueue.main.async {
-                                    self.delegate.saveAndDisplayWeightsAndNotes(wadan: results)
+                                    self.delegate.saveWeightsAndDatesAndNotesThenDisplay(wadan: results)
                                     
                                     var commentCount = 0
                                     var blankCount = 0
@@ -98,14 +98,14 @@ class HealthKitHelper {
    }
    
    // weightValue arg is kilogram & healthDB weight is always in kg
-   func storeWeight(kg: Double, unit: WeightUnit, note: String) {
+   // note is not an optional; if there is no note it is stored as ""; called comment in storyboard
+   internal func storeWeight(kg: Double, unit: WeightUnit, note: String) {
       let quantityType: HKQuantityType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!
       let quantityUnit: HKUnit = HKUnit.gramUnit(with: .kilo)
       let quantity: HKQuantity = HKQuantity(unit: quantityUnit, doubleValue: kg)
       
       let now = Date()
-      let meta: [String : Any]? = ["note" : note]  // note is not an optional
-      print("meta: \(meta!))")
+      let meta: [String : Any]? = ["note" : note]
       let sample: HKQuantitySample = HKQuantitySample(type: quantityType, quantity: quantity, start: now, end: now, metadata: meta)
       
       store.save(sample) {

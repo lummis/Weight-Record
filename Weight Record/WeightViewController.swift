@@ -32,9 +32,6 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       }
    }
    
-   let delayUntilFadeOut: TimeInterval = 4.0
-   let fadeDuration: TimeInterval = 1.0
-   
    var messageText: String {
       get {
          return messageL.text ?? "messageText initial value"
@@ -61,16 +58,6 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
          }
       }
    }
-   
-   //    var noteText: String {
-   //        get{
-   //            return inputNoteTF.text ?? ""
-   //        }
-   //
-   //        set{
-   //            inputNoteTF.text = newValue  // if empty show placeholder text
-   //        }
-   //    }
    
    override func viewDidLoad() {
       super.viewDidLoad()
@@ -107,7 +94,8 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
    }
    
    func fadeThenRemoveMessage() {
-      
+      let delayUntilFadeOut: TimeInterval = 4.0
+      let fadeDuration: TimeInterval = 1.0
       UIView.animate(withDuration: fadeDuration,
                      delay: delayUntilFadeOut,
                      options: [.curveEaseInOut],
@@ -123,23 +111,7 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       textField.isHighlighted = true
    }
    
-   @IBAction func segmentedCAction(_ sender: UISegmentedControl) {
-      Model.shared.weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex + 10)!
-      initializeWeightTF(weightDisplayUnit)
-      updateCells()
-      emphasizeField(nil) // deemphasize all UITextFields
-   }
-   
-   // need a better name; this function receives wad from helper and stores it in viewcontroller
-   func saveAndDisplayWeightsAndNotes( wadan: [ (kg: Double, date: Date, note: String) ] ) {
-      
-      var commentCount = 0
-      var blankCount = 0
-      for sample in wadan {
-         if sample.note == "" {blankCount += 1} else {commentCount += 1}
-      }
-      print("blankCount: \(blankCount)     commentCount: \(commentCount)")
-      
+   func saveWeightsAndDatesAndNotesThenDisplay( wadan: [ (kg: Double, date: Date, note: String) ] ) {
       weightsAndDatesAndNotes = wadan
       updateCells()
       messageText = "\(weightsAndDatesAndNotes.count) weights"
@@ -151,7 +123,6 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       
       if let wt = Double(weightTF.text!) {
          if wt >= minValue(weightDisplayUnit) && wt <= maxValue(weightDisplayUnit) {
-            print("saving wt: \(wt), unit: \(weightDisplayUnit), note: \(commentInputTF.text ?? "")")
             helper.storeWeight(kg: wt * weightDisplayUnit.unitToKgFactor(), unit: weightDisplayUnit, note: commentInputTF.text ?? "")
             commentInputTF.text = ""
          } else {
@@ -169,12 +140,6 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       weightTF.text = unit.pluralName() + "..."
    }
    
-   // for debugging
-   func saveWeightFailed() {
-      print("saveWeightFailed")
-      exit(0)
-   }
-   
    func updateCells() {
       if tableView != nil && !weightsAndDatesAndNotes.isEmpty {
          tableView!.reloadData()
@@ -184,7 +149,7 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       }
    }
    
-   // this indented section is not being used ???
+   // something about this var is redundant ???
    var emphasizedFields: Set<UITextField> = []
    
    // highlight field & unhighlight any other textField that may have previously been emphasized
@@ -200,13 +165,10 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
          field!.layer.borderColor = UIColor(red: 0.0, green: 128.0/255.0, blue: 0.0, alpha: 1.0).cgColor
       }
    }
-   //
    
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       super.prepare(for: segue, sender: sender)
-      print("prepare")
       initializeWeightTF(weightDisplayUnit)
-      print(segue.identifier!)
       let svc = segue.destination as! SettingsVC
       svc.wvc = self
    }
