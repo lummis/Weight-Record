@@ -9,3 +9,5 @@ evey time 'space' is input the entire note is checked again. The stack exchange 
 says to turn off "Spell Checking" but that seems to have no effect for me. Of course with "Correction"
 OFF there is no autocorrection.
 
+When "All Exceptions" breakpoint is set after not triggering many times I now get a C++ break thrown
+every when in AppDelegate. So it's turned off for now but I'd like to know what it's about.

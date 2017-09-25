@@ -66,6 +66,7 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       helper = HealthKitHelper(delegate: self)
       weightTF.delegate = self
       weightTF.tintColor = UIColor.black
+      weightTF.textColor = UIColor.lightGray
       commentInputTF.delegate = self
       commentInputTF.text = ""
       initializeWeightTF(weightDisplayUnit)
@@ -117,7 +118,7 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       messageText = "\(weightsAndDatesAndNotes.count) weights"
    }
    
-   @IBAction func saveWeightAction(_ sender: Any) {
+   @IBAction func saveAction(_ sender: Any) {
       weightTF.resignFirstResponder()
       commentInputTF.resignFirstResponder()
       
@@ -134,6 +135,7 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       
       initializeWeightTF(weightDisplayUnit)
       emphasizeField(nil) // nil means remove all empasis
+      saveB.isEnabled = false
    }
    
    func initializeWeightTF(_ unit: WeightUnit) {
@@ -190,11 +192,14 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       return weightsAndDatesAndNotes.count
    }
    
+   let colorA = UIColor(red: 0.9, green: 0.9, blue: 1.0, alpha: 1.0)
+//   let colorB = UIColor(red: 0.9, green: 1.0, blue: 0.9, alpha: 1.0)
+   let colorB = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1.0)
    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
       if indexPath.row % 2 == 0 {
-         cell.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 1.0, alpha: 1.0)
+         cell.backgroundColor = colorA
       } else {
-         cell.backgroundColor = UIColor(red: 0.9, green: 1.0, blue: 0.9, alpha: 1.0)
+         cell.backgroundColor = colorB
       }
    }
    

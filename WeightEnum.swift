@@ -16,11 +16,11 @@ internal enum WeightUnit: Int {
    internal func pluralName() -> String {
       switch self {
       case .kilogram:
-         return "Kilograms"
+         return "kilograms"
       case .pound:
-         return "Pounds"
+         return "pounds"
       case .stone:
-         return "Stone"
+         return "stone"
       }
    }
    
