@@ -190,6 +190,14 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       return weightsAndDatesAndNotes.count
    }
    
+   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+      if indexPath.row % 2 == 0 {
+         cell.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 1.0, alpha: 1.0)
+      } else {
+         cell.backgroundColor = UIColor(red: 0.9, green: 1.0, blue: 0.9, alpha: 1.0)
+      }
+   }
+   
    // for pausing to debug
    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
       print("touchesBegan")
