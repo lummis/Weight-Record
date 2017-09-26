@@ -85,13 +85,6 @@ class HealthKitHelper {
                                  // would this be better as a "completeion: " arg?
                                  DispatchQueue.main.async {
                                     self.delegate.saveWeightsAndDatesAndNotesThenDisplay(wadan: results)
-                                    
-                                    var commentCount = 0
-                                    var blankCount = 0
-                                    for sample in results {
-                                       if sample.note == "" {blankCount += 1} else {commentCount += 1}
-                                    }
-                                    print("in helper...    blankCount: \(blankCount)     commentCount: \(commentCount)")
                                  }
       }
       store.execute(query)

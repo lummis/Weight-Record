@@ -25,7 +25,6 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
    var isRemoveMessageInProgress: Bool = false
    var isWeightInValidRange: Bool = false
    var weightsAndDatesAndNotes: [ (kg: Double, date: Date, note: String) ]  = []
-   var gradation: UIImageView!
    
    var weightDisplayUnit: WeightUnit {
       get {
@@ -46,6 +45,7 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       }
    }
    
+   // helper notified us that a weight was stored; now we update the table to include the new weight
    var storeWeightSucceeded: Bool {
       get {
          return false
@@ -67,17 +67,12 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       helper = HealthKitHelper(delegate: self)
       weightTF.delegate = self
       weightTF.tintColor = UIColor.black
-      weightTF.textColor = UIColor.lightGray
       commentInputTF.delegate = self
       commentInputTF.text = ""
-      initializeWeightTF(weightDisplayUnit)
       messageText = ""
       
       // move text right a little
       commentInputTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
-      
-      let gradationImage = UIImage(named: "GreenGradation.png")
-      gradation = UIImageView(image: gradationImage)
    }
    
    override func viewDidAppear(_ animated: Bool) {
@@ -85,18 +80,10 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       
       saveB.isEnabled = false
       helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
-      
-//      let gearImage = UIImage(named: "gearIcon.png")
-//      if gearImage == nil { print("gearImage is nil") } else { print("gearImage OK") }
-//      let starImage = UIImage(named: "RGStar.png")
-//      if starImage == nil { print("starImage is nil") } else { print("starImage is OK") }
-//      testTF.background = starImage! // when textField is active
-//      print("image.size" , starImage!.size)
-//      print("image.scale" , starImage!.scale)
-////      testTF.text = "HAHA"
-//      testTF.textColor = UIColor.green
+      weightTF.placeholder = weightDisplayUnit.pluralName() + "..."
    }
    
+   // enabled save button only when the weight is in the valid range, set in the extension
    @IBAction func weightTFTextChanged() {
       saveB.isEnabled = false
       if let w: String = weightTF.text {
@@ -118,12 +105,12 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
                      completion: { finished in
                         self.messageL.text = ""
                         self.messageL.alpha = 1.0
-      }
-      )
+      })
    }
    
    func textFieldDidBeginEditing(_ textField: UITextField) {
       textField.isHighlighted = true
+      textField.textColor = UIColor.black
    }
    
    func saveWeightsAndDatesAndNotesThenDisplay( wadan: [ (kg: Double, date: Date, note: String) ] ) {
@@ -139,6 +126,7 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       if let wt = Double(weightTF.text!) {
          if wt >= minValue(weightDisplayUnit) && wt <= maxValue(weightDisplayUnit) {
             helper.storeWeight(kg: wt * weightDisplayUnit.unitToKgFactor(), unit: weightDisplayUnit, note: commentInputTF.text ?? "")
+            weightTF.text = ""
             commentInputTF.text = ""
          } else {
             print("weight not in valid range")
@@ -147,13 +135,7 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
          print("weight not valid")
       }
       
-      initializeWeightTF(weightDisplayUnit)
-      emphasizeField(nil) // nil means remove all empasis
       saveB.isEnabled = false
-   }
-   
-   func initializeWeightTF(_ unit: WeightUnit) {
-      weightTF.text = unit.pluralName() + "..."
    }
    
    func updateCells() {
@@ -165,26 +147,9 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       }
    }
    
-   // something about this var is redundant ???
-   var emphasizedFields: Set<UITextField> = []
-   
-   // highlight field & unhighlight any other textField that may have previously been emphasized
-   // if field is nil unhighlight all fields
-   func emphasizeField(_ field: UITextField?) {
-      emphasizedFields.forEach(){
-         $0.layer.borderWidth = 0
-         $0.layer.borderColor = UIColor.clear.cgColor
-      }
-      if field != nil {
-         emphasizedFields.insert(field!)
-         field!.layer.borderWidth = 2
-         field!.layer.borderColor = UIColor(red: 0.0, green: 128.0/255.0, blue: 0.0, alpha: 1.0).cgColor
-      }
-   }
-   
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       super.prepare(for: segue, sender: sender)
-      initializeWeightTF(weightDisplayUnit)
+
       let svc = segue.destination as! SettingsVC
       svc.wvc = self
    }
@@ -200,41 +165,24 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
    }
    
    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-      initializeWeightTF(weightDisplayUnit)
       let cell = tableView.dequeueReusableCell(withIdentifier: "weightAndDateCell", for: indexPath) as! WeightAndDateCell
       cell.updateFields(withSample: weightsAndDatesAndNotes[indexPath.row], displayUnit: weightDisplayUnit)
       
-      // following https://stackoverflow.com/questions/45537762/swift3-cells-with-image-is-not-displayed
+      // following is thanks to kosuke-ogawa https://stackoverflow.com/questions/45537762/swift3-cells-with-image-is-not-displayed
       UIGraphicsBeginImageContext(cell.frame.size)
-      UIImage(named: "GreenGradation.png")?.draw(in: cell.bounds)
+      UIImage(named: "lightBlue.png")?.draw(in: cell.bounds)
       if let image: UIImage = UIGraphicsGetImageFromCurrentImageContext() {
          cell.backgroundColor = UIColor(patternImage: image)
       }
       UIGraphicsEndImageContext()
-      
       return cell
    }
    
-   let colorA = UIColor(red: 0.9, green: 0.9, blue: 1.0, alpha: 1.0)
-//   let colorB = UIColor(red: 0.9, green: 1.0, blue: 0.9, alpha: 1.0)
-   let colorB = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1.0)
-   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-      
-//      cell.backgroundView = gradation
-      
-//      if indexPath.row % 2 == 0 {
-//         cell.backgroundColor = colorA
-//      } else {
-//         cell.backgroundColor = colorB
-//      }
-   }
-   
-   // for pausing to debug
+   // reset weightTF but keep commentTF.text
    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
       print("touchesBegan")
       super.touchesBegan(touches, with: event)
-      
-      initializeWeightTF(weightDisplayUnit)
+      weightTF.text = ""
       view.endEditing(true)
    }
 }
