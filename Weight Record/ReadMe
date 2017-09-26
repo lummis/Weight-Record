@@ -11,3 +11,6 @@ OFF there is no autocorrection.
 
 When "All Exceptions" breakpoint is set after not triggering many times I now get a C++ break thrown
 every when in AppDelegate. So it's turned off for now but I'd like to know what it's about.
+
+If a textField has border style set to roundedRect, putting a UIImage into the background property
+is ignored

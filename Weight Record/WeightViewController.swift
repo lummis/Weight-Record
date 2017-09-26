@@ -25,6 +25,7 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
    var isRemoveMessageInProgress: Bool = false
    var isWeightInValidRange: Bool = false
    var weightsAndDatesAndNotes: [ (kg: Double, date: Date, note: String) ]  = []
+   var gradation: UIImageView!
    
    var weightDisplayUnit: WeightUnit {
       get {
@@ -74,6 +75,9 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       
       // move text right a little
       commentInputTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
+      
+      let gradationImage = UIImage(named: "GreenGradation.png")
+      gradation = UIImageView(image: gradationImage)
    }
    
    override func viewDidAppear(_ animated: Bool) {
@@ -81,6 +85,16 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       
       saveB.isEnabled = false
       helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
+      
+//      let gearImage = UIImage(named: "gearIcon.png")
+//      if gearImage == nil { print("gearImage is nil") } else { print("gearImage OK") }
+//      let starImage = UIImage(named: "RGStar.png")
+//      if starImage == nil { print("starImage is nil") } else { print("starImage is OK") }
+//      testTF.background = starImage! // when textField is active
+//      print("image.size" , starImage!.size)
+//      print("image.scale" , starImage!.scale)
+////      testTF.text = "HAHA"
+//      testTF.textColor = UIColor.green
    }
    
    @IBAction func weightTFTextChanged() {
@@ -175,13 +189,6 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       svc.wvc = self
    }
    
-   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-      initializeWeightTF(weightDisplayUnit)
-      let cell = tableView.dequeueReusableCell(withIdentifier: "weightAndDateCell", for: indexPath) as! WeightAndDateCell
-      cell.updateFields(withSample: weightsAndDatesAndNotes[indexPath.row], displayUnit: weightDisplayUnit)
-      return cell
-   }
-   
    func numberOfSections(in tableView: UITableView) -> Int {
       self.tableView = tableView
       return 1
@@ -192,15 +199,34 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       return weightsAndDatesAndNotes.count
    }
    
+   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+      initializeWeightTF(weightDisplayUnit)
+      let cell = tableView.dequeueReusableCell(withIdentifier: "weightAndDateCell", for: indexPath) as! WeightAndDateCell
+      cell.updateFields(withSample: weightsAndDatesAndNotes[indexPath.row], displayUnit: weightDisplayUnit)
+      
+      // following https://stackoverflow.com/questions/45537762/swift3-cells-with-image-is-not-displayed
+      UIGraphicsBeginImageContext(cell.frame.size)
+      UIImage(named: "GreenGradation.png")?.draw(in: cell.bounds)
+      if let image: UIImage = UIGraphicsGetImageFromCurrentImageContext() {
+         cell.backgroundColor = UIColor(patternImage: image)
+      }
+      UIGraphicsEndImageContext()
+      
+      return cell
+   }
+   
    let colorA = UIColor(red: 0.9, green: 0.9, blue: 1.0, alpha: 1.0)
 //   let colorB = UIColor(red: 0.9, green: 1.0, blue: 0.9, alpha: 1.0)
    let colorB = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1.0)
    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-      if indexPath.row % 2 == 0 {
-         cell.backgroundColor = colorA
-      } else {
-         cell.backgroundColor = colorB
-      }
+      
+//      cell.backgroundView = gradation
+      
+//      if indexPath.row % 2 == 0 {
+//         cell.backgroundColor = colorA
+//      } else {
+//         cell.backgroundColor = colorB
+//      }
    }
    
    // for pausing to debug
