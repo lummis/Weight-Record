@@ -15,6 +15,8 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
    @IBOutlet weak var weightTF: UITextField!
    @IBOutlet weak var commentInputTF: UITextField!
    @IBOutlet weak var saveB: UIButton!
+   @IBOutlet weak var editB: UIButton!
+   @IBOutlet weak var doneB: UIButton!
    
    let hks = HKHealthStore()
    var helper: HealthKitHelper!
@@ -70,6 +72,8 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       commentInputTF.delegate = self
       commentInputTF.text = ""
       messageText = ""
+      editB.isEnabled = false
+      doneB.isEnabled = false
       
       // move text right a little
       commentInputTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
@@ -150,6 +154,7 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       super.prepare(for: segue, sender: sender)
 
+      editB.isEnabled = false
       let svc = segue.destination as! SettingsVC
       svc.wvc = self
    }
@@ -178,11 +183,16 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       return cell
    }
    
+   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+      editB.isEnabled = true
+   }
+   
    // reset weightTF but keep commentTF.text
    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
       print("touchesBegan")
       super.touchesBegan(touches, with: event)
       weightTF.text = ""
+      editB.isEnabled = false
       view.endEditing(true)
    }
 }

@@ -30,8 +30,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight Record" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M0b-De-qtC">
-                                <rect key="frame" x="109" y="20" width="156.5" height="29"/>
-                                <fontDescription key="fontDescription" name="Optima-Bold" family="Optima" pointSize="24"/>
+                                <rect key="frame" x="89.5" y="20" width="196" height="36"/>
+                                <fontDescription key="fontDescription" name="Optima-Bold" family="Optima" pointSize="30"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -47,7 +47,6 @@
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NX1-Zb-d4a" userLabel="weightTF">
                                         <rect key="frame" x="0.0" y="0.0" width="145.5" height="39"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="decimalPad" keyboardAppearance="alert" enablesReturnKeyAutomatically="YES"/>
                                         <connections>
@@ -57,7 +56,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PRv-bE-dH6" userLabel="saveB">
                                         <rect key="frame" x="197.5" y="0.0" width="145.5" height="39"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <state key="normal" title="Save"/>
                                         <connections>
                                             <action selector="saveAction:" destination="I1G-ah-9Vk" eventType="touchUpInside" id="38r-xT-gfB"/>
@@ -68,9 +67,8 @@
                                     <constraint firstAttribute="height" constant="39" id="dZt-Sz-f29"/>
                                 </constraints>
                             </stackView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" highlighted="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="comment..." textAlignment="natural" minimumFontSize="10" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="4KZ-Qk-Zd7" userLabel="commentInputTF">
-                                <rect key="frame" x="16" y="154" width="343" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" highlighted="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="comment..." textAlignment="natural" minimumFontSize="10" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="4KZ-Qk-Zd7" userLabel="commentInputTF">
+                                <rect key="frame" x="19.5" y="145" width="337.5" height="24"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" name="keyboardFocusIndicatorColor" catalog="System" colorSpace="catalog"/>
                                 <rect key="contentStretch" x="0.20000000000000001" y="0.20000000000000001" width="0.5" height="0.5"/>
@@ -79,7 +77,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                             </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qEi-hi-bqI">
-                                <rect key="frame" x="0.0" y="200" width="375" height="467"/>
+                                <rect key="frame" x="0.0" y="179" width="375" height="436"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                 <prototypes>
@@ -167,27 +165,46 @@
                                     <segue destination="cvF-pl-rmI" kind="presentation" identifier="WeightVC-SettingsVC" id="4bn-LX-1bD"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kSW-zH-V9L" userLabel="editB">
+                                <rect key="frame" x="16" y="623" width="34" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Edit"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YCf-75-N9I" userLabel="doneB">
+                                <rect key="frame" x="312" y="623" width="47" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Done"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="K5F-kk-vcz" firstAttribute="centerY" secondItem="4NC-SM-AC8" secondAttribute="centerY" id="02R-3k-dLi"/>
                             <constraint firstItem="YdB-Xe-RRy" firstAttribute="top" secondItem="ras-7C-Wba" secondAttribute="bottom" constant="530" id="2IA-Ts-DZz"/>
-                            <constraint firstItem="qEi-hi-bqI" firstAttribute="leading" secondItem="bxE-Bb-PKl" secondAttribute="leading" id="COp-dh-euD"/>
+                            <constraint firstItem="YCf-75-N9I" firstAttribute="centerY" secondItem="kSW-zH-V9L" secondAttribute="centerY" id="2n3-c9-VKi"/>
+                            <constraint firstAttribute="trailing" secondItem="YCf-75-N9I" secondAttribute="trailing" constant="16" id="BQi-YU-IGS"/>
+                            <constraint firstItem="kSW-zH-V9L" firstAttribute="leading" secondItem="bxE-Bb-PKl" secondAttribute="leading" constant="16" id="D82-nK-tDf"/>
                             <constraint firstItem="K5F-kk-vcz" firstAttribute="leading" secondItem="4NC-SM-AC8" secondAttribute="trailing" id="Dn7-C2-M3V"/>
                             <constraint firstItem="qEi-hi-bqI" firstAttribute="centerX" secondItem="bxE-Bb-PKl" secondAttribute="centerX" id="J1B-7x-KUM"/>
-                            <constraint firstItem="qEi-hi-bqI" firstAttribute="bottom" secondItem="YdB-Xe-RRy" secondAttribute="top" id="NS8-Y0-tf5"/>
+                            <constraint firstItem="4KZ-Qk-Zd7" firstAttribute="width" secondItem="bxE-Bb-PKl" secondAttribute="width" multiplier="0.9" id="Q4e-hK-fhz"/>
+                            <constraint firstItem="qEi-hi-bqI" firstAttribute="top" secondItem="4KZ-Qk-Zd7" secondAttribute="bottom" constant="10" id="QpV-M3-AXj"/>
+                            <constraint firstItem="4KZ-Qk-Zd7" firstAttribute="top" secondItem="ras-7C-Wba" secondAttribute="bottomMargin" constant="8" id="Qr3-Yi-7Iz"/>
                             <constraint firstItem="PRv-bE-dH6" firstAttribute="top" secondItem="K5F-kk-vcz" secondAttribute="centerY" constant="30" id="Spr-aX-8kh"/>
                             <constraint firstItem="M0b-De-qtC" firstAttribute="top" secondItem="FAT-uq-VPv" secondAttribute="bottom" id="XnA-Bs-Nir"/>
+                            <constraint firstItem="qEi-hi-bqI" firstAttribute="leading" secondItem="bxE-Bb-PKl" secondAttribute="leading" id="Yzg-78-61v"/>
+                            <constraint firstItem="4KZ-Qk-Zd7" firstAttribute="centerX" secondItem="bxE-Bb-PKl" secondAttribute="centerX" id="aih-fk-xra"/>
                             <constraint firstAttribute="leadingMargin" secondItem="ras-7C-Wba" secondAttribute="leading" id="avh-dk-6Zr"/>
+                            <constraint firstItem="YdB-Xe-RRy" firstAttribute="top" secondItem="kSW-zH-V9L" secondAttribute="bottom" constant="8" id="bvL-bW-QSG"/>
                             <constraint firstAttribute="trailingMargin" secondItem="K5F-kk-vcz" secondAttribute="trailing" id="hsr-ER-lJR"/>
                             <constraint firstItem="ras-7C-Wba" firstAttribute="centerX" secondItem="bxE-Bb-PKl" secondAttribute="centerX" id="nhT-zz-uah"/>
-                            <constraint firstItem="qEi-hi-bqI" firstAttribute="height" secondItem="bxE-Bb-PKl" secondAttribute="height" multiplier="0.7" id="qRR-8Y-Peu"/>
+                            <constraint firstItem="kSW-zH-V9L" firstAttribute="top" secondItem="qEi-hi-bqI" secondAttribute="bottom" constant="8" id="uro-Kz-GAz"/>
                             <constraint firstItem="M0b-De-qtC" firstAttribute="centerX" secondItem="bxE-Bb-PKl" secondAttribute="centerX" id="vG6-GW-xD6"/>
                             <constraint firstItem="4NC-SM-AC8" firstAttribute="centerX" secondItem="bxE-Bb-PKl" secondAttribute="centerX" id="zVV-GC-RO0"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="commentInputTF" destination="4KZ-Qk-Zd7" id="uCs-tH-mLZ"/>
+                        <outlet property="doneB" destination="YCf-75-N9I" id="hYj-1A-46G"/>
+                        <outlet property="editB" destination="kSW-zH-V9L" id="2XI-df-iG3"/>
                         <outlet property="messageL" destination="4NC-SM-AC8" id="NZK-R9-mn6"/>
                         <outlet property="saveB" destination="PRv-bE-dH6" id="w24-ff-kUn"/>
                         <outlet property="weightTF" destination="NX1-Zb-d4a" id="gnC-ui-UpU"/>
@@ -195,7 +212,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2DR-ok-XpS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3346.4000000000001" y="-591.45427286356824"/>
+            <point key="canvasLocation" x="-5372" y="-229.83508245877064"/>
         </scene>
         <!--SettingsVC-->
         <scene sceneID="jPd-HW-Qlk">
@@ -267,7 +284,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5iD-9T-5a8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2594" y="-591"/>
+            <point key="canvasLocation" x="-4692" y="-230"/>
         </scene>
     </scenes>
     <resources>
