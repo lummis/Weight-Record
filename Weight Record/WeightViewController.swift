@@ -142,6 +142,10 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       saveB.isEnabled = false
    }
    
+   @IBAction func editBAction(_ sender: Any) {
+      tableView?.setEditing(true, animated: true)
+   }
+   
    func updateCells() {
       if tableView != nil && !weightsAndDatesAndNotes.isEmpty {
          tableView!.reloadData()
@@ -185,6 +189,13 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
    
    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
       editB.isEnabled = true
+   }
+   
+   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+      let cell = tableView.cellForRow(at: indexPath) as! WeightAndDateCell
+      print("indexPath.row: \(indexPath.row)")
+      print("cell.date: \(cell.date)")
+      tableView.deleteRows(at: [indexPath], with: .fade) // delete item in DB first so number of rows is right during reload
    }
    
    // reset weightTF but keep commentTF.text

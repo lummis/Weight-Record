@@ -169,6 +169,9 @@
                                 <rect key="frame" x="16" y="623" width="34" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Edit"/>
+                                <connections>
+                                    <action selector="editBAction:" destination="I1G-ah-9Vk" eventType="touchUpInside" id="Qae-LV-2SV"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YCf-75-N9I" userLabel="doneB">
                                 <rect key="frame" x="312" y="623" width="47" height="36"/>

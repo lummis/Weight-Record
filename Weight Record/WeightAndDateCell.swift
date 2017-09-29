@@ -16,6 +16,8 @@ class WeightAndDateCell: UITableViewCell {
    @IBOutlet weak var weightL: UILabel!
    @IBOutlet weak var commentDisplayL: UILabel!
    
+   var date: Date!
+   
    func updateFields(withSample sample: (kg: Double, date: Date, note: String), displayUnit: WeightUnit) {
       let dateFormatter = DateFormatter()
       dateFormatter.timeZone = .current
@@ -45,6 +47,8 @@ class WeightAndDateCell: UITableViewCell {
       hourMinuteL.font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: UIFont.Weight(rawValue: fontWeight))
       
       commentDisplayL.text = sample.note == "" ? "" : sample.note
+      
+      self.date = sample.date
    }
 }
 
