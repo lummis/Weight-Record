@@ -13,6 +13,7 @@ protocol WeightAndDateDelegate {
    var messageText: String { get set }
    var storeWeightSucceeded: Bool { get set }
    func saveWeightsAndDatesAndNotesThenDisplay( wadan: [ (kg: Double, date: Date, note: String) ] )
+   func removeRequestCompleted()
    func reset()
 }
 
@@ -96,24 +97,23 @@ class HealthKitHelper {
       store.execute(query)
    }
    
-   /*
-    func removeSampleFromHKStore(sampleDate: Date)
-       make query with startTime and endTime = startTime + 1, strictStartTime and strictEndTime
-       relies on the sampleDate as Date being a property of table cell even though it doesn't appear in UI per se
-       execute query
+/*
+ func removeSampleFromHKStore(sampleDate: Date)
+    make query with startTime and endTime = startTime + 1, strictStartTime and strictEndTime
+    relies on the sampleDate as Date being a property of table cell even though it doesn't appear in UI per se
+    execute query
+    on completion:
+       verify that a single sample was found
+       call HKDelete with the found object as arg
        on completion:
-          verify that a single sample was found
-          call HKDelete with the found object as arg
-          on completion:
-             set delegate.deletionSuceeded true or false
+          set delegate.deletionSuceeded true or false
     
     
- For simplicity this assumes only one delete request is outstanding at a time. Find a way around this restriction later.
+ For simplicity I'm assuming one delete request is outstanding at a time. Find a way around this restriction later.
 
-   The sampple date is guaranteed to be unique, at least among samples added to the DB by this app, because the date is
-    when the user enters the weight into the weight field. The user doesn't specify the date and can't change it.
-    
-   */
+The sampple date is guaranteed to be unique, at least among samples added to the DB by this app, because the date is
+ automatically the date/time the user saved the weight sample into the HK store. The user doesn't set the date manually and can't change it.
+*/
    
    internal func removeSampleFromHKStore(sampleDate: Date) {
       guard let sampleType: HKSampleType = HKSampleType.quantityType(forIdentifier: .bodyMass) else {
@@ -128,39 +128,17 @@ class HealthKitHelper {
          if nSamples == 1 {
             let sample = results!.first
             self.store.delete(sample!) {
-               ok, error in
-               print("deleted maybe.  ok: \(ok)    error: \(debugDescription: error)")
+               deleteOK, deleteError in
+//               print("deleted?  ok: \(deleteOK)    error: \(debugDescription: deleteError)")
+               print("delete completed")
+               self.delegate.removeRequestCompleted()
             }
          } else { print("stop because other than one sample found") }
       }
       store.execute(query)
    }
    
-   
-   
-   internal func deleteWeight(sampleDate: Date, kg: Double, comment: String) {
-      // apparently we have to search for the sample, retrieve it, then put it into a delete call to identify what to delete
-      
-      let quantityType: HKQuantityType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!
-      let quantityUnit: HKUnit = HKUnit.gramUnit(with: .kilo)
-      let quantity: HKQuantity = HKQuantity(unit: quantityUnit, doubleValue: kg)
-      let object: HKQuantitySample = HKQuantitySample(type: quantityType, quantity: quantity, start: sampleDate, end: sampleDate, metadata: ["note" : comment])
-      debugPrint(object)
-      store.delete( [object] ) { (ok: Bool, error: Error?) in
-         DispatchQueue.main.async {
-            print("doing delete")
-            print("ok: \(ok)")
-            if error != nil {
-               print(error!)
-            } else {
-               print("error is nil")
-            }
-            print("===================")
-         }
-         self.delegate.reset()
-      }
-      print("end of deleteWeight")
-   }
+
    
    // weightValue arg is kilogram & healthDB weight is always in kg
    // note is not an optional; if there is no note it is stored as ""; called comment in storyboard

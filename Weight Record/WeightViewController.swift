@@ -122,7 +122,10 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
    func saveWeightsAndDatesAndNotesThenDisplay( wadan: [ (kg: Double, date: Date, note: String) ] ) {
       weightsAndDatesAndNotes = wadan
       updateCells()
-      messageText = "\(weightsAndDatesAndNotes.count) weights"
+      let nSamples = weightsAndDatesAndNotes.count
+      messageText = "\(nSamples) weights"
+      editB.isEnabled = nSamples > 0 ? true : false
+      doneB.isEnabled = editB.isEnabled ? true : false
    }
    
    @IBAction func saveAction(_ sender: Any) {
@@ -146,6 +149,11 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
    
    @IBAction func editBAction(_ sender: Any) {
       tableView?.setEditing(true, animated: true)
+   }
+   
+   func removeRequestCompleted() {
+      print("remove request completed")
+      reset()
    }
    
    func reset() {
