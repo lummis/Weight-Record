@@ -96,7 +96,51 @@ class HealthKitHelper {
       store.execute(query)
    }
    
-   @objc internal func deleteWeight(sampleDate: Date, kg: Double, comment: String) {
+   /*
+    func removeSampleFromHKStore(sampleDate: Date)
+       make query with startTime and endTime = startTime + 1, strictStartTime and strictEndTime
+       relies on the sampleDate as Date being a property of table cell even though it doesn't appear in UI per se
+       execute query
+       on completion:
+          verify that a single sample was found
+          call HKDelete with the found object as arg
+          on completion:
+             set delegate.deletionSuceeded true or false
+    
+    
+ For simplicity this assumes only one delete request is outstanding at a time. Find a way around this restriction later.
+
+   The sampple date is guaranteed to be unique, at least among samples added to the DB by this app, because the date is
+    when the user enters the weight into the weight field. The user doesn't specify the date and can't change it.
+    
+   */
+   
+   internal func removeSampleFromHKStore(sampleDate: Date) {
+      guard let sampleType: HKSampleType = HKSampleType.quantityType(forIdentifier: .bodyMass) else {
+         fatalError(" *** sampleType construction should never fail ***")
+      }
+      let predicate = HKQuery.predicateForSamples(withStart: sampleDate - 1.0, end: sampleDate + 2.0, options: [.strictStartDate, .strictEndDate])
+      let query = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: Int(HKObjectQueryNoLimit), sortDescriptors: nil) {
+         query, results, error in
+         let nSamples = results?.count ?? 0
+         print("+++ # samples identified: \(nSamples)")
+         print(error ?? "no error")
+         if nSamples == 1 {
+            let sample = results!.first
+            self.store.delete(sample!) {
+               ok, error in
+               print("deleted maybe.  ok: \(ok)    error: \(debugDescription: error)")
+            }
+         } else { print("stop because other than one sample found") }
+      }
+      store.execute(query)
+   }
+   
+   
+   
+   internal func deleteWeight(sampleDate: Date, kg: Double, comment: String) {
+      // apparently we have to search for the sample, retrieve it, then put it into a delete call to identify what to delete
+      
       let quantityType: HKQuantityType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!
       let quantityUnit: HKUnit = HKUnit.gramUnit(with: .kilo)
       let quantity: HKQuantity = HKQuantity(unit: quantityUnit, doubleValue: kg)

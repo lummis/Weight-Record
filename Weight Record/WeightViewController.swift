@@ -202,9 +202,10 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       let cell = tableView.cellForRow(at: indexPath) as! WeightAndDateCell
       print("indexPath.row: \(indexPath.row)")
       print("cell.date: \(cell.date)")
-      let kg = weightDisplayUnit.unitToKgFactor()*Double(cell.weightL.text!)!
+//      let kg = weightDisplayUnit.unitToKgFactor()*Double(cell.weightL.text!)!
       let helper = HealthKitHelper(delegate: self)
-      helper.deleteWeight(sampleDate: cell.date, kg: kg, comment: cell.commentDisplayL.text!)
+//      helper.deleteWeight(sampleDate: cell.date, kg: kg, comment: cell.commentDisplayL.text!)
+      helper.removeSampleFromHKStore(sampleDate: cell.date)
    }
    
    // reset weightTF but keep commentTF.text
