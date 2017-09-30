@@ -13,6 +13,7 @@ protocol WeightAndDateDelegate {
    var messageText: String { get set }
    var storeWeightSucceeded: Bool { get set }
    func saveWeightsAndDatesAndNotesThenDisplay( wadan: [ (kg: Double, date: Date, note: String) ] )
+   func reset()
 }
 
 class HealthKitHelper {
@@ -83,11 +84,38 @@ class HealthKitHelper {
                                  // if following isn't on the main thread it gives:
                                  // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird...."
                                  // would this be better as a "completeion: " arg?
+                                 
+                                 DispatchQueue.main.async {
+                                    print("hhh")
+                                 }
+                                 
                                  DispatchQueue.main.async {
                                     self.delegate.saveWeightsAndDatesAndNotesThenDisplay(wadan: results)
                                  }
       }
       store.execute(query)
+   }
+   
+   @objc internal func deleteWeight(sampleDate: Date, kg: Double, comment: String) {
+      let quantityType: HKQuantityType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!
+      let quantityUnit: HKUnit = HKUnit.gramUnit(with: .kilo)
+      let quantity: HKQuantity = HKQuantity(unit: quantityUnit, doubleValue: kg)
+      let object: HKQuantitySample = HKQuantitySample(type: quantityType, quantity: quantity, start: sampleDate, end: sampleDate, metadata: ["note" : comment])
+      debugPrint(object)
+      store.delete( [object] ) { (ok: Bool, error: Error?) in
+         DispatchQueue.main.async {
+            print("doing delete")
+            print("ok: \(ok)")
+            if error != nil {
+               print(error!)
+            } else {
+               print("error is nil")
+            }
+            print("===================")
+         }
+         self.delegate.reset()
+      }
+      print("end of deleteWeight")
    }
    
    // weightValue arg is kilogram & healthDB weight is always in kg
@@ -96,7 +124,6 @@ class HealthKitHelper {
       let quantityType: HKQuantityType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!
       let quantityUnit: HKUnit = HKUnit.gramUnit(with: .kilo)
       let quantity: HKQuantity = HKQuantity(unit: quantityUnit, doubleValue: kg)
-      
       let now = Date()
       let meta: [String : Any]? = ["note" : note]
       let sample: HKQuantitySample = HKQuantitySample(type: quantityType, quantity: quantity, start: now, end: now, metadata: meta)

@@ -27,6 +27,8 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
    var isRemoveMessageInProgress: Bool = false
    var isWeightInValidRange: Bool = false
    var weightsAndDatesAndNotes: [ (kg: Double, date: Date, note: String) ]  = []
+   let earliestDate: Date = .distantPast
+   let latestDate: Date = .distantFuture
    
    var weightDisplayUnit: WeightUnit {
       get {
@@ -56,7 +58,7 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
          print("storeWeight succeeded: \(newValue)")
          if newValue == true {
             DispatchQueue.main.async {
-               self.helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
+               self.helper.getWeightsAndDates(fromDate: self.earliestDate, toDate: self.latestDate)
             }
          }
       }
@@ -83,7 +85,7 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       super.viewDidAppear(animated)
       
       saveB.isEnabled = false
-      helper.getWeightsAndDates(fromDate: Date.distantPast, toDate: Date.distantFuture)
+      helper.getWeightsAndDates(fromDate: earliestDate, toDate: latestDate)
       weightTF.placeholder = weightDisplayUnit.pluralName() + "..."
    }
    
@@ -146,6 +148,11 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       tableView?.setEditing(true, animated: true)
    }
    
+   func reset() {
+      weightsAndDatesAndNotes = []
+      helper.getWeightsAndDates(fromDate: earliestDate, toDate: latestDate)   // triggers updateCells()
+   }
+   
    func updateCells() {
       if tableView != nil && !weightsAndDatesAndNotes.isEmpty {
          tableView!.reloadData()
@@ -195,7 +202,9 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       let cell = tableView.cellForRow(at: indexPath) as! WeightAndDateCell
       print("indexPath.row: \(indexPath.row)")
       print("cell.date: \(cell.date)")
-      tableView.deleteRows(at: [indexPath], with: .fade) // delete item in DB first so number of rows is right during reload
+      let kg = weightDisplayUnit.unitToKgFactor()*Double(cell.weightL.text!)!
+      let helper = HealthKitHelper(delegate: self)
+      helper.deleteWeight(sampleDate: cell.date, kg: kg, comment: cell.commentDisplayL.text!)
    }
    
    // reset weightTF but keep commentTF.text
