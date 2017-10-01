@@ -165,12 +165,12 @@
                                     <segue destination="cvF-pl-rmI" kind="presentation" identifier="WeightVC-SettingsVC" id="4bn-LX-1bD"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kSW-zH-V9L" userLabel="editB">
-                                <rect key="frame" x="16" y="623" width="34" height="36"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kSW-zH-V9L" userLabel="deleteB">
+                                <rect key="frame" x="16" y="623" width="57" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Edit"/>
+                                <state key="normal" title="Delete"/>
                                 <connections>
-                                    <action selector="editBAction:" destination="I1G-ah-9Vk" eventType="touchUpInside" id="Qae-LV-2SV"/>
+                                    <action selector="deleteBAction:" destination="I1G-ah-9Vk" eventType="touchUpInside" id="Cmk-BS-LMo"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YCf-75-N9I" userLabel="doneB">
@@ -209,8 +209,8 @@
                     </view>
                     <connections>
                         <outlet property="commentInputTF" destination="4KZ-Qk-Zd7" id="uCs-tH-mLZ"/>
+                        <outlet property="deleteB" destination="kSW-zH-V9L" id="bfL-g5-Cgs"/>
                         <outlet property="doneB" destination="YCf-75-N9I" id="hYj-1A-46G"/>
-                        <outlet property="editB" destination="kSW-zH-V9L" id="2XI-df-iG3"/>
                         <outlet property="messageL" destination="4NC-SM-AC8" id="NZK-R9-mn6"/>
                         <outlet property="saveB" destination="PRv-bE-dH6" id="w24-ff-kUn"/>
                         <outlet property="weightTF" destination="NX1-Zb-d4a" id="gnC-ui-UpU"/>

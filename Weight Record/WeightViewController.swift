@@ -15,7 +15,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    @IBOutlet weak var weightTF: UITextField!
    @IBOutlet weak var commentInputTF: UITextField!
    @IBOutlet weak var saveB: UIButton!
-   @IBOutlet weak var editB: UIButton!
+   @IBOutlet weak var deleteB: UIButton!
    @IBOutlet weak var doneB: UIButton!
    
    let hks = HKHealthStore()
@@ -74,8 +74,8 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       commentInputTF.delegate = self
       commentInputTF.text = ""
       messageText = ""
-      editB.isEnabled = false
-      doneB.isEnabled = false
+      deleteB.isEnabled = false
+      doneB.isHidden = true
       
       // move text right a little
       commentInputTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
@@ -86,7 +86,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       
       saveB.isEnabled = false
       tableView?.setEditing(false, animated: true)
-      doneB.isEnabled = false // not needed?
+      doneB.isHidden = true // not needed?
       helper.getWeightsAndDates(fromDate: earliestDate, toDate: latestDate)
       weightTF.placeholder = weightDisplayUnit.pluralName() + "..."
       weightTF.text = ""
@@ -127,7 +127,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       updateCells()
       let nSamples = weightsAndDatesAndNotes.count
       messageText = "\(nSamples) weights"
-      editB.isEnabled = nSamples > 0 ? true : false
+      deleteB.isEnabled = nSamples > 0 ? true : false
    }
    
    @IBAction func saveAction(_ sender: Any) {
@@ -149,14 +149,14 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       saveB.isEnabled = false
    }
    
-   @IBAction func editBAction(_ sender: Any) {
+   @IBAction func deleteBAction(_ sender: Any) {
       tableView?.setEditing(true, animated: true)
-      doneB.isEnabled = true
+      doneB.isHidden = false
    }
    
    @IBAction func doneBAction(_ sender: Any) {
       tableView?.setEditing(false, animated: true)
-      doneB.isEnabled = false
+      doneB.isHidden = true
    }
    
    func removeRequestCompleted() {
@@ -209,17 +209,9 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       return cell
    }
    
-//   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//      editB.isEnabled = true
-//   }
-   
    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
       let cell = tableView.cellForRow(at: indexPath) as! WeightAndDateCell
-      print("indexPath.row: \(indexPath.row)")
-      print("cell.date: \(cell.date)")
-//      let kg = weightDisplayUnit.unitToKgFactor()*Double(cell.weightL.text!)!
       let helper = HealthKitHelper(delegate: self)
-//      helper.deleteWeight(sampleDate: cell.date, kg: kg, comment: cell.commentDisplayL.text!)
       helper.removeSampleFromHKStore(sampleDate: cell.date)
    }
    
