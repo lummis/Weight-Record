@@ -16,7 +16,7 @@ class WeightAndDateCell: UITableViewCell {
    @IBOutlet weak var weightL: UILabel!
    @IBOutlet weak var commentDisplayL: UILabel!
    
-   // date property serves as unique field for deletion from HK
+   // date property is used as unique field for identifying a value for deletion from HKStore
    var date: Date!
    
    func updateFields(withSample sample: (kg: Double, date: Date, note: String), displayUnit: WeightUnit) {
