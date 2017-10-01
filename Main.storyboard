@@ -36,7 +36,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="message" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4NC-SM-AC8" userLabel="messageL">
-                                <rect key="frame" x="48.5" y="56" width="278.5" height="24"/>
+                                <rect key="frame" x="48.5" y="60" width="278.5" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="textColor" red="1" green="0.0" blue="0.1960784314" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -177,11 +177,14 @@
                                 <rect key="frame" x="312" y="623" width="47" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Done"/>
+                                <connections>
+                                    <action selector="doneBAction:" destination="I1G-ah-9Vk" eventType="touchUpInside" id="tRU-Xf-1e4"/>
+                                </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="1" green="1" blue="0.73637153377777786" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="K5F-kk-vcz" firstAttribute="centerY" secondItem="4NC-SM-AC8" secondAttribute="centerY" id="02R-3k-dLi"/>
+                            <constraint firstItem="K5F-kk-vcz" firstAttribute="centerY" secondItem="4NC-SM-AC8" secondAttribute="centerY" constant="-4" id="02R-3k-dLi"/>
                             <constraint firstItem="YdB-Xe-RRy" firstAttribute="top" secondItem="ras-7C-Wba" secondAttribute="bottom" constant="530" id="2IA-Ts-DZz"/>
                             <constraint firstItem="YCf-75-N9I" firstAttribute="centerY" secondItem="kSW-zH-V9L" secondAttribute="centerY" id="2n3-c9-VKi"/>
                             <constraint firstAttribute="trailing" secondItem="YCf-75-N9I" secondAttribute="trailing" constant="16" id="BQi-YU-IGS"/>

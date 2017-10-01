@@ -9,12 +9,11 @@ import Foundation
 import UIKit
 import HealthKit
 
-protocol WeightAndDateDelegate {
+protocol WeightAndDateAndNoteDelegate {
    var messageText: String { get set }
    var storeWeightSucceeded: Bool { get set }
    func saveWeightsAndDatesAndNotesThenDisplay( wadan: [ (kg: Double, date: Date, note: String) ] )
    func removeRequestCompleted()
-   func reset()
 }
 
 class HealthKitHelper {
@@ -82,14 +81,10 @@ class HealthKitHelper {
                                     }
                                     results.append( (kilograms, date, note) )
                                  }
+                                 
                                  // if following isn't on the main thread it gives:
                                  // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird...."
                                  // would this be better as a "completeion: " arg?
-                                 
-                                 DispatchQueue.main.async {
-                                    print("hhh")
-                                 }
-                                 
                                  DispatchQueue.main.async {
                                     self.delegate.saveWeightsAndDatesAndNotesThenDisplay(wadan: results)
                                  }
@@ -137,8 +132,6 @@ The sampple date is guaranteed to be unique, at least among samples added to the
       }
       store.execute(query)
    }
-   
-
    
    // weightValue arg is kilogram & healthDB weight is always in kg
    // note is not an optional; if there is no note it is stored as ""; called comment in storyboard

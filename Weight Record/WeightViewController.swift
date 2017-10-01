@@ -9,7 +9,7 @@
 import UIKit
 import HealthKit
 
-class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
+class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
    
    @IBOutlet weak var messageL: UILabel!
    @IBOutlet weak var weightTF: UITextField!
@@ -85,8 +85,11 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       super.viewDidAppear(animated)
       
       saveB.isEnabled = false
+      tableView?.setEditing(false, animated: true)
+      doneB.isEnabled = false // not needed?
       helper.getWeightsAndDates(fromDate: earliestDate, toDate: latestDate)
       weightTF.placeholder = weightDisplayUnit.pluralName() + "..."
+      weightTF.text = ""
    }
    
    // enabled save button only when the weight is in the valid range, set in the extension
@@ -125,7 +128,6 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       let nSamples = weightsAndDatesAndNotes.count
       messageText = "\(nSamples) weights"
       editB.isEnabled = nSamples > 0 ? true : false
-      doneB.isEnabled = editB.isEnabled ? true : false
    }
    
    @IBAction func saveAction(_ sender: Any) {
@@ -149,14 +151,20 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
    
    @IBAction func editBAction(_ sender: Any) {
       tableView?.setEditing(true, animated: true)
+      doneB.isEnabled = true
+   }
+   
+   @IBAction func doneBAction(_ sender: Any) {
+      tableView?.setEditing(false, animated: true)
+      doneB.isEnabled = false
    }
    
    func removeRequestCompleted() {
       print("remove request completed")
-      reset()
+      updateUI()
    }
    
-   func reset() {
+   func updateUI() {
       weightsAndDatesAndNotes = []
       helper.getWeightsAndDates(fromDate: earliestDate, toDate: latestDate)   // triggers updateCells()
    }
@@ -173,7 +181,6 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       super.prepare(for: segue, sender: sender)
 
-      editB.isEnabled = false
       let svc = segue.destination as! SettingsVC
       svc.wvc = self
    }
@@ -202,9 +209,9 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       return cell
    }
    
-   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-      editB.isEnabled = true
-   }
+//   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//      editB.isEnabled = true
+//   }
    
    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
       let cell = tableView.cellForRow(at: indexPath) as! WeightAndDateCell
@@ -221,7 +228,6 @@ class WeightVC: UIViewController, WeightAndDateDelegate, UITableViewDataSource, 
       print("touchesBegan")
       super.touchesBegan(touches, with: event)
       weightTF.text = ""
-      editB.isEnabled = false
       view.endEditing(true)
    }
 }
