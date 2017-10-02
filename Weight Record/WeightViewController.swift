@@ -16,7 +16,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    @IBOutlet weak var commentInputTF: UITextField!
    @IBOutlet weak var saveB: UIButton!
    @IBOutlet weak var deleteB: UIButton!
-   @IBOutlet weak var doneB: UIButton!
+   @IBOutlet weak var button_B: UIButton!
    
    let hks = HKHealthStore()
    var helper: HealthKitHelper!
@@ -79,8 +79,6 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       commentInputTF.delegate = self
       commentInputTF.text = ""
       messageText = ""
-      deleteB.isEnabled = false
-      doneB.isHidden = true
       
       // move text right a little
       commentInputTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
@@ -91,10 +89,13 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       
       saveB.isEnabled = false
       tableView?.setEditing(false, animated: true)
-      doneB.isHidden = true // not needed?
+      button_B.titleLabel!.text = "Units"
       helper.getWeightsAndDates(fromDate: earliestDate, toDate: latestDate)
       weightTF.placeholder = weightDisplayUnit.pluralName() + "..."
       weightTF.text = ""
+      
+      let sb = UIStoryboard(name: "Main", bundle: nil)
+      debugPrint("Main sb: \(sb)")
    }
    
    // enabled save button only when the weight is in the valid range, set in the extension
@@ -132,7 +133,6 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       updateCells()
       let nSamples = weightsAndDatesAndNotes.count
       messageText = "\(nSamples) weights"
-      deleteB.isEnabled = nSamples > 0 ? true : false
    }
    
    @IBAction func saveAction(_ sender: Any) {
@@ -156,12 +156,17 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    
    @IBAction func deleteBAction(_ sender: Any) {
       tableView?.setEditing(true, animated: true)
-      doneB.isHidden = false
+      button_B.titleLabel!.text = "Done"
    }
    
-   @IBAction func doneBAction(_ sender: Any) {
-      tableView?.setEditing(false, animated: true)
-      doneB.isHidden = true
+   @IBAction func button_BAction(_ sender: UIButton) {
+      if sender.titleLabel!.text == "Done" {
+         tableView?.setEditing(false, animated: true)
+         button_B.titleLabel!.text = "Units"
+      } else if sender.titleLabel!.text == "Units" {
+         print("button_B title is Units")
+         performSegue(withIdentifier: "WeightVC-SettingsVC", sender: self)
+         }
    }
    
    func updateUI() {
@@ -179,6 +184,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    }
    
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+      print("prepare")
       super.prepare(for: segue, sender: sender)
 
       let svc = segue.destination as! SettingsVC
