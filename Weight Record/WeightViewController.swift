@@ -49,7 +49,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       }
    }
    
-   // helper notified us that a weight was stored; now we update the table to include the new weight
+   // helper added a new weight to HKStore; now update the table to include the new weight
    var storeWeightSucceeded: Bool {
       get {
          return false
@@ -62,6 +62,11 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
             }
          }
       }
+   }
+   
+   // helper removed a weight from HKStore; now update the table to delete the weight
+   func removeRequestCompleted() {
+      updateUI()
    }
    
    override func viewDidLoad() {
@@ -157,11 +162,6 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    @IBAction func doneBAction(_ sender: Any) {
       tableView?.setEditing(false, animated: true)
       doneB.isHidden = true
-   }
-   
-   func removeRequestCompleted() {
-      print("remove request completed")
-      updateUI()
    }
    
    func updateUI() {

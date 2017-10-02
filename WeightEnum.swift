@@ -27,11 +27,11 @@ internal enum WeightUnit: Int {
    internal func abbreviation() -> String {
       switch self {
       case .kilogram:
-         return "Kg."
+         return "kg."
       case .pound:
-         return "Lb."
+         return "lb."
       case .stone:
-         return "St."
+         return "st."
       }
    }
    
