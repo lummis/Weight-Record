@@ -77,6 +77,13 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       
       // move text right a little
       commentInputTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
+      
+      // experiment
+      let rgbRedColorComponents = UIColor.red.cgColor.components
+      let rgbGreenColorComponents = UIColor.green.cgColor.components
+      
+      print ("red: ", rgbRedColorComponents!)
+      print ("green: ", rgbGreenColorComponents!)
    }
    
    override func viewDidAppear(_ animated: Bool) {

@@ -54,7 +54,7 @@ class Model {
       if abs(delta) < 0.002 {
          return UIColor.white
       }
-      let alpha = CGFloat(abs(50.0 * delta))
+      let alpha = CGFloat(abs(75.0 * delta))
       return delta < 0 ? UIColor.green.withAlphaComponent(alpha) : UIColor.red.withAlphaComponent(alpha)
    }
 }
