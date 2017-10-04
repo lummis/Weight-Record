@@ -18,15 +18,10 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    @IBOutlet weak var deleteB: UIButton!
    @IBOutlet weak var button_B: UIButton!
    
-   let hks = HKHealthStore()
    var helper: HealthKitHelper!
    var tableView: UITableView? = nil
    var dateFormatter = DateFormatter()
-   var fromDate: Date!
-   var toDate: Date!
-   var isRemoveMessageInProgress: Bool = false
    var isWeightInValidRange: Bool = false
-   var weightsAndDatesAndNotes: [ (kg: Double, date: Date, note: String) ]  = []
    let earliestDate: Date = .distantPast
    let latestDate: Date = .distantFuture
    
@@ -205,20 +200,32 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       let cell = tableView.dequeueReusableCell(withIdentifier: "weightAndDateCell", for: indexPath) as! WeightAndDateCell
       cell.updateFields(withSample: weightsAndDatesAndNotes[indexPath.row], displayUnit: weightDisplayUnit)
       
-      // following is thanks to kosuke-ogawa https://stackoverflow.com/questions/45537762/swift3-cells-with-image-is-not-displayed
-      UIGraphicsBeginImageContext(cell.frame.size)
-      UIImage(named: "lightBlue.png")?.draw(in: cell.bounds)
-      if let image: UIImage = UIGraphicsGetImageFromCurrentImageContext() {
-         cell.backgroundColor = UIColor(patternImage: image)
-      }
-      UIGraphicsEndImageContext()
+//      add gradient image as cell background
+//      thanks to kosuke-ogawa https://stackoverflow.com/questions/45537762/swift3-cells-with-image-is-not-displayed
+//      UIGraphicsBeginImageContext(cell.frame.size)
+//      UIImage(named: "lightBlue.png")?.draw(in: cell.bounds)
+//      if let image: UIImage = UIGraphicsGetImageFromCurrentImageContext() {
+//         cell.backgroundColor = UIColor(patternImage: image)
+//      }
+//      UIGraphicsEndImageContext()
+      
       return cell
    }
    
    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
       let cell = tableView.cellForRow(at: indexPath) as! WeightAndDateCell
       let helper = HealthKitHelper(delegate: self)
-      helper.removeSampleFromHKStore(sampleDate: cell.date)
+      helper.removeSampleFromHKStore(dateToBeDeleted: cell.date)
+   }
+   
+   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+      // row 0 is the first row showing in the table
+      if indexPath.row == weightsAndDatesAndNotes.count - 1 { return }  // don't apply color to last row of table
+      let thisWeight = weightsAndDatesAndNotes[indexPath.row].kg
+      let previousWeight = weightsAndDatesAndNotes[indexPath.row + 1].kg
+      let fractionalChange = (thisWeight - previousWeight) / previousWeight
+      let color = Model.shared.color(forFractionalChange: fractionalChange)
+      cell.backgroundColor = color
    }
    
    // reset weightTF but keep commentTF.text

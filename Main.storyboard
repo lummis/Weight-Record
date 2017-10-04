@@ -100,13 +100,13 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MDY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6by-PG-mpx">
-                                                    <rect key="frame" x="72" y="1.5" width="43" height="24"/>
+                                                    <rect key="frame" x="68" y="1.5" width="43" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HH:mm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3WE-BK-6Js">
-                                                    <rect key="frame" x="125" y="1.5" width="67" height="24"/>
+                                                    <rect key="frame" x="121" y="1.5" width="67" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -134,7 +134,7 @@
                                                 <constraint firstItem="3WE-BK-6Js" firstAttribute="leading" secondItem="6by-PG-mpx" secondAttribute="trailing" constant="10" id="PRy-cp-ZI0"/>
                                                 <constraint firstItem="NMe-GO-1Xe" firstAttribute="trailing" secondItem="PZ2-2p-gEJ" secondAttribute="trailingMargin" constant="-10" id="Pb8-20-t1g"/>
                                                 <constraint firstItem="NMe-GO-1Xe" firstAttribute="centerY" secondItem="r9f-iE-qvo" secondAttribute="centerY" id="UKr-A5-Ypk"/>
-                                                <constraint firstItem="6by-PG-mpx" firstAttribute="leading" secondItem="r9f-iE-qvo" secondAttribute="trailing" constant="10" id="WH5-pp-7tl"/>
+                                                <constraint firstItem="6by-PG-mpx" firstAttribute="leading" secondItem="r9f-iE-qvo" secondAttribute="trailing" constant="6" id="WH5-pp-7tl"/>
                                                 <constraint firstItem="NJr-Kd-wuf" firstAttribute="leading" secondItem="r9f-iE-qvo" secondAttribute="leading" id="dBz-hV-pog"/>
                                                 <constraint firstItem="r9f-iE-qvo" firstAttribute="centerY" secondItem="PZ2-2p-gEJ" secondAttribute="centerY" multiplier="0.57" id="gbU-ds-08u"/>
                                                 <constraint firstItem="3WE-BK-6Js" firstAttribute="centerY" secondItem="r9f-iE-qvo" secondAttribute="centerY" id="s0v-47-AMF"/>

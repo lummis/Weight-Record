@@ -93,8 +93,8 @@ class HealthKitHelper {
    }
    
 /*
- func removeSampleFromHKStore(sampleDate: Date)
-    make query with startTime and endTime = startTime + 1, strictStartTime and strictEndTime
+    removeSampleFromHKStore(sampleDate: Date)
+    make query with startTime = dateToBeDeleted - 1.0 and endTime = dateToBeDeleted + 1.0, strictStartTime and strictEndTime
     relies on the sampleDate as Date being a property of table cell even though it doesn't appear in UI per se
     execute query
     on completion:
@@ -103,18 +103,17 @@ class HealthKitHelper {
        on completion:
           set delegate.deletionSuceeded true or false
     
-    
- For simplicity I'm assuming one delete request is outstanding at a time. Find a way around this restriction later.
+ For simplicity assume one delete request is outstanding at a time. Maybe find a way around this restriction later.
 
-The sampple date is guaranteed to be unique, at least among samples added to the DB by this app, because the date is
- automatically the date/time the user saved the weight sample into the HK store. The user doesn't set the date manually and can't change it.
+The sample date is guaranteed to be unique, at least among samples added to the DB by this app, because the date is
+ automatically the date/time the user saved the weight sample into the HK store. User doesn't set the date manually and can't change it.
 */
    
-   internal func removeSampleFromHKStore(sampleDate: Date) {
+   internal func removeSampleFromHKStore(dateToBeDeleted: Date) {
       guard let sampleType: HKSampleType = HKSampleType.quantityType(forIdentifier: .bodyMass) else {
          fatalError(" *** sampleType construction should never fail ***")
       }
-      let predicate = HKQuery.predicateForSamples(withStart: sampleDate - 1.0, end: sampleDate + 2.0, options: [.strictStartDate, .strictEndDate])
+      let predicate = HKQuery.predicateForSamples(withStart: dateToBeDeleted - 1.0, end: dateToBeDeleted + 2.0, options: [.strictStartDate, .strictEndDate])
       let query = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: Int(HKObjectQueryNoLimit), sortDescriptors: nil) {
          query, results, error in
          let nSamples = results?.count ?? 0
