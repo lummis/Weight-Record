@@ -91,7 +91,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Day" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r9f-iE-qvo">
-                                                    <rect key="frame" x="8" y="1.5" width="54" height="24"/>
+                                                    <rect key="frame" x="8" y="4.5" width="54" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="54" id="MbH-h9-69W"/>
                                                     </constraints>
@@ -100,45 +100,54 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MDY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6by-PG-mpx">
-                                                    <rect key="frame" x="68" y="1.5" width="43" height="24"/>
+                                                    <rect key="frame" x="68" y="4.5" width="43" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HH:mm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3WE-BK-6Js">
-                                                    <rect key="frame" x="121" y="1.5" width="67" height="24"/>
+                                                    <rect key="frame" x="121" y="4.5" width="67" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="weight" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NMe-GO-1Xe" userLabel="weightL">
-                                                    <rect key="frame" x="298" y="1.5" width="59" height="24"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QIq-Mf-wbZ" userLabel="weightBorderV">
+                                                    <rect key="frame" x="290.5" y="-2.5" width="73" height="38"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="weight" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NMe-GO-1Xe" userLabel="weightL">
+                                                    <rect key="frame" x="298" y="4.5" width="59" height="24"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="note*******************" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NJr-Kd-wuf" userLabel="commentDisplayL">
-                                                    <rect key="frame" x="8" y="21.5" width="358" height="25"/>
+                                                    <rect key="frame" x="8" y="24.5" width="358" height="22"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="6by-PG-mpx" firstAttribute="centerY" secondItem="r9f-iE-qvo" secondAttribute="centerY" id="7se-ji-n4E"/>
                                                 <constraint firstItem="NJr-Kd-wuf" firstAttribute="bottomMargin" secondItem="PZ2-2p-gEJ" secondAttribute="bottomMargin" id="Amu-hN-gLy"/>
                                                 <constraint firstItem="NJr-Kd-wuf" firstAttribute="centerX" secondItem="PZ2-2p-gEJ" secondAttribute="centerX" id="GMZ-Sx-84b"/>
+                                                <constraint firstItem="QIq-Mf-wbZ" firstAttribute="centerX" secondItem="NMe-GO-1Xe" secondAttribute="centerX" id="GYc-1T-KRK"/>
+                                                <constraint firstItem="QIq-Mf-wbZ" firstAttribute="centerY" secondItem="NMe-GO-1Xe" secondAttribute="centerY" id="GtS-MZ-46e"/>
                                                 <constraint firstItem="r9f-iE-qvo" firstAttribute="leading" secondItem="PZ2-2p-gEJ" secondAttribute="leadingMargin" id="KfG-bz-lVq"/>
                                                 <constraint firstItem="3WE-BK-6Js" firstAttribute="leading" secondItem="6by-PG-mpx" secondAttribute="trailing" constant="10" id="PRy-cp-ZI0"/>
                                                 <constraint firstItem="NMe-GO-1Xe" firstAttribute="trailing" secondItem="PZ2-2p-gEJ" secondAttribute="trailingMargin" constant="-10" id="Pb8-20-t1g"/>
                                                 <constraint firstItem="NMe-GO-1Xe" firstAttribute="centerY" secondItem="r9f-iE-qvo" secondAttribute="centerY" id="UKr-A5-Ypk"/>
                                                 <constraint firstItem="6by-PG-mpx" firstAttribute="leading" secondItem="r9f-iE-qvo" secondAttribute="trailing" constant="6" id="WH5-pp-7tl"/>
+                                                <constraint firstItem="QIq-Mf-wbZ" firstAttribute="width" secondItem="NMe-GO-1Xe" secondAttribute="width" constant="14" id="ZFH-Pg-bh8"/>
                                                 <constraint firstItem="NJr-Kd-wuf" firstAttribute="leading" secondItem="r9f-iE-qvo" secondAttribute="leading" id="dBz-hV-pog"/>
-                                                <constraint firstItem="r9f-iE-qvo" firstAttribute="centerY" secondItem="PZ2-2p-gEJ" secondAttribute="centerY" multiplier="0.57" id="gbU-ds-08u"/>
+                                                <constraint firstItem="r9f-iE-qvo" firstAttribute="centerY" secondItem="PZ2-2p-gEJ" secondAttribute="centerY" multiplier="0.7" id="gbU-ds-08u"/>
                                                 <constraint firstItem="3WE-BK-6Js" firstAttribute="centerY" secondItem="r9f-iE-qvo" secondAttribute="centerY" id="s0v-47-AMF"/>
                                                 <constraint firstItem="NJr-Kd-wuf" firstAttribute="top" secondItem="r9f-iE-qvo" secondAttribute="bottom" constant="-4" id="t8n-Td-Iad"/>
+                                                <constraint firstItem="QIq-Mf-wbZ" firstAttribute="height" secondItem="NMe-GO-1Xe" secondAttribute="height" constant="14" id="w4D-V0-Uq1"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -147,6 +156,7 @@
                                             <outlet property="dayOfWeekL" destination="r9f-iE-qvo" id="DbS-d0-8b1"/>
                                             <outlet property="hourMinuteL" destination="3WE-BK-6Js" id="taE-jH-j4Z"/>
                                             <outlet property="monthDayYearL" destination="6by-PG-mpx" id="VBb-54-uK8"/>
+                                            <outlet property="weightBorderV" destination="QIq-Mf-wbZ" id="onQ-y9-Hau"/>
                                             <outlet property="weightL" destination="NMe-GO-1Xe" id="gPz-Hs-uyb"/>
                                         </connections>
                                     </tableViewCell>

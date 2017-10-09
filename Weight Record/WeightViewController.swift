@@ -225,14 +225,27 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       helper.removeSampleFromHKStore(dateToBeDeleted: cell.date)
    }
    
+//   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//      // row 0 is the first row showing in the table
+//      if indexPath.row == weightsAndDatesAndNotes.count - 1 { return }  // don't apply color to last row of table
+//      let thisWeight = weightsAndDatesAndNotes[indexPath.row].kg
+//      let previousWeight = weightsAndDatesAndNotes[indexPath.row + 1].kg
+//      let fractionalChange = (thisWeight - previousWeight) / previousWeight
+//      let color = Model.shared.color(forFractionalChange: fractionalChange)
+//      cell.backgroundColor = color
+//   }
+   
    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-      // row 0 is the first row showing in the table
       if indexPath.row == weightsAndDatesAndNotes.count - 1 { return }  // don't apply color to last row of table
+      let thisCell: WeightAndDateCell = cell as! WeightAndDateCell
+//      let label = thisCell.weightL
       let thisWeight = weightsAndDatesAndNotes[indexPath.row].kg
       let previousWeight = weightsAndDatesAndNotes[indexPath.row + 1].kg
       let fractionalChange = (thisWeight - previousWeight) / previousWeight
       let color = Model.shared.color(forFractionalChange: fractionalChange)
-      cell.backgroundColor = color
+//      label?.backgroundColor = color
+      let border = thisCell.weightBorderV
+      border?.backgroundColor = color
    }
    
    // reset weightTF but keep commentTF.text

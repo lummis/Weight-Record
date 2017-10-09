@@ -13,6 +13,7 @@ class WeightAndDateCell: UITableViewCell {
    @IBOutlet weak var dayOfWeekL: UILabel!
    @IBOutlet weak var monthDayYearL: UILabel!
    @IBOutlet weak var hourMinuteL: UILabel!
+   @IBOutlet weak var weightBorderV: UIView!
    @IBOutlet weak var weightL: UILabel!
    @IBOutlet weak var commentDisplayL: UILabel!
    
