@@ -206,16 +206,6 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       let cell = tableView.dequeueReusableCell(withIdentifier: "weightAndDateCell", for: indexPath) as! WeightAndDateCell
       cell.updateFields(withSample: weightsAndDatesAndNotes[indexPath.row], displayUnit: weightDisplayUnit)
-      
-//      add gradient image as cell background
-//      thanks to kosuke-ogawa https://stackoverflow.com/questions/45537762/swift3-cells-with-image-is-not-displayed
-//      UIGraphicsBeginImageContext(cell.frame.size)
-//      UIImage(named: "lightBlue.png")?.draw(in: cell.bounds)
-//      if let image: UIImage = UIGraphicsGetImageFromCurrentImageContext() {
-//         cell.backgroundColor = UIColor(patternImage: image)
-//      }
-//      UIGraphicsEndImageContext()
-      
       return cell
    }
    
@@ -225,35 +215,19 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       helper.removeSampleFromHKStore(dateToBeDeleted: cell.date)
    }
    
-//   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//      // row 0 is the first row showing in the table
-//      if indexPath.row == weightsAndDatesAndNotes.count - 1 { return }  // don't apply color to last row of table
-//      let thisWeight = weightsAndDatesAndNotes[indexPath.row].kg
-//      let previousWeight = weightsAndDatesAndNotes[indexPath.row + 1].kg
-//      let fractionalChange = (thisWeight - previousWeight) / previousWeight
-//      let color = Model.shared.color(forFractionalChange: fractionalChange)
-//      cell.backgroundColor = color
-//   }
-   
    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
       if indexPath.row == weightsAndDatesAndNotes.count - 1 { return }  // don't apply color to last row of table
       let thisCell: WeightAndDateCell = cell as! WeightAndDateCell
-//      let label = thisCell.weightL
       let thisWeight = weightsAndDatesAndNotes[indexPath.row].kg
       let previousWeight = weightsAndDatesAndNotes[indexPath.row + 1].kg
       let fractionalChange = (thisWeight - previousWeight) / previousWeight
-      let color = Model.shared.color(forFractionalChange: fractionalChange)
-//      label?.backgroundColor = color
-      let border = thisCell.weightBorderV
-      border?.backgroundColor = color
+      thisCell.addBorder(cell: thisCell, fractionalChange: fractionalChange)
    }
    
-   // reset weightTF but keep commentTF.text
+   // for debugging
    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-      print("touchesBegan")
       super.touchesBegan(touches, with: event)
-      weightTF.text = ""
-      view.endEditing(true)
+
    }
 }
 
