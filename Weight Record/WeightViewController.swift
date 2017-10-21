@@ -221,7 +221,11 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       let thisWeight = weightsAndDatesAndNotes[indexPath.row].kg
       let previousWeight = weightsAndDatesAndNotes[indexPath.row + 1].kg
       let fractionalChange = (thisWeight - previousWeight) / previousWeight
-      thisCell.addBorder(cell: thisCell, fractionalChange: fractionalChange)
+      print("====")
+      print()
+      print("row: ", indexPath.row, " weight: ", weightsAndDatesAndNotes[indexPath.row].kg/weightDisplayUnit.unitToKgFactor(), " weightL frame: ", thisCell.weightL.frame)
+      print( "tableView.frame: \(tableView.frame);   cell.contentView.frame: \(cell.contentView.frame)" )
+      thisCell.addBorder(cell: thisCell, row: indexPath.row, fractionalChange: fractionalChange)
    }
    
    // for debugging

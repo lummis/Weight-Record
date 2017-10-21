@@ -31,8 +31,11 @@ class WeightAndDateCell: UITableViewCell {
       
       // table row bolder every Monday to emphasize weeks
       // font weight 0.0 is 'regular'; range is -1.0 to 1.0
-      let fontWeight = dayName == "Mon" ? CGFloat(0.7) : CGFloat (0.0)
+      let fontWeight = dayName == "Mon" ? CGFloat(0.0) : CGFloat (0.0)
+      // stop using alternate fontWeight (Mon was 0.7). It might be responsible for the frame being misplaced
       dayOfWeekL.font = UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight(rawValue: fontWeight))
+      
+      
       dayOfWeekL.text = dayName
       
       // weight is stored in kilograms; show it and expect new values in display units
@@ -55,15 +58,15 @@ class WeightAndDateCell: UITableViewCell {
    }
    
    // values planned in file 'BorderThickness vs Fractional Change'
-   fileprivate func borderWidth(fractionalChange: Double) -> Double {
-      if abs(fractionalChange) <= 0.001 { return 0.0 }
-      if abs(fractionalChange) <= 0.003 { return 1.0 }
-      if abs(fractionalChange) <= 0.006 { return 2.0 }
-      if abs(fractionalChange) <= 0.009 { return 3.0 }
-      if abs(fractionalChange) <= 0.0125 { return 4.0 }
-      if abs(fractionalChange) <= 0.017 { return 5.0 }
-      if abs(fractionalChange) <= 0.023 { return 6.0 }
-      else { return 8.0 }
+   fileprivate func borderWidth(fractionalChange: Double) -> CGFloat {
+      if abs(fractionalChange) <= 0.001 { return CGFloat(0.0) }
+      if abs(fractionalChange) <= 0.003 { return CGFloat(1) }
+      if abs(fractionalChange) <= 0.006 { return CGFloat(2) }
+      if abs(fractionalChange) <= 0.009 { return CGFloat(3) }
+      if abs(fractionalChange) <= 0.0125 { return CGFloat(4) }
+      if abs(fractionalChange) <= 0.017 { return CGFloat(5) }
+      if abs(fractionalChange) <= 0.023 { return CGFloat(6) }
+      else { return CGFloat(8) }
    }
    
    fileprivate func borderColor(fractionalChange: Double) -> UIColor {
@@ -71,11 +74,7 @@ class WeightAndDateCell: UITableViewCell {
       else { return UIColor.red }
    }
    
-   var callNumber = 0
-   internal func addBorder(cell: WeightAndDateCell, fractionalChange: Double) {
-      callNumber += 1
-      print()
-      print("addingBorder \(callNumber)")
+   internal func addBorder(cell: WeightAndDateCell, row: Int, fractionalChange: Double) {
       let weightLabel = cell.weightL!
       let x0 = weightLabel.frame.origin.x
       let y0 = weightLabel.frame.origin.y
@@ -84,22 +83,16 @@ class WeightAndDateCell: UITableViewCell {
       let thickness = CGFloat( borderWidth(fractionalChange: fractionalChange) )
       let borderFrame = CGRect(x: x0 - thickness, y: y0 - thickness, width: width0 + thickness * 2.0, height: height0 + thickness * 2.0)
       let borderView = UIView(frame: borderFrame)
-      print("x0: \(x0), y0: \(y0), width0: \(width0), height0: \(height0)")
-      print("thickness: \(thickness)")
+      print("addingBorder for row \(row); weight: \(cell.weightL.text!); weightLabel.frame x0: \(x0), y0: \(y0), width0: \(width0), height0: \(height0)")
+      print("border thickness: \(thickness)")
       debugPrint("weightLabel: \(weightLabel)")
       debugPrint("borderView: \(borderView)")
       borderView.backgroundColor = borderColor(fractionalChange: fractionalChange)
       borderView.tag = borderViewTagValue
-      let oldBorder = cell.viewWithTag(borderViewTagValue)
-      if oldBorder != nil { oldBorder!.removeFromSuperview() }
-      weightLabel.superview!.insertSubview(borderView, belowSubview: weightLabel)
-//      contentView.insertSubview(borderView, belowSubview: weightLabel)
-//      cell.sendSubview(toBack: borderView)
-      
-      callNumber += 1
-      if callNumber == 3 {
-         debugPrint("subviews ", cell.subviews)
+      if let oldBorder = cell.viewWithTag(borderViewTagValue) {
+         oldBorder.removeFromSuperview()
       }
+      weightLabel.superview!.insertSubview(borderView, belowSubview: weightLabel)
    }
 }
 

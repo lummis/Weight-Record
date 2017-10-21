@@ -83,7 +83,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="weightAndDateCell" rowHeight="60" id="XPT-Fa-95Z" userLabel="weightCell" customClass="WeightAndDateCell" customModule="Weight_Record" customModuleProvider="target">
+                                    <tableViewCell autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="weightAndDateCell" rowHeight="60" id="XPT-Fa-95Z" userLabel="weightCell" customClass="WeightAndDateCell" customModule="Weight_Record" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XPT-Fa-95Z" id="PZ2-2p-gEJ">
@@ -111,13 +111,9 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="weight" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NMe-GO-1Xe" userLabel="weightL">
-                                                    <rect key="frame" x="297" y="18" width="60" height="24"/>
+                                                <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="weight" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NMe-GO-1Xe" userLabel="weightL">
+                                                    <rect key="frame" x="298" y="18" width="59" height="24"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="60" id="BAN-qX-LBe"/>
-                                                        <constraint firstAttribute="height" constant="24" id="f5j-ev-2jk"/>
-                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -128,9 +124,9 @@
                                                 <constraint firstItem="NMe-GO-1Xe" firstAttribute="centerY" secondItem="PZ2-2p-gEJ" secondAttribute="centerY" id="5WM-Q3-GkT"/>
                                                 <constraint firstItem="6by-PG-mpx" firstAttribute="centerY" secondItem="r9f-iE-qvo" secondAttribute="centerY" id="7se-ji-n4E"/>
                                                 <constraint firstItem="r9f-iE-qvo" firstAttribute="leading" secondItem="PZ2-2p-gEJ" secondAttribute="leadingMargin" id="KfG-bz-lVq"/>
+                                                <constraint firstAttribute="trailing" secondItem="NMe-GO-1Xe" secondAttribute="trailing" constant="18" id="Nkp-3l-dUa"/>
                                                 <constraint firstItem="3WE-BK-6Js" firstAttribute="leading" secondItem="6by-PG-mpx" secondAttribute="trailing" constant="10" id="PRy-cp-ZI0"/>
                                                 <constraint firstItem="6by-PG-mpx" firstAttribute="leading" secondItem="r9f-iE-qvo" secondAttribute="trailing" constant="6" id="WH5-pp-7tl"/>
-                                                <constraint firstAttribute="trailing" secondItem="NMe-GO-1Xe" secondAttribute="trailing" constant="18" id="cIT-Ln-S8u"/>
                                                 <constraint firstItem="r9f-iE-qvo" firstAttribute="centerY" secondItem="PZ2-2p-gEJ" secondAttribute="centerY" multiplier="0.7" id="gbU-ds-08u"/>
                                                 <constraint firstItem="3WE-BK-6Js" firstAttribute="centerY" secondItem="r9f-iE-qvo" secondAttribute="centerY" id="s0v-47-AMF"/>
                                             </constraints>
