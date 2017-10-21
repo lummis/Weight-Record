@@ -13,3 +13,14 @@ When "All Exceptions" breakpoint is set after not triggering many times I now ge
 every when in AppDelegate. So it's turned off for now but I'd like to know what it's about.
 
 A UIImage added to the background of a textField is ignored if the textField has its border style set to roundedRect, 
+
+This version has the problem than the weightBorderV appears a few points left of where it should be on the
+first screen. Actually what seems to be happening is that weightL gets shifted right between "...willDisplay cell:"
+when the view is actually drawn on the screen, but the weightBorderV is drawn at the place determined programmatically.
+The result is that the border is not drawn symmetrically around weightL on the first screen but looks correct on
+subsequent screens (i.e., it looks right if the user scrolls, even if he scrolls up and then back down to the early rows).
+After spinning wheels for a few days trying to find out why/when this is happening I will next try drawing the weightL
+and the weightBorderView all at once and pass it to the viewController as a single object. If its position on a cell gets
+shifted the border should still be symmetrical around the weightL.
+
+commentDisplayL was removed (commented out) in the course of debugging the shifting weightL problem.
