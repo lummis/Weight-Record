@@ -31,7 +31,7 @@ class Model {
       }
    }
    
-   private init() {
+   internal init() {
       let rawValue = userDefaults.integer(forKey: "weightDisplayUnitRawValue")
       if rawValue == 0 {    // 0 means first time running this app
          weightDisplayUnit = weightDisplayUnitDefault

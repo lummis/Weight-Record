@@ -25,12 +25,6 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    let earliestDate: Date = .distantPast
    let latestDate: Date = .distantFuture
    
-   var weightDisplayUnit: WeightUnit {
-      get {
-         return Model.shared.weightDisplayUnit
-      }
-   }
-   
    var messageText: String {
       get {
          return messageL.text ?? "messageText initial value"
@@ -76,14 +70,8 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       messageText = ""
       
       // move text right a little
-      commentInputTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
+//      commentInputTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
       
-      // experiment
-      let rgbRedColorComponents = UIColor.red.cgColor.components
-      let rgbGreenColorComponents = UIColor.green.cgColor.components
-      
-      print ("red: ", rgbRedColorComponents!)
-      print ("green: ", rgbGreenColorComponents!)
    }
    
    override func viewDidAppear(_ animated: Bool) {
@@ -218,20 +206,21 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
       if indexPath.row == weightsAndDatesAndNotes.count - 1 { return }  // don't apply color to last row of table
       let thisCell: WeightAndDateCell = cell as! WeightAndDateCell
-      let thisWeight = weightsAndDatesAndNotes[indexPath.row].kg
-      let previousWeight = weightsAndDatesAndNotes[indexPath.row + 1].kg
-      let fractionalChange = (thisWeight - previousWeight) / previousWeight
-      print("====")
-      print()
-      print("row: ", indexPath.row, " weight: ", weightsAndDatesAndNotes[indexPath.row].kg/weightDisplayUnit.unitToKgFactor(), " weightL frame: ", thisCell.weightL.frame)
-      print( "tableView.frame: \(tableView.frame);   cell.contentView.frame: \(cell.contentView.frame)" )
-      thisCell.addBorder(cell: thisCell, row: indexPath.row, fractionalChange: fractionalChange)
+      let thisWeightInKg = weightsAndDatesAndNotes[indexPath.row].kg
+      let previousWeightInKg = weightsAndDatesAndNotes[indexPath.row + 1].kg
+      let fractionalChange = (thisWeightInKg - previousWeightInKg) / previousWeightInKg
+      thisCell.addWeightDisplayView(in: thisCell.weightContainerV,
+                                    weight: thisWeightInKg / weightDisplayUnit.unitToKgFactor(),
+                                    fractionalChange: fractionalChange )
    }
    
    // for debugging
    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
       super.touchesBegan(touches, with: event)
 
+      // if user starts entering text then decides against it
+      weightTF.resignFirstResponder()
+      commentInputTF.resignFirstResponder()
    }
 }
 

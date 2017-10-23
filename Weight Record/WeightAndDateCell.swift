@@ -9,15 +9,21 @@
 import Foundation
 import UIKit
 
-let borderViewTagValue = 77
+let borderViewTagValue = 4
+let weightLTagValue = 3
+var weightDisplayUnit: WeightUnit {
+   get {
+      return Model.shared.weightDisplayUnit
+   }
+}
 
 class WeightAndDateCell: UITableViewCell {
    @IBOutlet weak var dayOfWeekL: UILabel!
    @IBOutlet weak var monthDayYearL: UILabel!
    @IBOutlet weak var hourMinuteL: UILabel!
-   @IBOutlet weak var weightL: UILabel!
-//   @IBOutlet weak var commentDisplayL: UILabel!
-   
+   @IBOutlet weak var weightContainerV: UIView!
+   @IBOutlet weak var commentDisplayL: UILabel!
+
    // date property is used as unique field for identifying a value for deletion from HKStore
    internal var date: Date!
    
@@ -34,16 +40,9 @@ class WeightAndDateCell: UITableViewCell {
       let fontWeight = dayName == "Mon" ? CGFloat(0.0) : CGFloat (0.0)
       // stop using alternate fontWeight (Mon was 0.7). It might be responsible for the frame being misplaced
       dayOfWeekL.font = UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight(rawValue: fontWeight))
-      
-      
       dayOfWeekL.text = dayName
       
-      // weight is stored in kilograms; show it and expect new values in display units
-      let weightInDisplayUnit = sample.kg / displayUnit.unitToKgFactor()
-      weightL.text = displayUnit == WeightUnit.stone ? weightInDisplayUnit.stringWithRounding(precision: 2)
-         : weightInDisplayUnit.stringWithRounding(precision: 1)
-      weightL.font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: UIFont.Weight(rawValue: fontWeight))
-      
+      // weight is stored in kilograms; show it and expect new values in weightDisplayUnit
       dateFormatter.dateFormat = "MMM-dd-yyyy"
       monthDayYearL.text = dateFormatter.string(from: sample.date)
       monthDayYearL.font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: UIFont.Weight(rawValue: fontWeight))
@@ -52,47 +51,65 @@ class WeightAndDateCell: UITableViewCell {
       hourMinuteL.text = dateFormatter.string(from: sample.date)
       hourMinuteL.font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: UIFont.Weight(rawValue: fontWeight))
       
-//      commentDisplayL.text = sample.note == "" ? "" : sample.note
+      commentDisplayL.text = sample.note == "" ? "" : sample.note
       
       self.date = sample.date
    }
    
-   // values planned in file 'BorderThickness vs Fractional Change'
-   fileprivate func borderWidth(fractionalChange: Double) -> CGFloat {
-      if abs(fractionalChange) <= 0.001 { return CGFloat(0.0) }
-      if abs(fractionalChange) <= 0.003 { return CGFloat(1) }
-      if abs(fractionalChange) <= 0.006 { return CGFloat(2) }
-      if abs(fractionalChange) <= 0.009 { return CGFloat(3) }
-      if abs(fractionalChange) <= 0.0125 { return CGFloat(4) }
-      if abs(fractionalChange) <= 0.017 { return CGFloat(5) }
-      if abs(fractionalChange) <= 0.023 { return CGFloat(6) }
-      else { return CGFloat(8) }
-   }
-   
-   fileprivate func borderColor(fractionalChange: Double) -> UIColor {
-      if (fractionalChange <= 0.0) { return UIColor.green }
-      else { return UIColor.red }
-   }
-   
-   internal func addBorder(cell: WeightAndDateCell, row: Int, fractionalChange: Double) {
-      let weightLabel = cell.weightL!
-      let x0 = weightLabel.frame.origin.x
-      let y0 = weightLabel.frame.origin.y
-      let width0 = weightLabel.bounds.size.width
-      let height0 = weightLabel.bounds.size.height
-      let thickness = CGFloat( borderWidth(fractionalChange: fractionalChange) )
-      let borderFrame = CGRect(x: x0 - thickness, y: y0 - thickness, width: width0 + thickness * 2.0, height: height0 + thickness * 2.0)
-      let borderView = UIView(frame: borderFrame)
-      print("addingBorder for row \(row); weight: \(cell.weightL.text!); weightLabel.frame x0: \(x0), y0: \(y0), width0: \(width0), height0: \(height0)")
-      print("border thickness: \(thickness)")
-      debugPrint("weightLabel: \(weightLabel)")
-      debugPrint("borderView: \(borderView)")
-      borderView.backgroundColor = borderColor(fractionalChange: fractionalChange)
-      borderView.tag = borderViewTagValue
-      if let oldBorder = cell.viewWithTag(borderViewTagValue) {
-         oldBorder.removeFromSuperview()
+   // weight argument should be in the current weightDisplayUnit
+   internal func addWeightDisplayView(in containerV: UIView, weight: Double, fractionalChange: Double) {
+      let model = Model()
+      
+      // width & height of containerV
+      let w0 = containerV.bounds.size.width
+      let h0 = containerV.bounds.size.height
+      
+      // width & height of the weightL
+      let w = CGFloat(60)
+      let h = CGFloat(25)
+      
+      // assume containerV is same aspect ratio as weightL or wider
+      // thus its height is the limiting dimension for border thickness
+      func borderThickness(fractionalChange: Double) -> CGFloat {
+         let maxThickness = CGFloat(h0 - h) * 0.5    // border fills container vertically
+         if abs(fractionalChange) <= 0.001 { return maxThickness * 0.05 }
+         if abs(fractionalChange) <= 0.003 { return maxThickness * 0.1 }
+         if abs(fractionalChange) <= 0.006 { return maxThickness * 0.2 }
+         if abs(fractionalChange) <= 0.009 { return maxThickness * 0.4 }
+         if abs(fractionalChange) <= 0.0125 { return maxThickness * 0.55 }
+         if abs(fractionalChange) <= 0.017 { return maxThickness * 0.7 }
+         if abs(fractionalChange) <= 0.023 { return maxThickness * 0.85 }
+         return maxThickness
       }
-      weightLabel.superview!.insertSubview(borderView, belowSubview: weightLabel)
+      
+      let weightLFrame = CGRect(x: (w0 - w) * 0.5, y: (h0 - h) * 0.5, width: w, height: h)
+      let weightL = UILabel(frame: weightLFrame)
+      weightL.backgroundColor = UIColor.white
+      weightL.textAlignment = .center
+      weightL.font = UIFont.monospacedDigitSystemFont(ofSize: CGFloat(18), weight: UIFont.Weight(rawValue: 0.0) )  // 0.0 normal, 1.0 heavy bold
+      let weightDisplayPrecision = model.weightDisplayUnit == WeightUnit.stone ? 2 : 1
+      weightL.text = weight.stringWithRounding(precision: weightDisplayPrecision)
+      weightL.tag = weightLTagValue
+      
+      let borderWidth = borderThickness(fractionalChange: fractionalChange)
+      let borderFrame = CGRect(x: (w0 - w) * 0.5 - borderWidth,
+                               y: (h0 - h) * 0.5 - borderWidth,
+                               width: w + 2.0 * borderWidth,
+                               height: h + 2.0 * borderWidth )
+      let borderView = UIView(frame: borderFrame)
+      borderView.backgroundColor = fractionalChange <= 0.0 ? UIColor.green : UIColor.red
+      borderView.tag = borderViewTagValue
+      
+      if let oldWeightL = containerV.viewWithTag(weightLTagValue) {
+         oldWeightL.removeFromSuperview()
+      }
+      if let oldBorderView = containerV.viewWithTag(borderViewTagValue) {
+         oldBorderView.removeFromSuperview()
+      }
+      
+      containerV.addSubview(borderView)
+      containerV.addSubview(weightL)
+
    }
 }
 
