@@ -57,6 +57,7 @@ class WeightAndDateCell: UITableViewCell {
    }
    
    // weight argument should be in the current weightDisplayUnit
+   // fractionalChange is set to 0.0 in the last row of the table by VC
    internal func addWeightDisplayView(in containerV: UIView, weight: Double, fractionalChange: Double) {
       let model = Model()
       
@@ -72,6 +73,7 @@ class WeightAndDateCell: UITableViewCell {
       // thus its height is the limiting dimension for border thickness
       func borderThickness(fractionalChange: Double) -> CGFloat {
          let maxThickness = CGFloat(h0 - h) * 0.5    // border fills container vertically
+         if fractionalChange == 0.0 { return 0.0 } 
          if abs(fractionalChange) <= 0.001 { return maxThickness * 0.05 }
          if abs(fractionalChange) <= 0.003 { return maxThickness * 0.1 }
          if abs(fractionalChange) <= 0.006 { return maxThickness * 0.2 }

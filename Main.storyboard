@@ -5,10 +5,8 @@
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
-        <capability name="Baseline standard spacing" minToolsVersion="9.0"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -160,7 +158,11 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kSW-zH-V9L" userLabel="deleteB">
-                                <rect key="frame" x="16" y="623" width="57" height="36"/>
+                                <rect key="frame" x="16" y="623" width="68" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="42u-Jn-2p6"/>
+                                    <constraint firstAttribute="width" constant="68" id="kMW-WS-Rws"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Delete"/>
                                 <connections>
@@ -168,10 +170,14 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YCf-75-N9I" userLabel="button_B">
-                                <rect key="frame" x="313" y="623" width="46" height="36"/>
+                                <rect key="frame" x="291" y="623" width="68" height="36"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="68" id="IaS-rh-cfo"/>
+                                    <constraint firstAttribute="height" constant="36" id="nA3-JD-SW5"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Units"/>
+                                <state key="normal" title="Setup"/>
                                 <connections>
                                     <action selector="button_BAction:" destination="I1G-ah-9Vk" eventType="touchUpInside" id="dJE-hx-TTY"/>
                                 </connections>
@@ -179,15 +185,15 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="0.73637153377777786" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="YdB-Xe-RRy" firstAttribute="top" secondItem="ras-7C-Wba" secondAttribute="bottom" constant="530" id="2IA-Ts-DZz"/>
                             <constraint firstItem="YCf-75-N9I" firstAttribute="centerY" secondItem="kSW-zH-V9L" secondAttribute="centerY" id="2n3-c9-VKi"/>
-                            <constraint firstItem="4NC-SM-AC8" firstAttribute="firstBaseline" secondItem="M0b-De-qtC" secondAttribute="baseline" constant="28" symbolType="layoutAnchor" id="3Op-aR-40g"/>
+                            <constraint firstItem="ras-7C-Wba" firstAttribute="top" secondItem="M0b-De-qtC" secondAttribute="bottom" constant="42" id="32D-hz-0CZ"/>
                             <constraint firstAttribute="trailing" secondItem="YCf-75-N9I" secondAttribute="trailing" constant="16" id="BQi-YU-IGS"/>
                             <constraint firstItem="kSW-zH-V9L" firstAttribute="leading" secondItem="bxE-Bb-PKl" secondAttribute="leading" constant="16" id="D82-nK-tDf"/>
                             <constraint firstItem="qEi-hi-bqI" firstAttribute="centerX" secondItem="bxE-Bb-PKl" secondAttribute="centerX" id="J1B-7x-KUM"/>
                             <constraint firstItem="4KZ-Qk-Zd7" firstAttribute="width" secondItem="bxE-Bb-PKl" secondAttribute="width" multiplier="0.9" id="Q4e-hK-fhz"/>
                             <constraint firstItem="qEi-hi-bqI" firstAttribute="top" secondItem="4KZ-Qk-Zd7" secondAttribute="bottom" constant="10" id="QpV-M3-AXj"/>
                             <constraint firstItem="4KZ-Qk-Zd7" firstAttribute="top" secondItem="ras-7C-Wba" secondAttribute="bottomMargin" constant="8" id="Qr3-Yi-7Iz"/>
+                            <constraint firstItem="4NC-SM-AC8" firstAttribute="top" secondItem="M0b-De-qtC" secondAttribute="bottom" id="XgT-U4-bTq"/>
                             <constraint firstItem="M0b-De-qtC" firstAttribute="top" secondItem="FAT-uq-VPv" secondAttribute="bottom" id="XnA-Bs-Nir"/>
                             <constraint firstItem="qEi-hi-bqI" firstAttribute="leading" secondItem="bxE-Bb-PKl" secondAttribute="leading" id="Yzg-78-61v"/>
                             <constraint firstItem="4KZ-Qk-Zd7" firstAttribute="centerX" secondItem="bxE-Bb-PKl" secondAttribute="centerX" id="aih-fk-xra"/>

@@ -24,6 +24,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    var isWeightInValidRange: Bool = false
    let earliestDate: Date = .distantPast
    let latestDate: Date = .distantFuture
+   var buttonBDefaultTitle = ""  // set in viewDidAppear
    
    var messageText: String {
       get {
@@ -79,10 +80,10 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       
       saveB.isEnabled = false
       tableView?.setEditing(false, animated: true)
-      button_B.titleLabel!.text = "Units"
       helper.getWeightsAndDates(fromDate: earliestDate, toDate: latestDate)
       weightTF.placeholder = weightDisplayUnit.pluralName() + "..."
       weightTF.text = ""
+      buttonBDefaultTitle = button_B.titleLabel!.text!
       
       let sb = UIStoryboard(name: "Main", bundle: nil)
       debugPrint("Main sb: \(sb)")
@@ -152,9 +153,9 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    @IBAction func button_BAction(_ sender: UIButton) {
       if sender.titleLabel!.text == "Done" {
          tableView?.setEditing(false, animated: true)
-         button_B.titleLabel!.text = "Units"
-      } else if sender.titleLabel!.text == "Units" {
-         print("button_B title is Units")
+         button_B.titleLabel!.text = buttonBDefaultTitle
+      } else if sender.titleLabel!.text == buttonBDefaultTitle {
+         print("button_B title is \(buttonBDefaultTitle)")
          performSegue(withIdentifier: "WeightVC-SettingsVC", sender: self)
          }
    }
@@ -204,11 +205,15 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    }
    
    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-      if indexPath.row == weightsAndDatesAndNotes.count - 1 { return }  // don't apply color to last row of table
+
       let thisCell: WeightAndDateCell = cell as! WeightAndDateCell
       let thisWeightInKg = weightsAndDatesAndNotes[indexPath.row].kg
-      let previousWeightInKg = weightsAndDatesAndNotes[indexPath.row + 1].kg
-      let fractionalChange = (thisWeightInKg - previousWeightInKg) / previousWeightInKg
+      
+      var fractionalChange = 0.0
+      if indexPath.row != weightsAndDatesAndNotes.count - 1 { // not the last row of table
+         let previousWeightInKg = weightsAndDatesAndNotes[indexPath.row + 1].kg
+         fractionalChange = (thisWeightInKg - previousWeightInKg) / previousWeightInKg
+      }
       thisCell.addWeightDisplayView(in: thisCell.weightContainerV,
                                     weight: thisWeightInKg / weightDisplayUnit.unitToKgFactor(),
                                     fractionalChange: fractionalChange )
