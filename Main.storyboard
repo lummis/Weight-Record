@@ -44,7 +44,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="52" translatesAutoresizingMaskIntoConstraints="NO" id="ras-7C-Wba">
                                 <rect key="frame" x="16" y="98" width="343" height="39"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="NX1-Zb-d4a" userLabel="weightTF">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="NX1-Zb-d4a" userLabel="weightTF">
                                         <rect key="frame" x="0.0" y="0.0" width="145.5" height="39"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -210,7 +210,7 @@
                         <outlet property="commentInputTF" destination="4KZ-Qk-Zd7" id="uCs-tH-mLZ"/>
                         <outlet property="deleteB" destination="kSW-zH-V9L" id="bfL-g5-Cgs"/>
                         <outlet property="messageL" destination="4NC-SM-AC8" id="NZK-R9-mn6"/>
-                        <outlet property="saveB" destination="PRv-bE-dH6" id="w24-ff-kUn"/>
+                        <outlet property="saveB" destination="PRv-bE-dH6" id="yPr-bc-vE9"/>
                         <outlet property="weightTF" destination="NX1-Zb-d4a" id="gnC-ui-UpU"/>
                         <segue destination="cvF-pl-rmI" kind="presentation" identifier="WeightVC-SettingsVC" id="mHW-xm-6aE"/>
                     </connections>
