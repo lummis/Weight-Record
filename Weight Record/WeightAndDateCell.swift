@@ -11,11 +11,6 @@ import UIKit
 
 let borderViewTagValue = 4
 let weightLTagValue = 3
-//var weightDisplayUnit: WeightUnit {
-//   get {
-//      return Model.shared.weightDisplayUnit
-//   }
-//}
 
 class WeightAndDateCell: UITableViewCell {
    @IBOutlet weak var dayOfWeekL: UILabel!
@@ -76,11 +71,10 @@ class WeightAndDateCell: UITableViewCell {
          if fractionalChange == 0.0 { return 0.0 } 
          if abs(fractionalChange) <= 0.001 { return maxThickness * 0.05 }
          if abs(fractionalChange) <= 0.003 { return maxThickness * 0.1 }
-         if abs(fractionalChange) <= 0.006 { return maxThickness * 0.2 }
-         if abs(fractionalChange) <= 0.009 { return maxThickness * 0.4 }
-         if abs(fractionalChange) <= 0.0125 { return maxThickness * 0.55 }
-         if abs(fractionalChange) <= 0.017 { return maxThickness * 0.7 }
-         if abs(fractionalChange) <= 0.023 { return maxThickness * 0.85 }
+         if abs(fractionalChange) <= 0.006 { return maxThickness * 0.15 }
+         if abs(fractionalChange) <= 0.012 { return maxThickness * 0.25 }
+         if abs(fractionalChange) <= 0.018 { return maxThickness * 0.32 }
+         if abs(fractionalChange) <= 0.028 { return maxThickness * 0.4 }
          return maxThickness
       }
       

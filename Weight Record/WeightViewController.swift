@@ -57,7 +57,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
             buttonA.isHidden = true
             buttonB.isHidden = true
             weightTF.isHidden = true
-            deleteB.setTitle("Done", for: .normal)
+            deleteB.setTitle("Done deleting", for: .normal)
             commentInputTF.isHidden = true
 
          default:
@@ -203,7 +203,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       if sender.titleLabel!.text == "Delete" {
          tableView?.setEditing(true, animated: true)
          state = .deleting
-      } else if sender.titleLabel!.text == "Done" {
+      } else if sender.titleLabel!.text == "Done deleting" {
          tableView?.setEditing(false, animated: true)
          weightTF.text = ""
          state = .blank

@@ -155,11 +155,11 @@
                                     <outlet property="delegate" destination="I1G-ah-9Vk" id="f2A-Dm-K5o"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kSW-zH-V9L" userLabel="deleteB">
-                                <rect key="frame" x="16" y="623" width="68" height="36"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kSW-zH-V9L" userLabel="deleteB">
+                                <rect key="frame" x="16" y="623" width="145" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="42u-Jn-2p6"/>
-                                    <constraint firstAttribute="width" constant="68" id="kMW-WS-Rws"/>
+                                    <constraint firstAttribute="width" constant="145" id="kMW-WS-Rws"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Delete"/>
