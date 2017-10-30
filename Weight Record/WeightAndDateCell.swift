@@ -69,11 +69,10 @@ class WeightAndDateCell: UITableViewCell {
       func borderThickness(fractionalChange: Double) -> CGFloat {
          let maxThickness = CGFloat(h0 - h) * 0.5    // border fills container vertically
          if fractionalChange == 0.0 { return 0.0 } 
-         if abs(fractionalChange) <= 0.001 { return maxThickness * 0.05 }
-         if abs(fractionalChange) <= 0.003 { return maxThickness * 0.1 }
-         if abs(fractionalChange) <= 0.006 { return maxThickness * 0.15 }
-         if abs(fractionalChange) <= 0.012 { return maxThickness * 0.25 }
-         if abs(fractionalChange) <= 0.018 { return maxThickness * 0.32 }
+         if abs(fractionalChange) <= 0.003 { return maxThickness * 0.05 }
+         if abs(fractionalChange) <= 0.006 { return maxThickness * 0.10 }
+         if abs(fractionalChange) <= 0.012 { return maxThickness * 0.20 }
+         if abs(fractionalChange) <= 0.018 { return maxThickness * 0.30 }
          if abs(fractionalChange) <= 0.028 { return maxThickness * 0.4 }
          return maxThickness
       }

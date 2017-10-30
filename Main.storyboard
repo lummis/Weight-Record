@@ -42,7 +42,7 @@
                             </label>
                             <button autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iin-uG-xWo" userLabel="buttonA">
                                 <rect key="frame" x="20" y="92" width="150" height="38"/>
-                                <color key="backgroundColor" red="0.91117869129999995" green="0.74037856540000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="38" id="bfP-fD-Lu5"/>
                                     <constraint firstAttribute="width" constant="150" id="hHn-2V-Tma"/>
@@ -54,7 +54,7 @@
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="NX1-Zb-d4a" userLabel="weightTF">
                                 <rect key="frame" x="205" y="92" width="150" height="38"/>
-                                <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="KnT-zY-lht"/>
                                     <constraint firstAttribute="height" constant="38" id="eDP-w1-LrI"/>
