@@ -10,7 +10,7 @@ import Foundation
 
 internal enum WeightUnit: Int {
    
-   // don't start with rawValue == 0 so 0 can be used to signal first execution
+   // don't start with rawValue == 0 so 0 can be used to signal first execution in userDefaults
    case kilogram = 10, pound, stone
    
    internal func pluralName() -> String {
@@ -45,5 +45,6 @@ internal enum WeightUnit: Int {
          return 6.35029
       }
    }
+
 }
 

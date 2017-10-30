@@ -11,11 +11,11 @@ import UIKit
 
 let borderViewTagValue = 4
 let weightLTagValue = 3
-var weightDisplayUnit: WeightUnit {
-   get {
-      return Model.shared.weightDisplayUnit
-   }
-}
+//var weightDisplayUnit: WeightUnit {
+//   get {
+//      return Model.shared.weightDisplayUnit
+//   }
+//}
 
 class WeightAndDateCell: UITableViewCell {
    @IBOutlet weak var dayOfWeekL: UILabel!
@@ -59,7 +59,7 @@ class WeightAndDateCell: UITableViewCell {
    // weight argument should be in the current weightDisplayUnit
    // fractionalChange is set to 0.0 in the last row of the table by VC
    internal func addWeightDisplayView(in containerV: UIView, weight: Double, fractionalChange: Double) {
-      let model = Model()
+      let model = Model.shared
       
       // width & height of containerV
       let w0 = containerV.bounds.size.width

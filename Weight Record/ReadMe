@@ -1,5 +1,3 @@
-Darkening Mondays results in a value entered Monday night (say, 11:15pm) being darkened which wasn't the intention
-not very good because a Monday value could be missing or present more than once
 
 get a better name for messageText
 
@@ -10,17 +8,26 @@ says to turn off "Spell Checking" but that seems to have no effect for me. Of co
 OFF there is no autocorrection.
 
 When "All Exceptions" breakpoint is set after not triggering many times I now get a C++ break thrown
-every when in AppDelegate. So it's turned off for now but I'd like to know what it's about.
+every time in AppDelegate. So it's turned off for now but I'd like to know what it's about.
 
-A UIImage added to the background of a textField is ignored if the textField has its border style set to roundedRect, 
+A UIImage added to the background of a textField is ignored if the textField has its border style set to roundedRect,
 
-This version has the problem than the weightBorderV appears a few points left of where it should be on the
-first screen. Actually what seems to be happening is that weightL gets shifted right between "...willDisplay cell:"
-when the view is actually drawn on the screen, but the weightBorderV is drawn at the place determined programmatically.
-The result is that the border is not drawn symmetrically around weightL on the first screen but looks correct on
-subsequent screens (i.e., it looks right if the user scrolls, even if he scrolls up and then back down to the early rows).
-After spinning wheels for a few days trying to find out why/when this is happening I will next try drawing the weightL
-and the weightBorderView all at once and pass it to the viewController as a single object. If its position on a cell gets
-shifted the border should still be symmetrical around the weightL.
 
-commentDisplayL was removed (commented out) in the course of debugging the shifting weightL problem.
+buttonA enabled all the time
+At start
+   state = .entering
+   buttonA title = "Enter Weight"
+   weightTF not enabled
+
+buttonA when title is "Enter Weight"
+   state = .outOfRange
+   title changes to "Cancel"
+   weightTF enabled
+
+each entry into weightTF
+   if weight value is inRange
+      state = .inRange
+      buttonA title changes to "Save"
+   if weight value is not valid
+      state = .outOfRange
+      buttonA title changes to "Cancel"

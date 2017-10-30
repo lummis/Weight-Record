@@ -26,6 +26,12 @@ class SettingsVC : UIViewController {
    
    @IBAction func segmentedCAction(_ sender: UISegmentedControl) {
       Model.shared.weightDisplayUnit = WeightUnit(rawValue: sender.selectedSegmentIndex + 10)!
+
+      print()
+      print("model.weightDisplayUnit: \(Model.shared.weightDisplayUnit)")
+      print("userDefaults weightDisplayUnitRawValue: \(UserDefaults.standard.integer(forKey: "weightDisplayUnitRawValue"))")
+      print("model.minValue: \(Model.shared.minValue(Model.shared.weightDisplayUnit))")
+      debugPrint("model address: \(Model.shared)")
    }
    
 }

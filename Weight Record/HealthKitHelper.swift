@@ -36,7 +36,7 @@ class HealthKitHelper {
             // if authorization was denied a subsequent request to read data will return no data
             // if authorization to share (write) was denied a subsequent request to write will fail to write
             (success: Bool, error: Error?) in
-            print("requestAuthorization returned; success: \(success)     error: \(error.debugDescription)")
+//            print("requestAuthorization returned; success: \(success)     error: \(error.debugDescription)")
             if success {
                self.readWeights(fromDate: fromDate, toDate: toDate)
             } else {
@@ -62,9 +62,10 @@ class HealthKitHelper {
                                  (theQuery, results, error) in
                                  if error != nil {
                                     print("error: ", error.debugDescription)
-                                 } else {
-                                    print("query completed, error is nil")
                                  }
+//                                 else {
+//                                    print("query completed, error is nil")
+//                                 }
                                  
                                  guard let samples = results as! [HKQuantitySample]? else {
                                     print("error: \(error.debugDescription)")
@@ -82,7 +83,7 @@ class HealthKitHelper {
                                     results.append( (kilograms, date, note) )
                                  }
                                  
-                                 // if following isn't on the main thread it gives:
+                                 // if the following statement isn't on the main thread it gives:
                                  // "This application is modifying the autolayout engine from a background thread, which can lead to engine corruption and weird...."
                                  // would this be better as a "completeion: " arg?
                                  DispatchQueue.main.async {

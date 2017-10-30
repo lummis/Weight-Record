@@ -9,14 +9,17 @@
 import UIKit
 import HealthKit
 
+// global data
+var weightsAndDatesAndNotes: [ (kg: Double, date: Date, note: String) ]  = []
+
 class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
    
    @IBOutlet weak var messageL: UILabel!
    @IBOutlet weak var weightTF: UITextField!
    @IBOutlet weak var commentInputTF: UITextField!
-   @IBOutlet weak var saveB: UIButton!
+   @IBOutlet weak var buttonA: UIButton!
    @IBOutlet weak var deleteB: UIButton!
-   @IBOutlet weak var button_B: UIButton!
+   @IBOutlet weak var buttonB: UIButton!
    
    var helper: HealthKitHelper!
    var tableView: UITableView? = nil
@@ -25,6 +28,45 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    let earliestDate: Date = .distantPast
    let latestDate: Date = .distantFuture
    var buttonBDefaultTitle = ""  // set in viewDidAppear
+   enum State {
+      case blank, entering, inRange, outOfRange, deleting
+   }
+   
+   var state: State = .blank {
+      didSet (oldState) {
+         deleteB.setTitle("Delete", for: .normal)
+         buttonA.isHidden = false
+         buttonB.isHidden = false
+         deleteB.isHidden = false
+         weightTF.isHidden = false
+         commentInputTF.isHidden = false
+         switch state {
+         case .inRange:
+            buttonA.setTitle("Save", for: .normal)
+            weightTF.isHidden = false
+            deleteB.isHidden = true
+            buttonB.isHidden = true
+         case .outOfRange:
+            buttonA.setTitle("Cancel", for: .normal)
+            deleteB.isHidden = true
+            buttonB.isHidden = true
+         case .blank:
+            buttonA.setTitle("Enter Weight", for: .normal)
+            weightTF.isHidden = true
+         case .deleting:
+            buttonA.isHidden = true
+            buttonB.isHidden = true
+            weightTF.isHidden = true
+            deleteB.setTitle("Done", for: .normal)
+            commentInputTF.isHidden = true
+
+         default:
+            buttonA.setTitle("Cancel", for: .normal)
+         }
+      }
+   }
+   
+   var model = Model.shared
    
    var messageText: String {
       get {
@@ -66,9 +108,11 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       helper = HealthKitHelper(delegate: self)
       weightTF.delegate = self
       weightTF.tintColor = UIColor.black
+      weightTF.isHidden = true
       commentInputTF.delegate = self
       commentInputTF.text = ""
       messageText = ""
+//      model.vc = self
       
       // move text right a little
 //      commentInputTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
@@ -78,12 +122,12 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    override func viewDidAppear(_ animated: Bool) {
       super.viewDidAppear(animated)
       
-      saveB.isEnabled = false
+      state = .blank
       tableView?.setEditing(false, animated: true)
       helper.getWeightsAndDates(fromDate: earliestDate, toDate: latestDate)
-      weightTF.placeholder = weightDisplayUnit.pluralName() + "..."
+      weightTF.placeholder = model.weightDisplayUnit.pluralName() + "..."
       weightTF.text = ""
-      buttonBDefaultTitle = button_B.titleLabel!.text!
+      buttonBDefaultTitle = buttonB.titleLabel!.text!
       
       let sb = UIStoryboard(name: "Main", bundle: nil)
       debugPrint("Main sb: \(sb)")
@@ -91,14 +135,16 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    
    // enabled save button only when the weight is in the valid range, set in the extension
    @IBAction func weightTFTextChanged() {
-      saveB.isEnabled = false
       if let w: String = weightTF.text {
          if let wt: Double = Double(w) {
-            if wt >= minValue(weightDisplayUnit) && wt <= maxValue(weightDisplayUnit) {
-               saveB.isEnabled = true
-            }
+            if model.isInRange(wt) { state = .inRange } else { state = .outOfRange }
          }
       }
+   }
+   
+   func textFieldDidBeginEditing(_ textField: UITextField) {
+      textField.isHighlighted = true
+      textField.textColor = UIColor.black
    }
    
    func fadeThenRemoveMessage() {
@@ -114,11 +160,6 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       })
    }
    
-   func textFieldDidBeginEditing(_ textField: UITextField) {
-      textField.isHighlighted = true
-      textField.textColor = UIColor.black
-   }
-   
    func saveWeightsAndDatesAndNotesThenDisplay( wadan: [ (kg: Double, date: Date, note: String) ] ) {
       weightsAndDatesAndNotes = wadan
       updateCells()
@@ -126,13 +167,27 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       messageText = "\(nSamples) weights"
    }
    
-   @IBAction func saveAction(_ sender: Any) {
+   @IBAction func buttonAAction(_ sender: UIButton) {
+      switch sender.titleLabel!.text! {
+      case "Enter Weight":
+         state = .outOfRange
+      case "Save":
+         state = .blank
+         save()
+      case "Cancel":
+         state = .blank
+      default:
+         state = .blank
+      }
+   }
+   
+   func save() {
       weightTF.resignFirstResponder()
       commentInputTF.resignFirstResponder()
       
       if let wt = Double(weightTF.text!) {
-         if wt >= minValue(weightDisplayUnit) && wt <= maxValue(weightDisplayUnit) {
-            helper.storeWeight(kg: wt * weightDisplayUnit.unitToKgFactor(), unit: weightDisplayUnit, note: commentInputTF.text ?? "")
+         if model.isInRange(wt) {
+            helper.storeWeight(kg: wt * model.weightDisplayUnit.unitToKgFactor(), unit: model.weightDisplayUnit, note: commentInputTF.text ?? "")
             weightTF.text = ""
             commentInputTF.text = ""
          } else {
@@ -142,20 +197,24 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
          print("weight not valid")
       }
       
-      saveB.isEnabled = false
    }
    
-   @IBAction func deleteBAction(_ sender: Any) {
-      tableView?.setEditing(true, animated: true)
-      button_B.titleLabel!.text = "Done"
+   @IBAction func deleteBAction(_ sender: UIButton) {
+      if sender.titleLabel!.text == "Delete" {
+         tableView?.setEditing(true, animated: true)
+         state = .deleting
+      } else if sender.titleLabel!.text == "Done" {
+         tableView?.setEditing(false, animated: true)
+         weightTF.text = ""
+         state = .blank
+      }
    }
    
-   @IBAction func button_BAction(_ sender: UIButton) {
+   @IBAction func buttonBAction(_ sender: UIButton) {
       if sender.titleLabel!.text == "Done" {
          tableView?.setEditing(false, animated: true)
-         button_B.titleLabel!.text = buttonBDefaultTitle
-      } else if sender.titleLabel!.text == buttonBDefaultTitle {
-         print("button_B title is \(buttonBDefaultTitle)")
+         buttonB.titleLabel!.text = buttonBDefaultTitle
+      } else if sender.titleLabel!.text == "Setup" {
          performSegue(withIdentifier: "WeightVC-SettingsVC", sender: self)
          }
    }
@@ -175,7 +234,6 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    }
    
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-      print("prepare")
       super.prepare(for: segue, sender: sender)
 
       let svc = segue.destination as! SettingsVC
@@ -194,7 +252,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    
    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       let cell = tableView.dequeueReusableCell(withIdentifier: "weightAndDateCell", for: indexPath) as! WeightAndDateCell
-      cell.updateFields(withSample: weightsAndDatesAndNotes[indexPath.row], displayUnit: weightDisplayUnit)
+      cell.updateFields(withSample: weightsAndDatesAndNotes[indexPath.row], displayUnit: model.weightDisplayUnit)
       return cell
    }
    
@@ -215,7 +273,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
          fractionalChange = (thisWeightInKg - previousWeightInKg) / previousWeightInKg
       }
       thisCell.addWeightDisplayView(in: thisCell.weightContainerV,
-                                    weight: thisWeightInKg / weightDisplayUnit.unitToKgFactor(),
+                                    weight: thisWeightInKg / model.weightDisplayUnit.unitToKgFactor(),
                                     fractionalChange: fractionalChange )
    }
    
@@ -226,25 +284,10 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       // if user starts entering text then decides against it
       weightTF.resignFirstResponder()
       commentInputTF.resignFirstResponder()
+      
+      print()
+      print("model.weightDisplayUnit: \(model.weightDisplayUnit)")
+      print("userDefaults weightDisplayUnitRawValue: \(UserDefaults.standard.integer(forKey: "weightDisplayUnitRawValue"))")
+      print("model.minValue: \(model.minValue(model.weightDisplayUnit))")
    }
-}
-
-extension WeightVC {
-   
-   func minValue(_ unit: WeightUnit) -> Double {
-      switch(unit) {
-      case .kilogram: return 18.0     // 18.143695
-      case .pound:    return 40.0
-      case .stone:   return 2.85     // 2.857143
-      }
-   }
-   
-   func maxValue(_ unit: WeightUnit) -> Double {
-      switch(unit) {
-      case .kilogram: return 180.0    // 180.873356
-      case .pound:    return 399.0
-      case .stone:    return 28.5     // 28.5000
-      }
-   }
-   
 }
