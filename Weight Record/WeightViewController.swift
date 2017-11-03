@@ -19,7 +19,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    @IBOutlet weak var commentInputTF: UITextField!
    @IBOutlet weak var buttonA: UIButton!
    @IBOutlet weak var deleteB: UIButton!
-   @IBOutlet weak var buttonB: UIButton!
+   @IBOutlet weak var buttonC: UIButton!
    
    var helper: HealthKitHelper!
    var tableView: UITableView? = nil
@@ -27,7 +27,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    var isWeightInValidRange: Bool = false
    let earliestDate: Date = .distantPast
    let latestDate: Date = .distantFuture
-   var buttonBDefaultTitle = ""  // set in viewDidAppear
+   var buttonCDefaultTitle = ""  // set in viewDidAppear
    enum State {
       case blank, entering, inRange, outOfRange, deleting
    }
@@ -36,7 +36,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       didSet (oldState) {
          deleteB.setTitle("Delete", for: .normal)
          buttonA.isHidden = false
-         buttonB.isHidden = false
+         buttonC.isHidden = false
          deleteB.isHidden = false
          weightTF.isHidden = false
          commentInputTF.isHidden = false
@@ -45,17 +45,17 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
             buttonA.setTitle("Save", for: .normal)
             weightTF.isHidden = false
             deleteB.isHidden = true
-            buttonB.isHidden = true
+            buttonC.isHidden = true
          case .outOfRange:
             buttonA.setTitle("Cancel", for: .normal)
             deleteB.isHidden = true
-            buttonB.isHidden = true
+            buttonC.isHidden = true
          case .blank:
             buttonA.setTitle("Enter Weight", for: .normal)
             weightTF.isHidden = true
          case .deleting:
             buttonA.isHidden = true
-            buttonB.isHidden = true
+            buttonC.isHidden = true
             weightTF.isHidden = true
             deleteB.setTitle("Done deleting", for: .normal)
             commentInputTF.isHidden = true
@@ -127,7 +127,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       helper.getWeightsAndDates(fromDate: earliestDate, toDate: latestDate)
       weightTF.placeholder = model.weightDisplayUnit.pluralName() + "..."
       weightTF.text = ""
-      buttonBDefaultTitle = buttonB.titleLabel!.text!
+      buttonCDefaultTitle = buttonC.titleLabel!.text!
       
       let sb = UIStoryboard(name: "Main", bundle: nil)
       debugPrint("Main sb: \(sb)")
@@ -210,10 +210,10 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       }
    }
    
-   @IBAction func buttonBAction(_ sender: UIButton) {
+   @IBAction func buttonCAction(_ sender: UIButton) {
       if sender.titleLabel!.text == "Done" {
          tableView?.setEditing(false, animated: true)
-         buttonB.titleLabel!.text = buttonBDefaultTitle
+         buttonC.titleLabel!.text = buttonCDefaultTitle
       } else if sender.titleLabel!.text == "Setup" {
          performSegue(withIdentifier: "WeightVC-SettingsVC", sender: self)
          }

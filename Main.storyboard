@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="I1G-ah-9Vk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="I1G-ah-9Vk">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -167,7 +167,7 @@
                                     <action selector="deleteBAction:" destination="I1G-ah-9Vk" eventType="touchUpInside" id="Cmk-BS-LMo"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YCf-75-N9I" userLabel="buttonB">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YCf-75-N9I" userLabel="buttonC">
                                 <rect key="frame" x="291" y="623" width="68" height="36"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -177,7 +177,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Setup"/>
                                 <connections>
-                                    <action selector="buttonBAction:" destination="I1G-ah-9Vk" eventType="touchUpInside" id="5Xw-KA-FnS"/>
+                                    <action selector="buttonCAction:" destination="I1G-ah-9Vk" eventType="touchUpInside" id="5Xw-KA-FnS"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -206,7 +206,7 @@
                     </view>
                     <connections>
                         <outlet property="buttonA" destination="Iin-uG-xWo" id="4uS-iD-LpF"/>
-                        <outlet property="buttonB" destination="YCf-75-N9I" id="IqY-jn-ws2"/>
+                        <outlet property="buttonC" destination="YCf-75-N9I" id="IqY-jn-ws2"/>
                         <outlet property="commentInputTF" destination="4KZ-Qk-Zd7" id="uCs-tH-mLZ"/>
                         <outlet property="deleteB" destination="kSW-zH-V9L" id="bfL-g5-Cgs"/>
                         <outlet property="messageL" destination="4NC-SM-AC8" id="NZK-R9-mn6"/>
