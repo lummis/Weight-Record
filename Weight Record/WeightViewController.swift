@@ -18,6 +18,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    @IBOutlet weak var weightTF: UITextField!
    @IBOutlet weak var commentInputTF: UITextField!
    @IBOutlet weak var buttonA: UIButton!
+   @IBOutlet weak var buttonB: UIButton!
    @IBOutlet weak var deleteB: UIButton!
    @IBOutlet weak var buttonC: UIButton!
    
@@ -29,39 +30,49 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    let latestDate: Date = .distantFuture
    var buttonCDefaultTitle = ""  // set in viewDidAppear
    enum State {
-      case blank, entering, inRange, outOfRange, deleting
+      case waiting, entering, inRange, deleting
    }
    
-   var state: State = .blank {
+   var state: State = .waiting {
       didSet (oldState) {
+         /*
+          buttonA and weightTF occupy the same place
+          their isHidden properties are always the opposite of each other
+          
+ */
+         deleteB.isHidden = false
          deleteB.setTitle("Delete", for: .normal)
          buttonA.isHidden = false
+         buttonB.isHidden = true
+         buttonB.setTitle("Cancel",for: .normal)
          buttonC.isHidden = false
-         deleteB.isHidden = false
-         weightTF.isHidden = false
+         weightTF.isHidden = true
          commentInputTF.isHidden = false
          switch state {
-         case .inRange:
-            buttonA.setTitle("Save", for: .normal)
+         case .waiting:
+            break
+         case .entering:
+            buttonA.isHidden = true
             weightTF.isHidden = false
-            deleteB.isHidden = true
+            if weightTF.isFirstResponder == false {
+               weightTF.becomeFirstResponder()
+            }
+            buttonB.isHidden = false
+            buttonB.setTitle("Cancel", for: .normal)
             buttonC.isHidden = true
-         case .outOfRange:
-            buttonA.setTitle("Cancel", for: .normal)
             deleteB.isHidden = true
+         case .inRange:
+            buttonA.isHidden = true
+            weightTF.isHidden = false
+            buttonB.isHidden = false
+            buttonB.setTitle("Save", for: .normal)
             buttonC.isHidden = true
-         case .blank:
-            buttonA.setTitle("Enter Weight", for: .normal)
-            weightTF.isHidden = true
          case .deleting:
             buttonA.isHidden = true
             buttonC.isHidden = true
             weightTF.isHidden = true
             deleteB.setTitle("Done deleting", for: .normal)
             commentInputTF.isHidden = true
-
-         default:
-            buttonA.setTitle("Cancel", for: .normal)
          }
       }
    }
@@ -122,7 +133,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    override func viewDidAppear(_ animated: Bool) {
       super.viewDidAppear(animated)
       
-      state = .blank
+      state = .waiting
       tableView?.setEditing(false, animated: true)
       helper.getWeightsAndDates(fromDate: earliestDate, toDate: latestDate)
       weightTF.placeholder = model.weightDisplayUnit.pluralName() + "..."
@@ -137,7 +148,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    @IBAction func weightTFTextChanged() {
       if let w: String = weightTF.text {
          if let wt: Double = Double(w) {
-            if model.isInRange(wt) { state = .inRange } else { state = .outOfRange }
+            if model.isInRange(wt) { state = .inRange } else { state = .entering }
          }
       }
    }
@@ -168,16 +179,18 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    }
    
    @IBAction func buttonAAction(_ sender: UIButton) {
-      switch sender.titleLabel!.text! {
-      case "Enter Weight":
-         state = .outOfRange
-      case "Save":
-         state = .blank
+      state = .entering
+   }
+   
+   @IBAction func buttonBAction(_ sender: UIButton) {
+      if sender.titleLabel!.text == "Cancel" {
+         weightTF.resignFirstResponder()
+         state = .waiting
+      } else if sender.titleLabel!.text == "Save" {
+         state = .waiting
          save()
-      case "Cancel":
-         state = .blank
-      default:
-         state = .blank
+      } else {
+         print("error in buttonBAction")
       }
    }
    
@@ -206,7 +219,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       } else if sender.titleLabel!.text == "Done deleting" {
          tableView?.setEditing(false, animated: true)
          weightTF.text = ""
-         state = .blank
+         state = .waiting
       }
    }
    
