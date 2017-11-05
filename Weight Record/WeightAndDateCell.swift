@@ -33,7 +33,6 @@ class WeightAndDateCell: UITableViewCell {
       // table row bolder every Monday to emphasize weeks
       // font weight 0.0 is 'regular'; range is -1.0 to 1.0
       let fontWeight = dayName == "Mon" ? CGFloat(0.0) : CGFloat (0.0)
-      // stop using alternate fontWeight (Mon was 0.7). It might be responsible for the frame being misplaced
       dayOfWeekL.font = UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight(rawValue: fontWeight))
       dayOfWeekL.text = dayName
       
@@ -70,10 +69,11 @@ class WeightAndDateCell: UITableViewCell {
          let maxThickness = CGFloat(h0 - h) * 0.5    // border fills container vertically
          if fractionalChange == 0.0 { return 0.0 } 
          if abs(fractionalChange) <= 0.003 { return maxThickness * 0.05 }
-         if abs(fractionalChange) <= 0.006 { return maxThickness * 0.10 }
-         if abs(fractionalChange) <= 0.012 { return maxThickness * 0.20 }
-         if abs(fractionalChange) <= 0.018 { return maxThickness * 0.30 }
-         if abs(fractionalChange) <= 0.028 { return maxThickness * 0.4 }
+         if abs(fractionalChange) <= 0.005 { return maxThickness * 0.09 }
+         if abs(fractionalChange) <= 0.009 { return maxThickness * 0.16 }
+         if abs(fractionalChange) <= 0.015 { return maxThickness * 0.26 }
+         if abs(fractionalChange) <= 0.024 { return maxThickness * 0.32 }
+         if abs(fractionalChange) <= 0.030 { return maxThickness * 0.4 }
          return maxThickness
       }
       

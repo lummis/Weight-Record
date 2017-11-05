@@ -35,11 +35,8 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    
    var state: State = .waiting {
       didSet (oldState) {
-         /*
-          buttonA and weightTF occupy the same place
-          their isHidden properties are always the opposite of each other
-          
- */
+ //    buttonA and weightTF occupy the same place and have opposite isHidden properties
+         
          deleteB.isHidden = false
          deleteB.setTitle("Delete", for: .normal)
          buttonA.isHidden = false
