@@ -262,7 +262,17 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    
    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       let cell = tableView.dequeueReusableCell(withIdentifier: "weightAndDateCell", for: indexPath) as! WeightAndDateCell
-      cell.updateFields(withSample: weightsAndDatesAndNotes[indexPath.row], displayUnit: model.weightDisplayUnit)
+      let section = indexPath.section
+      let row = indexPath.row
+      let thisSample = weightsAndDatesAndNotes[indexPath.row]
+      var previousSample: (kg: Double, date: Date, note: String)?
+      if row != 0 {
+         let previousIndexPath = IndexPath(row: row - 1, section: section)
+         previousSample = weightsAndDatesAndNotes[previousIndexPath.row]
+      } else {
+         previousSample = nil
+      }
+      cell.updateFields(withSample: thisSample, previousSample: previousSample, displayUnit: model.weightDisplayUnit)
       return cell
    }
    

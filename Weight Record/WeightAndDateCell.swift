@@ -22,7 +22,10 @@ class WeightAndDateCell: UITableViewCell {
    // date property is used as unique field for identifying a value for deletion from HKStore
    internal var date: Date!
    
-   internal func updateFields(withSample sample: (kg: Double, date: Date, note: String), displayUnit: WeightUnit) {
+   internal func updateFields(withSample sample: (kg: Double, date: Date, note: String), previousSample: (kg: Double, date: Date, note: String)?, displayUnit: WeightUnit) {
+      date = sample.date
+      commentDisplayL.text = sample.note == "" ? "" : sample.note
+      
       let dateFormatter = DateFormatter()
       dateFormatter.timeZone = .current
       
@@ -30,24 +33,37 @@ class WeightAndDateCell: UITableViewCell {
       let dayName = dateFormatter.string(from: sample.date)
       let fontSize = CGFloat(18.0)
       
+
+      
       // table row bolder every Monday to emphasize weeks
       // font weight 0.0 is 'regular'; range is -1.0 to 1.0
       let fontWeight = dayName == "Mon" ? CGFloat(0.0) : CGFloat (0.0)
       dayOfWeekL.font = UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight(rawValue: fontWeight))
       dayOfWeekL.text = dayName
       
+      
       // weight is stored in kilograms; show it and expect new values in weightDisplayUnit
       dateFormatter.dateFormat = "MMM-dd-yyyy"
       monthDayYearL.text = dateFormatter.string(from: sample.date)
       monthDayYearL.font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: UIFont.Weight(rawValue: fontWeight))
       
+      var previousMonthDayYear: String?
+      if let previousDate = previousSample?.date {
+         previousMonthDayYear = dateFormatter.string(from: previousDate)
+      } else {
+         previousMonthDayYear = nil
+      }
+      
+      // hide dayOfWeekL and monthDayYearL if this is the same day as the previous sample
+      var sameDay = false
+      if previousMonthDayYear != nil && previousMonthDayYear == monthDayYearL.text { sameDay = true }
+      
+      monthDayYearL.isHidden = sameDay ? true : false
+      dayOfWeekL.isHidden = sameDay ? true : false
+      
       dateFormatter.dateFormat = "HH:mm"
       hourMinuteL.text = dateFormatter.string(from: sample.date)
       hourMinuteL.font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: UIFont.Weight(rawValue: fontWeight))
-      
-      commentDisplayL.text = sample.note == "" ? "" : sample.note
-      
-      self.date = sample.date
    }
    
    // weight argument should be in the current weightDisplayUnit
