@@ -44,7 +44,8 @@ class WeightAndDateCell: UITableViewCell {
       
       // weight is stored in kilograms; show it and expect new values in weightDisplayUnit
       dateFormatter.dateFormat = "MMM-dd-yyyy"
-      monthDayYearL.text = dateFormatter.string(from: sample.date)
+      let thisMonthDayYear = dateFormatter.string(from: sample.date)
+      monthDayYearL.text = thisMonthDayYear
       monthDayYearL.font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: UIFont.Weight(rawValue: fontWeight))
       
       var previousMonthDayYear: String?
@@ -54,10 +55,9 @@ class WeightAndDateCell: UITableViewCell {
          previousMonthDayYear = nil
       }
       
-      // hide dayOfWeekL and monthDayYearL if this is the same day as the previous sample
+      // hide day and date if this is the same day as the previous sample (the sample above in the table)
       var sameDay = false
-      if previousMonthDayYear != nil && previousMonthDayYear == monthDayYearL.text { sameDay = true }
-      
+      if previousMonthDayYear != nil && previousMonthDayYear == thisMonthDayYear { sameDay = true }
       monthDayYearL.isHidden = sameDay ? true : false
       dayOfWeekL.isHidden = sameDay ? true : false
       
@@ -87,7 +87,7 @@ class WeightAndDateCell: UITableViewCell {
          if abs(fractionalChange) <= 0.003 { return maxThickness * 0.05 }
          if abs(fractionalChange) <= 0.005 { return maxThickness * 0.09 }
          if abs(fractionalChange) <= 0.009 { return maxThickness * 0.16 }
-         if abs(fractionalChange) <= 0.015 { return maxThickness * 0.26 }
+         if abs(fractionalChange) <= 0.015 { return maxThickness * 0.24 }
          if abs(fractionalChange) <= 0.024 { return maxThickness * 0.32 }
          if abs(fractionalChange) <= 0.030 { return maxThickness * 0.4 }
          return maxThickness
