@@ -28,19 +28,12 @@ class WeightAndDateCell: UITableViewCell {
       
       let dateFormatter = DateFormatter()
       dateFormatter.timeZone = .current
-      
       dateFormatter.dateFormat = "ccc"
       let dayName = dateFormatter.string(from: sample.date)
-      let fontSize = CGFloat(18.0)
-      
-
-      
-      // table row bolder every Monday to emphasize weeks
-      // font weight 0.0 is 'regular'; range is -1.0 to 1.0
-      let fontWeight = dayName == "Mon" ? CGFloat(0.0) : CGFloat (0.0)
-      dayOfWeekL.font = UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight(rawValue: fontWeight))
       dayOfWeekL.text = dayName
       
+      let fontSize = CGFloat(18.0)
+      let fontWeight = CGFloat(0.0)
       
       // weight is stored in kilograms; show it and expect new values in weightDisplayUnit
       dateFormatter.dateFormat = "MMM-dd-yyyy"
@@ -80,7 +73,7 @@ class WeightAndDateCell: UITableViewCell {
       let h = CGFloat(25)
       
       // assume containerV is same aspect ratio as weightL or wider
-      // thus its height is the limiting dimension for border thickness
+      // so its height determines the max border thickness
       func borderThickness(fractionalChange: Double) -> CGFloat {
          let maxThickness = CGFloat(h0 - h) * 0.5    // border fills container vertically
          if fractionalChange == 0.0 { return 0.0 } 
