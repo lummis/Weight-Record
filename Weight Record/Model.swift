@@ -33,7 +33,7 @@ class Model {
    
    static let shared = Model()   // singleton
    
-//   var vc: WeightVC!
+   var vc: WeightVC!
    private let userDefaults = UserDefaults.standard
    private let weightDisplayUnitDefault: WeightUnit = .kilogram
    private var weight10DayTrailingAvg: [Double] = []

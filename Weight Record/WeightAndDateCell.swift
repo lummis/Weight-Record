@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+protocol WeightAndDateCellVC {
+   func saveMonthDayYearL(_: UILabel)
+}
+
 let borderViewTagValue = 4
 let weightLTagValue = 3
 
@@ -40,19 +44,20 @@ class WeightAndDateCell: UITableViewCell {
       let thisMonthDayYear = dateFormatter.string(from: sample.date)
       monthDayYearL.text = thisMonthDayYear
       monthDayYearL.font = UIFont.monospacedDigitSystemFont(ofSize: fontSize, weight: UIFont.Weight(rawValue: fontWeight))
+      Model.shared.vc.saveMonthDayYearL(monthDayYearL)
       
-      var previousMonthDayYear: String?
-      if let previousDate = previousSample?.date {
-         previousMonthDayYear = dateFormatter.string(from: previousDate)
-      } else {
-         previousMonthDayYear = nil
-      }
+//      var previousMonthDayYear: String?
+//      if let previousDate = previousSample?.date {
+//         previousMonthDayYear = dateFormatter.string(from: previousDate)
+//      } else {
+//         previousMonthDayYear = nil
+//      }
       
       // hide day and date if this is the same day as the previous sample (the sample above in the table)
-      var sameDay = false
-      if previousMonthDayYear != nil && previousMonthDayYear == thisMonthDayYear { sameDay = true }
-      monthDayYearL.isHidden = sameDay ? true : false
-      dayOfWeekL.isHidden = sameDay ? true : false
+//      var sameDay = false
+//      if previousMonthDayYear != nil && previousMonthDayYear == thisMonthDayYear { sameDay = true }
+//      monthDayYearL.isHidden = sameDay ? true : false
+//      dayOfWeekL.isHidden = sameDay ? true : false
       
       dateFormatter.dateFormat = "HH:mm"
       hourMinuteL.text = dateFormatter.string(from: sample.date)
@@ -113,7 +118,6 @@ class WeightAndDateCell: UITableViewCell {
       
       containerV.addSubview(borderView)
       containerV.addSubview(weightL)
-
    }
 }
 

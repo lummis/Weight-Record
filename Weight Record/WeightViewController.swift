@@ -12,7 +12,7 @@ import HealthKit
 // global data
 var weightsAndDatesAndNotes: [ (kg: Double, date: Date, note: String) ]  = []
 
-class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
+class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, WeightAndDateCellVC, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
    
    @IBOutlet weak var messageL: UILabel!
    @IBOutlet weak var weightTF: UITextField!
@@ -29,6 +29,9 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
    let earliestDate: Date = .distantPast
    let latestDate: Date = .distantFuture
    var buttonCDefaultTitle = ""  // set in viewDidAppear
+   var model = Model.shared
+   var oldMonthDayYearL: UILabel? = nil
+   
    enum State {
       case waiting, entering, inRange, deleting
    }
@@ -74,8 +77,6 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       }
    }
    
-   var model = Model.shared
-   
    var messageText: String {
       get {
          return messageL.text ?? "messageText initial value"
@@ -120,7 +121,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
       commentInputTF.delegate = self
       commentInputTF.text = ""
       messageText = ""
-//      model.vc = self
+      model.vc = self
       
       // move text right a little
 //      commentInputTF.layer.sublayerTransform = CATransform3DMakeTranslation(8, 0, 0)
@@ -241,6 +242,13 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, UITableViewDataS
          messageText = "Can't access weight in the Apple Health app. Verify that it is set to permit 'write' and 'read'."
          print("updateCells failed; tableView is nil or weightsAndDates is empty")
       }
+   }
+   
+   func saveMonthDayYearL(_ currentLabel: UILabel) {
+      if oldMonthDayYearL != nil {
+         oldMonthDayYearL!.isHidden = oldMonthDayYearL!.text == currentLabel.text ? true : false
+      }
+      oldMonthDayYearL = currentLabel
    }
    
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
