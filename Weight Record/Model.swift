@@ -84,17 +84,17 @@ class Model {
    // min and max valid weight
    func minValue(_ unit: WeightUnit) -> Double {
       switch(unit) {
-      case .kilogram: return 18.0     // 18.143695
-      case .pound:    return 40.0
-      case .stone:   return 2.85     // 2.857143
+      case .kilogram: return 16.0     // 15.909090
+      case .pound:    return 35.0
+      case .stone:   return 2.5     // 2.5000
       }
    }
 
    func maxValue(_ unit: WeightUnit) -> Double {
       switch(unit) {
-      case .kilogram: return 180.0    // 180.873356
-      case .pound:    return 399.0
-      case .stone:    return 28.5     // 28.5000
+      case .kilogram: return 159    // 158.636
+      case .pound:    return 349.0
+      case .stone:    return 24.9     // 24.9286
       }
    }
 

@@ -25,12 +25,13 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, WeightAndDateCel
    var helper: HealthKitHelper!
    var tableView: UITableView? = nil
    var dateFormatter = DateFormatter()
-   var isWeightInValidRange: Bool = false
+//   var isWeightInValidRange: Bool = false // not used?
    let earliestDate: Date = .distantPast
    let latestDate: Date = .distantFuture
    var buttonCDefaultTitle = ""  // set in viewDidAppear
    var model = Model.shared
    var oldMonthDayYearL: UILabel? = nil
+   var oldTextFieldText = ""
    
    enum State {
       case waiting, entering, inRange, deleting
@@ -96,7 +97,6 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, WeightAndDateCel
          return false
       }
       set {
-         print("storeWeight succeeded: \(newValue)")
          if newValue == true {
             DispatchQueue.main.async {
                self.helper.getWeightsAndDates(fromDate: self.earliestDate, toDate: self.latestDate)
@@ -142,13 +142,34 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, WeightAndDateCel
       debugPrint("Main sb: \(sb)")
    }
    
-   // enabled save button only when the weight is in the valid range, set in the extension
-   @IBAction func weightTFTextChanged() {
-      if let w: String = weightTF.text {
-         if let wt: Double = Double(w) {
-            if model.isInRange(wt) { state = .inRange } else { state = .entering }
-         }
+   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+      // we have only one textField, so textField is the same as weightTF
+      let textAsString = weightTF.text!
+      if string.count == 0 && textAsString.last == "." { // delete button and last char is decimal dot
+         weightTF.text = String(textAsString.dropLast(2))   // must convert subString to String before assigning it to a String
+         weightTFTextChanged()
+         return false
       }
+      return true
+   }
+   
+   // enabled save button only when the weight is in the valid range, set in the extension
+   // inputString must be all numbers because numeric keyboard is specified
+   // backspace key apparently takes effect before this func is called so we never see bs
+   @IBAction func weightTFTextChanged() {
+      if let inputString = weightTF.text {
+         if inputString.count == 3 {
+            weightTF.text = inputString + "."
+         }
+         let value = Double(weightTF.text!)!
+         state = model.isInRange(value) ? .inRange : .entering
+      }
+   }
+   
+   func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+      oldTextFieldText = textField.text!
+      print(oldTextFieldText)
+      return true
    }
    
    func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -207,7 +228,6 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, WeightAndDateCel
       } else {
          print("weight not valid")
       }
-      
    }
    
    @IBAction func deleteBAction(_ sender: UIButton) {

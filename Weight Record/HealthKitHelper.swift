@@ -146,7 +146,6 @@ The sample date is guaranteed to be unique, at least among samples added to the 
       store.save(sample) {
          (ok, error) in
          self.delegate.storeWeightSucceeded = ok
-         print("storeWeight completed. ok: \(ok), error: \(String(describing: error))")
       }
    }
    
