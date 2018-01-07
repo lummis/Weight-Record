@@ -146,7 +146,7 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, WeightAndDateCel
       // we have only one textField, so textField is the same as weightTF
       let textAsString = weightTF.text!
       if string.count == 0 && textAsString.last == "." { // delete button and last char is decimal dot
-         weightTF.text = String(textAsString.dropLast(2))   // must convert subString to String before assigning it to a String
+         weightTF.text = String(textAsString.dropLast(2))   // convert subString to String before assigning it to a String
          weightTFTextChanged()
          return false
       }
@@ -158,10 +158,12 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, WeightAndDateCel
    // backspace key apparently takes effect before this func is called so we never see bs
    @IBAction func weightTFTextChanged() {
       if let inputString = weightTF.text {
-         if inputString.count == 3 {
+         let value = Double(inputString)!
+         if inputString.count == 2 && model.isInRange(value) {
+            weightTF.text = inputString + "."
+         } else if inputString.count == 3 && inputString.last != "." {
             weightTF.text = inputString + "."
          }
-         let value = Double(weightTF.text!)!
          state = model.isInRange(value) ? .inRange : .entering
       }
    }
