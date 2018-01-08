@@ -67,7 +67,7 @@ class Model {
    }
    
    // return the value stored in userDefaults
-   // return nil if the key is not set
+   // return nil if the key is not set (which means userDefaults returns 0)
    internal func weightDisplayUnitRawValue() -> WeightUnit.RawValue? {
       let rawValue = userDefaults.integer(forKey: "weightDisplayUnitRawValue")
       return rawValue == 0 ? nil : rawValue
@@ -86,7 +86,7 @@ class Model {
       switch(unit) {
       case .kilogram: return 16.0     // 15.909090
       case .pound:    return 35.0
-      case .stone:   return 2.5     // 2.5000
+      case .stone:   return 3.0     // 2.5000
       }
    }
 
@@ -94,7 +94,7 @@ class Model {
       switch(unit) {
       case .kilogram: return 159    // 158.636
       case .pound:    return 349.0
-      case .stone:    return 24.9     // 24.9286
+      case .stone:    return 29.9     // 24.9286
       }
    }
 

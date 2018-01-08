@@ -157,14 +157,29 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, WeightAndDateCel
    // inputString must be all numbers because numeric keyboard is specified
    // backspace key apparently takes effect before this func is called so we never see bs
    @IBAction func weightTFTextChanged() {
+      if weightTF.text == "" { return }
+      
       if let inputString = weightTF.text {
-         let value = Double(inputString)!
-         if inputString.count == 2 && model.isInRange(value) {
-            weightTF.text = inputString + "."
-         } else if inputString.count == 3 && inputString.last != "." {
-            weightTF.text = inputString + "."
+         let inputValue = Double(inputString)!
+         if inputValue == 0.0 { // prevent 0 because the decimal point logic doesn't work
+            weightTF.text = ""
+            return
          }
-         state = model.isInRange(value) ? .inRange : .entering
+         
+         switch model.weightDisplayUnit {
+            
+         case .pound, .kilogram:
+            if inputString.count == 3 && inputString.last != "." || inputString.count == 2 && model.isInRange(inputValue) {
+               weightTF.text = inputString + "."
+            }
+            
+         case .stone:
+            if inputString.count <= 2 && model.isInRange(inputValue) {
+               weightTF.text = inputString + "."
+            }
+         }
+         
+         state = model.isInRange(inputValue) ? .inRange : .entering
       }
    }
    

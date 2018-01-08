@@ -83,7 +83,7 @@ class WeightAndDateCell: UITableViewCell {
       weightL.backgroundColor = UIColor.white
       weightL.textAlignment = .center
       weightL.font = UIFont.monospacedDigitSystemFont(ofSize: CGFloat(18), weight: UIFont.Weight(rawValue: 0.0) )  // 0.0 normal, 1.0 heavy bold
-      let weightDisplayPrecision = model.weightDisplayUnit == WeightUnit.stone ? 2 : 1
+      let weightDisplayPrecision = model.weightDisplayUnit == (WeightUnit.stone) && weight < 10.0 ? 2 : 1
       weightL.text = weight.stringWithRounding(precision: weightDisplayPrecision)
       weightL.tag = weightLTagValue
       
