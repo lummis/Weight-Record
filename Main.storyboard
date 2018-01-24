@@ -41,30 +41,30 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iin-uG-xWo" userLabel="buttonA">
-                                <rect key="frame" x="20" y="92" width="150" height="38"/>
+                                <rect key="frame" x="20" y="88" width="170" height="55"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="38" id="bfP-fD-Lu5"/>
-                                    <constraint firstAttribute="width" constant="150" id="hHn-2V-Tma"/>
+                                    <constraint firstAttribute="height" constant="55" id="bfP-fD-Lu5"/>
+                                    <constraint firstAttribute="width" constant="170" id="hHn-2V-Tma"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                 <state key="normal" title="Enter Weight"/>
                                 <connections>
                                     <action selector="buttonAAction:" destination="I1G-ah-9Vk" eventType="touchUpInside" id="hme-uT-Rxv"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qgm-Fx-NLR" userLabel="buttonB">
-                                <rect key="frame" x="205" y="92" width="150" height="38"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <rect key="frame" x="185" y="88" width="170" height="55"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                 <state key="normal" title="Button B"/>
                                 <connections>
                                     <action selector="buttonBAction:" destination="I1G-ah-9Vk" eventType="touchUpInside" id="yEo-ty-ukO"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="NX1-Zb-d4a" userLabel="weightTF">
-                                <rect key="frame" x="20" y="92" width="150" height="38"/>
+                                <rect key="frame" x="20" y="88" width="170" height="55"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" keyboardAppearance="alert" enablesReturnKeyAutomatically="YES"/>
                                 <connections>
                                     <action selector="weightTFTextChanged" destination="I1G-ah-9Vk" eventType="editingChanged" id="Bgo-oa-LTr"/>
@@ -110,18 +110,18 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9NS-40-b3X" userLabel="weightContainerV">
-                                                    <rect key="frame" x="281" y="5" width="90" height="50"/>
+                                                    <rect key="frame" x="266" y="5" width="105" height="50"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" notEnabled="YES"/>
                                                     </accessibility>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="90" id="gKV-p6-nNw"/>
+                                                        <constraint firstAttribute="width" constant="105" id="gKV-p6-nNw"/>
                                                         <constraint firstAttribute="height" constant="50" id="yrc-8X-Y49"/>
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eXr-2r-8L6" userLabel="commentDisplayL">
-                                                    <rect key="frame" x="8" y="35" width="265" height="21"/>
+                                                    <rect key="frame" x="8" y="35" width="250" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="AYn-BN-C6g"/>
                                                     </constraints>
@@ -188,7 +188,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="0.73637153377777786" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="Iin-uG-xWo" firstAttribute="top" secondItem="FAT-uq-VPv" secondAttribute="bottom" constant="72" id="0oD-eb-ijB"/>
+                            <constraint firstItem="Iin-uG-xWo" firstAttribute="top" secondItem="FAT-uq-VPv" secondAttribute="bottom" constant="68" id="0oD-eb-ijB"/>
                             <constraint firstItem="YCf-75-N9I" firstAttribute="centerY" secondItem="kSW-zH-V9L" secondAttribute="centerY" id="2n3-c9-VKi"/>
                             <constraint firstItem="NX1-Zb-d4a" firstAttribute="centerY" secondItem="Iin-uG-xWo" secondAttribute="centerY" id="4Kw-qU-JSo"/>
                             <constraint firstAttribute="trailing" secondItem="YCf-75-N9I" secondAttribute="trailing" constant="16" id="BQi-YU-IGS"/>
