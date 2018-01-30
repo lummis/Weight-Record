@@ -61,7 +61,7 @@ class WeightAndDateCell: UITableViewCell {
       let h0 = containerV.bounds.size.height
       
       // width & height of the weightL
-      let w = CGFloat(60)
+      let w = CGFloat(80)
       let h = CGFloat(25)
       
       // assume containerV is same aspect ratio as weightL or wider
@@ -82,7 +82,7 @@ class WeightAndDateCell: UITableViewCell {
       let weightL = UILabel(frame: weightLFrame)
       weightL.backgroundColor = UIColor.white
       weightL.textAlignment = .center
-      weightL.font = UIFont.monospacedDigitSystemFont(ofSize: CGFloat(18), weight: UIFont.Weight(rawValue: 0.0) )  // 0.0 normal, 1.0 heavy bold
+      weightL.font = UIFont.monospacedDigitSystemFont(ofSize: CGFloat(24), weight: UIFont.Weight(rawValue: 0.0) )  // 0.0 normal, 1.0 heavy bold
       let weightDisplayPrecision = model.weightDisplayUnit == (WeightUnit.stone) && weight < 10.0 ? 2 : 1
       weightL.text = weight.stringWithRounding(precision: weightDisplayPrecision)
       weightL.tag = weightLTagValue
