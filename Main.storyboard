@@ -47,7 +47,7 @@
                                     <constraint firstAttribute="height" constant="55" id="bfP-fD-Lu5"/>
                                     <constraint firstAttribute="width" constant="170" id="hHn-2V-Tma"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="Enter Weight"/>
                                 <connections>
                                     <action selector="buttonAAction:" destination="I1G-ah-9Vk" eventType="touchUpInside" id="hme-uT-Rxv"/>
