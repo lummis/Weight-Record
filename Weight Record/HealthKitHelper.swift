@@ -36,7 +36,6 @@ class HealthKitHelper {
             // if authorization was denied a subsequent request to read data will return no data
             // if authorization to share (write) was denied a subsequent request to write will fail to write
             (success: Bool, error: Error?) in
-//            print("requestAuthorization returned; success: \(success)     error: \(error.debugDescription)")
             if success {
                self.readWeights(fromDate: fromDate, toDate: toDate)
             } else {

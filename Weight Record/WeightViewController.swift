@@ -19,13 +19,11 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, WeightAndDateCel
    @IBOutlet weak var commentInputTF: UITextField!
    @IBOutlet weak var buttonA: UIButton!
    @IBOutlet weak var buttonB: UIButton!
-   @IBOutlet weak var deleteB: UIButton!
    @IBOutlet weak var buttonC: UIButton!
    
    var helper: HealthKitHelper!
    var tableView: UITableView? = nil
    var dateFormatter = DateFormatter()
-//   var isWeightInValidRange: Bool = false // not used?
    let earliestDate: Date = .distantPast
    let latestDate: Date = .distantFuture
    var buttonCDefaultTitle = ""  // set in viewDidAppear
@@ -41,8 +39,6 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, WeightAndDateCel
       didSet (oldState) {
  //    buttonA and weightTF occupy the same place and have opposite isHidden properties
          
-         deleteB.isHidden = false
-         deleteB.setTitle("Delete", for: .normal)
          buttonA.isHidden = false
          buttonB.isHidden = true
          buttonB.setTitle("Cancel",for: .normal)
@@ -61,7 +57,6 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, WeightAndDateCel
             buttonB.isHidden = false
             buttonB.setTitle("Cancel", for: .normal)
             buttonC.isHidden = true
-            deleteB.isHidden = true
          case .inRange:
             buttonA.isHidden = true
             weightTF.isHidden = false
@@ -72,7 +67,6 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, WeightAndDateCel
             buttonA.isHidden = true
             buttonC.isHidden = true
             weightTF.isHidden = true
-            deleteB.setTitle("Done deleting", for: .normal)
             commentInputTF.isHidden = true
          }
       }
@@ -244,17 +238,6 @@ class WeightVC: UIViewController, WeightAndDateAndNoteDelegate, WeightAndDateCel
          }
       } else {
          print("weight not valid")
-      }
-   }
-   
-   @IBAction func deleteBAction(_ sender: UIButton) {
-      if sender.titleLabel!.text == "Delete" {
-         tableView?.setEditing(true, animated: true)
-         state = .deleting
-      } else if sender.titleLabel!.text == "Done deleting" {
-         tableView?.setEditing(false, animated: true)
-         weightTF.text = ""
-         state = .waiting
       }
    }
    
