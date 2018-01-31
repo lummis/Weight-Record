@@ -31,3 +31,7 @@ each entry into weightTF
    if weight value is not valid
       state = .outOfRange
       buttonA title changes to "Cancel"
+
+ToDo
+If I change units after an entry is already stored for today the day/date/time field is blank
+
