@@ -60,14 +60,14 @@ class WeightAndDateCell: UITableViewCell {
       let w0 = containerV.bounds.size.width
       let h0 = containerV.bounds.size.height
       
-      // width & height of the weightL
-      let w = CGFloat(80)
+      // width & height of weightL - the UILabel that displays the number
+      let w = CGFloat(72)  // by trial and error
       let h = CGFloat(25)
       
       // assume containerV is same aspect ratio as weightL or wider
       // so its height determines the max border thickness
       func borderThickness(fractionalChange: Double) -> CGFloat {
-         let maxThickness = CGFloat(h0 - h) * 0.5    // border fills container vertically
+         let maxThickness = (h0 - h) * 0.5    // border fills container vertically
          if fractionalChange == 0.0 { return 0.0 } 
          if abs(fractionalChange) <= 0.003 { return maxThickness * 0.05 }
          if abs(fractionalChange) <= 0.005 { return maxThickness * 0.09 }
