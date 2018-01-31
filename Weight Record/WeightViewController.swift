@@ -4,7 +4,7 @@
 //
 //  Created by Robert Lummis on 7/5/17.
 //  Copyright © 2017 ElectricTurkeySoftware. All rights reserved.
-//
+//  github try on Jan 31
 
 import UIKit
 import HealthKit
